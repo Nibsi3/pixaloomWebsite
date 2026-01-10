@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Game2048, GuessGame, HackOverlay, SnakeGame } from '@/components/hack-overlay';
 import { workItems } from '@/components/work-items';
 
 type Line =
@@ -11,6 +12,8 @@ type Line =
   | { id: string; kind: 'out_html'; html: string };
 
 type ThemeName = 'pixaloom' | 'dracula' | 'dark';
+
+type HackGameId = 'snake' | '2048' | 'guess';
 
 type CommandCtx = {
   cwd: string;
@@ -48,6 +51,10 @@ function helpText() {
     '  projects                     List projects (open <slug>)',
     '  open <slug>                  Open project detail page',
     '  goto <section>               Scroll to section (projects|work|skills|timeline|contact)',
+    '  github                       Show latest GitHub activity',
+    '  weather                      Show live weather (George, WC)',
+    '  joke                         Fetch a random dev joke',
+    '  hack                         Open built-in mini games menu',
     '  clear                        Clear terminal',
     '  theme <pixaloom|dracula|dark> Change terminal theme',
     '  whoami                       Identify',
@@ -245,6 +252,9 @@ export function TerminalIntro() {
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [currentInput, setCurrentInput] = useState('');
 
+  const [hackOpen, setHackOpen] = useState(false);
+  const [activeGame, setActiveGame] = useState<HackGameId | null>(null);
+
   const themeClasses = useMemo(() => {
     if (theme === 'dracula') return 'bg-[#282a36] border-[#6272a4] text-[#f8f8f2]';
     if (theme === 'dark') return 'bg-bg-900 border-bg-700 text-fg-100';
@@ -265,6 +275,67 @@ export function TerminalIntro() {
 
   function clear() {
     setLines([{ id: uid(), kind: 'banner', text: bannerAscii() }]);
+  }
+
+  function appendOut(text: string) {
+    setLines((prev) => [...prev, { id: uid(), kind: 'out', text }]);
+  }
+
+  async function runAsyncCommand(cmd: 'github' | 'weather' | 'joke') {
+    try {
+      if (cmd === 'github') {
+        const res = await fetch('/api/github', { cache: 'no-store' });
+        const data = (await res.json()) as
+          | { ok: true; user: string; items: { repo: string; createdAt: string | null; messages: string[] }[] }
+          | { ok: false; error: string };
+        if (!('ok' in data) || !data.ok) {
+          appendOut(`github: ${'error' in data ? data.error : 'failed'}`);
+          return;
+        }
+
+        if (!data.items.length) {
+          appendOut(`GitHub (${data.user}): no recent push events found.`);
+          return;
+        }
+
+        const lines = [
+          `GitHub (${data.user}) — latest pushes:`,
+          ...data.items.flatMap((it) => {
+            const header = `- ${it.repo}${it.createdAt ? ` (${new Date(it.createdAt).toLocaleString()})` : ''}`;
+            const commits = it.messages.map((m) => `    • ${m}`);
+            return [header, ...commits];
+          }),
+        ];
+        appendOut(lines.join('\n'));
+        return;
+      }
+
+      if (cmd === 'weather') {
+        const res = await fetch('/api/weather', { cache: 'no-store' });
+        const data = (await res.json()) as
+          | { ok: true; city: string; temperatureC: number | null; windKmh: number | null; weatherCode: number | null }
+          | { ok: false; error: string };
+        if (!('ok' in data) || !data.ok) {
+          appendOut(`weather: ${'error' in data ? data.error : 'failed'}`);
+          return;
+        }
+        const t = data.temperatureC === null ? '?' : `${Math.round(data.temperatureC)}°C`;
+        const w = data.windKmh === null ? '?' : `${Math.round(data.windKmh)} km/h wind`;
+        const c = data.weatherCode === null ? '?' : `code ${data.weatherCode}`;
+        appendOut(`Weather — ${data.city}: ${t} · ${w} · ${c}`);
+        return;
+      }
+
+      const res = await fetch('/api/joke', { cache: 'no-store' });
+      const data = (await res.json()) as { ok: true; joke: string } | { ok: false; error: string };
+      if (!('ok' in data) || !data.ok) {
+        appendOut(`joke: ${'error' in data ? data.error : 'failed'}`);
+        return;
+      }
+      appendOut(data.joke);
+    } catch {
+      appendOut(`${cmd}: unexpected error`);
+    }
   }
 
   const ctx: CommandCtx = {
@@ -291,15 +362,26 @@ export function TerminalIntro() {
   function onSubmit() {
     const input = currentInput;
 
+    const trimmed = sanitizeText(input).trim();
+    const [cmd] = trimmed.split(/\s+/);
+
     setLines((prev) => [
       ...prev,
       { id: uid(), kind: 'prompt', cwd, input },
     ]);
 
-    const { out } = runCommand(input, ctx);
+    if (cmd === 'github' || cmd === 'weather' || cmd === 'joke') {
+      appendOut('fetching…');
+      void runAsyncCommand(cmd);
+    } else if (cmd === 'hack') {
+      appendOut('opening hack menu…');
+      setHackOpen(true);
+    } else {
+      const { out } = runCommand(input, ctx);
 
-    if (out.length) {
-      setLines((prev) => [...prev, ...out]);
+      if (out.length) {
+        setLines((prev) => [...prev, ...out]);
+      }
     }
 
     setHistory((prev) => [input, ...prev]);
@@ -335,7 +417,25 @@ export function TerminalIntro() {
     if (e.key === 'Tab') {
       e.preventDefault();
       const v = currentInput.trimStart();
-      const candidates = ['help', 'about', 'services', 'projects', 'open', 'goto', 'clear', 'theme', 'whoami', 'date', 'echo', 'ls', 'cd'];
+      const candidates = [
+        'help',
+        'about',
+        'services',
+        'projects',
+        'open',
+        'goto',
+        'github',
+        'weather',
+        'joke',
+        'hack',
+        'clear',
+        'theme',
+        'whoami',
+        'date',
+        'echo',
+        'ls',
+        'cd',
+      ];
       const match = candidates.find((c) => c.startsWith(v));
       if (match) setCurrentInput(match + (match === 'open' || match === 'goto' || match === 'theme' || match === 'cd' || match === 'echo' ? ' ' : ''));
     }
@@ -417,9 +517,62 @@ export function TerminalIntro() {
                 />
               </div>
             </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="font-mono text-[11px] text-fg-400">More:</span>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => {
+                  setCurrentInput('github');
+                  inputRef.current?.focus();
+                }}
+              >
+                github
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => {
+                  setCurrentInput('weather');
+                  inputRef.current?.focus();
+                }}
+              >
+                weather
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => {
+                  setCurrentInput('joke');
+                  inputRef.current?.focus();
+                }}
+              >
+                joke
+              </button>
+              <span className="mx-1 text-fg-600">|</span>
+              <button
+                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
+                onClick={() => {
+                  setHackOpen(true);
+                  inputRef.current?.focus();
+                }}
+              >
+                hack
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <HackOverlay
+        open={hackOpen}
+        onCloseAction={() => setHackOpen(false)}
+        onSelectAction={(id) => {
+          setHackOpen(false);
+          setActiveGame(id);
+        }}
+      />
+      <SnakeGame open={activeGame === 'snake'} onCloseAction={() => setActiveGame(null)} />
+      <Game2048 open={activeGame === '2048'} onCloseAction={() => setActiveGame(null)} />
+      <GuessGame open={activeGame === 'guess'} onCloseAction={() => setActiveGame(null)} />
     </section>
   );
 }
