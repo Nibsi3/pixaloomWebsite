@@ -59,8 +59,10 @@ body {
     @apply flex w-max gap-4 px-1 py-1;
   }
 
-  .work-marquee:hover .work-marquee-track {
-    animation-play-state: paused;
+  @media (hover: hover) and (pointer: fine) {
+    .work-marquee:hover .work-marquee-track {
+      animation-play-state: paused;
+    }
   }
 
   .work-marquee-card {
@@ -80,6 +82,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .work-marquee-track {
-    animation: none;
+    animation-duration: 120s;
   }
 }
