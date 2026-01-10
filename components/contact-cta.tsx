@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 const phone = '0662995533';
 const whatsappBase = 'https://wa.me/27662995533?text=';
-const emailTo = '';
+const emailTo = 'info@pixaloom.co.za';
 
 export function ContactCTA() {
   const [name, setName] = useState('');

@@ -6,6 +6,7 @@ import { Metrics } from '@/components/metrics';
 import { Projects } from '@/components/projects';
 import { Skills } from '@/components/skills';
 import { Timeline } from '@/components/timeline';
+import { WebsitesMade } from '@/components/websites-made';
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
           <Hero />
           <Metrics />
           <Projects />
+          <WebsitesMade />
           <Skills />
           <Timeline />
           <ContactCTA />
