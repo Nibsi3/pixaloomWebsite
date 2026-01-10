@@ -5,7 +5,6 @@ import { Hero } from '@/components/hero';
 import { Metrics } from '@/components/metrics';
 import { Projects } from '@/components/projects';
 import { Skills } from '@/components/skills';
-import { TechGarden } from '@/components/tech-garden';
 import { Timeline } from '@/components/timeline';
 import { WebsitesMade } from '@/components/websites-made';
 
@@ -21,25 +20,6 @@ export default function HomePage() {
           <WebsitesMade />
           <Skills />
           <Timeline />
-          <section className="py-12 sm:py-14">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6">
-              <div className="mb-6">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-base font-semibold tracking-tight text-fg-100 sm:text-lg">
-                    Interactive Tech Garden
-                  </h2>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[11px] text-fg-200">
-                    <span className="h-2 w-2 rounded-full bg-accent-500" />
-                    <span>Interactive</span>
-                  </span>
-                </div>
-                <p className="mt-2 max-w-2xl text-sm text-fg-300">
-                  A playful garden of tech plants. Click to reveal skills and projects — and watch out for bugs.
-                </p>
-              </div>
-              <TechGarden />
-            </div>
-          </section>
           <ContactCTA />
         </main>
         <Footer />
