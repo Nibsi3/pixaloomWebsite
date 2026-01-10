@@ -49,39 +49,29 @@ body {
     @apply relative overflow-hidden;
   }
 
-  .work-marquee-track {
-    @apply flex w-max;
-    animation: work-marquee 45s linear infinite;
-    will-change: transform;
+  .work-marquee-viewport {
+    @apply flex overflow-x-auto;
+    scroll-behavior: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    cursor: grab;
+  }
+
+  .work-marquee-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .work-marquee-viewport:active {
+    cursor: grabbing;
   }
 
   .work-marquee-group {
     @apply flex w-max gap-4 px-1 py-1;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    .work-marquee:hover .work-marquee-track {
-      animation-play-state: paused;
-    }
-  }
-
   .work-marquee-card {
     width: min(460px, 78vw);
     flex: 0 0 auto;
-  }
-}
-
-@keyframes work-marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .work-marquee-track {
-    animation-duration: 120s;
   }
 }
