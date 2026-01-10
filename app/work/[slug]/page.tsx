@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/container';
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { WorkGallery } from '@/components/work-gallery';
 import { workItems } from '@/components/work-items';
 
@@ -13,8 +15,11 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
   const sections = (item.sections || []).filter((s) => s.title);
 
   return (
-    <div className="py-10 sm:py-12">
-      <Container>
+    <div className="min-h-screen bg-bg-900 bg-grid-fade">
+      <Header />
+      <div className="md:pl-[280px]">
+        <main className="py-10 sm:py-12">
+          <Container>
         <div className="mb-6">
           <Link
             href="/#work"
@@ -121,7 +126,10 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
             </div>
           ) : null}
         </div>
-      </Container>
+          </Container>
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

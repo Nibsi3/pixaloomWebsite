@@ -1,6 +1,7 @@
  'use client';
 
- import { useState } from 'react';
+ import { useMemo, useState } from 'react';
+ import { usePathname } from 'next/navigation';
  import { cn } from '@/components/utils';
  import { Container } from '@/components/ui/container';
  import { Button } from '@/components/ui/button';
@@ -17,6 +18,13 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const hashPrefix = pathname === '/' ? '' : '/';
+
+  const navResolved = useMemo(
+    () => nav.map((n) => ({ ...n, href: `${hashPrefix}${n.href}` })),
+    [hashPrefix]
+  );
 
   return (
     <>
@@ -31,14 +39,14 @@ export function Header() {
             <span>Menu</span>
           </button>
 
-          <a href="#top" className="flex items-center gap-2">
+          <a href={`${hashPrefix}#top`} className="flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 text-sm font-semibold">
               cf
             </span>
             <span className="text-sm font-medium text-fg-200">cameronfalck.dev</span>
           </a>
 
-          <Button href="#contact" variant="primary" size="sm">
+          <Button href={`${hashPrefix}#contact`} variant="primary" size="sm">
             Hire
           </Button>
         </Container>
@@ -46,7 +54,10 @@ export function Header() {
 
       <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[280px] border-r border-bg-700/70 bg-bg-900/60 backdrop-blur md:block">
         <div className="flex h-full flex-col p-4">
-          <a href="#top" className="flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800/60 px-3 py-2">
+          <a
+            href={`${hashPrefix}#top`}
+            className="flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800/60 px-3 py-2"
+          >
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-850 text-sm font-semibold">
               cf
             </span>
@@ -59,7 +70,7 @@ export function Header() {
           <div className="mt-4">
             <div className="px-2 text-xs font-medium text-fg-300">Navigation</div>
             <nav className="mt-2 space-y-1">
-              {nav.map((n) => (
+              {navResolved.map((n) => (
                 <a key={n.href} className="nav-item" href={n.href}>
                   {n.label}
                 </a>
@@ -71,7 +82,7 @@ export function Header() {
           </div>
 
           <div className="mt-4 space-y-2">
-            <Button href="#contact" variant="primary" size="md" className="w-full">
+            <Button href={`${hashPrefix}#contact`} variant="primary" size="md" className="w-full">
               Start a project
             </Button>
             <div className="grid grid-cols-2 gap-2">
@@ -123,7 +134,7 @@ export function Header() {
 
           <div className="p-4">
             <nav className="space-y-1">
-              {nav.map((n) => (
+              {navResolved.map((n) => (
                 <a
                   key={n.href}
                   className="nav-item"
