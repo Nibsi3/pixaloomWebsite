@@ -7,6 +7,8 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
   const item = workItems.find((x) => x.slug === params.slug);
   if (!item) notFound();
 
+  const gallery = (item.gallery || []).filter(Boolean);
+
   return (
     <div className="py-10 sm:py-12">
       <Container>
@@ -37,6 +39,26 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
             </picture>
           </div>
         </div>
+
+        {gallery.length ? (
+          <div className="mt-6">
+            <div className="mb-3 text-sm font-semibold text-fg-100">More screenshots</div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {gallery.map((src) => (
+                <div key={src} className="card overflow-hidden">
+                  <div className="aspect-[16/9] w-full bg-bg-850">
+                    <img
+                      src={encodeURI(src)}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="mt-6 grid gap-4 lg:grid-cols-12">
           <div className="card p-5 lg:col-span-7">

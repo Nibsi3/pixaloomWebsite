@@ -7,6 +7,7 @@ export type WorkItem = {
   scope: string;
   stack: string[];
   highlights: string[];
+  gallery?: string[];
 };
 
 export const workItems: WorkItem[] = [
@@ -17,23 +18,50 @@ export const workItems: WorkItem[] = [
     fallback: '/work/caps-tutor.svg',
     meta: 'EdTech · AI Tutor · Web App',
     scope:
-      'An AI-powered learning platform aligned to the South African CAPS curriculum for Grades 10–12. Built to help learners practice smarter, understand concepts faster, and track progress over time.',
+      `CAPS Tutor is an AI-powered educational platform built around the South African Curriculum and Assessment Policy Statement (CAPS) for Grades 10–12. The goal was to deliver a full learning ecosystem: a student experience that feels like a personal tutor, plus teacher/admin tooling that makes it practical to manage content at scale.
+
+The platform combines structured CAPS-aligned content, interactive lessons, practice, and authentic past papers—with live-style analytics and an admin workflow for creating/managing learning resources and reporting across subjects.`,
     highlights: [
-      'AI tutoring with step-by-step explanations and 24/7 support',
-      'CAPS-aligned lessons and adaptive practice questions',
-      'Grade 12 past papers with authentic exam layouts (Paper 1/2 + memos)',
-      'Progress tracking, mastery analytics, and achievement-style motivation',
-      'Admin tooling for content, past papers, tasks, and reporting',
-      'Multi-language ready foundation (11 SA languages)',
+      'Student dashboard with progress tracking: lessons completed, mastery by topic, time spent, and historical performance',
+      'Interactive AI tutor that provides step-by-step explanations and personalized support 24/7',
+      'Adaptive practice questions tailored to grade, subject, and weak areas',
+      'Searchable lessons hub with embedded practice questions and quizzes',
+      'Grade 12 CAPS past papers (Paper 1, Paper 2, memos) with authentic exam-style layouts',
+      'Past paper creation/management workflow (PDF or structured formats) with processing tooling',
+      'Admin dashboard to manage subjects, lesson content, practice questions, and weekly tasks',
+      'Student management: view progress, spot problem topics, and export reporting',
+      'Live-style analytics for engagement and mastery trends across topics and subjects',
+      'System-wide settings and announcements for platform-wide communication',
+      'News + blog pages for updates, announcements, and SEO-friendly educational content',
+      'Achievement-style progression for motivation and retention',
+      'Multi-language-ready foundation (11 official SA languages)',
+      'Subjects supported include Mathematics, Physical Sciences, Life Sciences, Accounting, Business Studies, Economics, Geography, History, IT, CAT, English, Afrikaans',
     ],
     stack: [
       'Next.js (App Router)',
       'TypeScript',
       'React',
       'Tailwind CSS',
-      'Appwrite (auth, DB, storage)',
+      'shadcn/ui (Radix UI primitives)',
+      'Recharts (analytics + reporting visualizations)',
+      'Lucide React (icons)',
+      'Appwrite (auth, DB, file storage)',
       'AI integrations (tutoring + question generation)',
-      'PDF processing pipeline',
+      'Groq API (AI workflows)',
+      'Next.js API routes (server-side logic)',
+      'PDF + exam paper processing pipeline (Python tooling)',
+      'PyMuPDF (fitz) (PDF extraction)',
+      'OpenCV (diagram detection / image processing)',
+    ],
+    gallery: [
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145539.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145544.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145607.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145614.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145620.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145628.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145640.png',
+      '/pixa_pics/capstutor/Screenshot 2026-01-10 145646.png',
     ],
   },
   {
@@ -51,6 +79,11 @@ export const workItems: WorkItem[] = [
       'SEO-focused headings, content structure, and performance basics',
     ],
     stack: ['WordPress', 'SEO setup', 'Performance tuning', 'Lead/contact flows'],
+    gallery: [
+      '/pixa_pics/pawsonroute/Screenshot 2026-01-10 145253.png',
+      '/pixa_pics/pawsonroute/Screenshot 2026-01-10 145307.png',
+      '/pixa_pics/pawsonroute/Screenshot 2026-01-10 145314.png',
+    ],
   },
   {
     slug: 'team-colours',
@@ -67,6 +100,11 @@ export const workItems: WorkItem[] = [
       'Performance improvements for faster browsing',
     ],
     stack: ['WordPress', 'WooCommerce', 'SEO', 'Performance optimization'],
+    gallery: [
+      '/pixa_pics/teamcolours/Screenshot 2026-01-10 145124.png',
+      '/pixa_pics/teamcolours/Screenshot 2026-01-10 145155.png',
+      '/pixa_pics/teamcolours/Screenshot 2026-01-10 145224.png',
+    ],
   },
   {
     slug: 'vicbay',
@@ -82,6 +120,11 @@ export const workItems: WorkItem[] = [
       'Performance-focused tweaks for a smoother experience',
     ],
     stack: ['WordPress', 'WooCommerce', 'SEO setup', 'Performance tuning'],
+    gallery: [
+      '/pixa_pics/vicbay/Screenshot 2026-01-10 145427.png',
+      '/pixa_pics/vicbay/Screenshot 2026-01-10 145436.png',
+      '/pixa_pics/vicbay/Screenshot 2026-01-10 145445.png',
+    ],
   },
   {
     slug: 'key-masters',
@@ -97,6 +140,11 @@ export const workItems: WorkItem[] = [
       'Clean, credible layout to improve conversion rate',
     ],
     stack: ['WordPress', 'SEO', 'Lead forms', 'Conversion optimization'],
+    gallery: [
+      '/pixa_pics/keymasters/Screenshot 2026-01-10 145829.png',
+      '/pixa_pics/keymasters/Screenshot 2026-01-10 145833.png',
+      '/pixa_pics/keymasters/Screenshot 2026-01-10 145839.png',
+    ],
   },
   {
     slug: 'physiotherapy',
@@ -112,6 +160,11 @@ export const workItems: WorkItem[] = [
       'SEO-ready content structure for local discovery',
     ],
     stack: ['WordPress', 'SEO', 'Contact forms', 'Content/portfolio sections'],
+    gallery: [
+      '/pixa_pics/physiope/Screenshot 2026-01-10 145341.png',
+      '/pixa_pics/physiope/Screenshot 2026-01-10 145349.png',
+      '/pixa_pics/physiope/Screenshot 2026-01-10 145410.png',
+    ],
   },
   {
     slug: 'kikay-pharma',
@@ -127,6 +180,11 @@ export const workItems: WorkItem[] = [
       'SEO foundation for visibility',
     ],
     stack: ['WordPress', 'SEO', 'Lead generation forms'],
+    gallery: [
+      '/pixa_pics/kikay/Screenshot 2026-01-10 145852.png',
+      '/pixa_pics/kikay/Screenshot 2026-01-10 145858.png',
+      '/pixa_pics/kikay/Screenshot 2026-01-10 145911.png',
+    ],
   },
   {
     slug: 'spotlight',
@@ -168,6 +226,11 @@ export const workItems: WorkItem[] = [
       'Performance-minded approach to keep response times fast',
     ],
     stack: ['Backend services', 'API integrations', 'TypeScript/Node.js', 'Database + queue-ready architecture'],
+    gallery: [
+      '/pixa_pics/nexai/Screenshot 2026-01-10 150029.png',
+      '/pixa_pics/nexai/Screenshot 2026-01-10 150043.png',
+      '/pixa_pics/nexai/Screenshot 2026-01-10 150051.png',
+    ],
   },
   {
     slug: 'ai-testing',
@@ -184,5 +247,6 @@ export const workItems: WorkItem[] = [
       'Exportable reporting foundations for stakeholders',
     ],
     stack: ['Web app', 'API routes', 'Database-backed storage', 'Auth-ready admin tooling'],
+    gallery: ['/pixa_pics/ai/Screenshot 2026-01-10 145507.png'],
   },
 ];
