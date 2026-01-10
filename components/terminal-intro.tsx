@@ -9,6 +9,7 @@ type Line =
   | { id: string; kind: 'banner'; text: string }
   | { id: string; kind: 'prompt'; cwd: string; input: string }
   | { id: string; kind: 'out'; text: string }
+  | { id: string; kind: 'out_typing'; text: string; full: string }
   | { id: string; kind: 'out_html'; html: string };
 
 type HackGameId = 'snake' | '2048' | 'guess';
@@ -277,6 +278,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   const router = useRouter();
   const shellRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const typingTimerRef = useRef<number | null>(null);
 
   const [cwd, setCwd] = useState('~/pixaloom');
 
@@ -315,8 +317,52 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   }
 
   function appendOut(text: string) {
-    setLines((prev) => [...prev, { id: uid(), kind: 'out', text }]);
+    const id = uid();
+    setLines((prev) => [...prev, { id, kind: 'out_typing', text: '', full: text }]);
   }
+
+  useEffect(() => {
+    const hasTyping = lines.some((l) => l.kind === 'out_typing');
+    if (!hasTyping) {
+      if (typingTimerRef.current) {
+        window.clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+      return;
+    }
+
+    if (typingTimerRef.current) return;
+
+    typingTimerRef.current = window.setInterval(() => {
+      setLines((prev) => {
+        const idx = prev.findIndex((l) => l.kind === 'out_typing' && l.text.length < l.full.length);
+        if (idx === -1) return prev;
+
+        const line = prev[idx];
+        if (line.kind !== 'out_typing') return prev;
+
+        const remaining = line.full.length - line.text.length;
+        const step = Math.min(remaining, 6);
+        const nextText = line.full.slice(0, line.text.length + step);
+
+        const nextLine: Line =
+          nextText.length >= line.full.length
+            ? { id: line.id, kind: 'out', text: line.full }
+            : { ...line, text: nextText };
+
+        const out = prev.slice();
+        out[idx] = nextLine;
+        return out;
+      });
+    }, 16);
+
+    return () => {
+      if (typingTimerRef.current) {
+        window.clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+    };
+  }, [lines]);
 
   async function runAsyncCommand(cmd: 'github' | 'weather' | 'joke') {
     try {
@@ -415,7 +461,13 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
       const { out } = runCommand(input, ctx);
 
       if (out.length) {
-        setLines((prev) => [...prev, ...out]);
+        setLines((prev) => [
+          ...prev,
+          ...out.map((l) => {
+            if (l.kind === 'out') return { id: l.id, kind: 'out_typing', text: '', full: l.text } as const;
+            return l;
+          }),
+        ]);
       }
     }
 
