@@ -91,7 +91,7 @@ export function ContactCTA() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                   placeholder="John"
                 />
               </label>
@@ -101,7 +101,7 @@ export function ContactCTA() {
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                   placeholder="you@company.com"
                 />
               </label>
@@ -111,7 +111,7 @@ export function ContactCTA() {
                 <input
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                   placeholder="Business / Brand"
                 />
               </label>
@@ -136,7 +136,7 @@ export function ContactCTA() {
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                   placeholder="What do you need built? Who is it for? Any deadline?"
                 />
                 <div className="mt-2 text-xs text-fg-300">
@@ -175,11 +175,6 @@ export function ContactCTA() {
               <div className="mt-3 text-xs text-danger-500">{error}</div>
             ) : null}
 
-            {!isValid ? (
-              <div className="mt-3 text-xs text-warn-500">
-                Add at least 10 characters in “Project details” to send a meaningful enquiry.
-              </div>
-            ) : null}
           </div>
 
           <div className="card p-5 lg:col-span-5">

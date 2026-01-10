@@ -68,8 +68,6 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
     dragRef.current.moved = false;
     dragRef.current.startX = e.clientX;
     dragRef.current.startScrollLeft = el.scrollLeft;
-
-    el.setPointerCapture(e.pointerId);
   }
 
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
@@ -91,21 +89,11 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
     }
   }
 
-  function endDrag(e: React.PointerEvent<HTMLDivElement>) {
-    const el = viewportRef.current;
-    if (!el) return;
-
-    const wasDrag = dragRef.current.moved;
+  function endDrag() {
+    if (dragRef.current.moved) {
+      dragRef.current.blockClickUntil = performance.now() + 100;
+    }
     dragRef.current.active = false;
-    try {
-      el.releasePointerCapture(e.pointerId);
-    } catch {
-      // ignore
-    }
-
-    if (wasDrag) {
-      dragRef.current.blockClickUntil = performance.now() + 350;
-    }
   }
 
   function onClickCapture(e: React.MouseEvent<HTMLDivElement>) {
