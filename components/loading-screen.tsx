@@ -2,90 +2,105 @@
 
 import { useEffect, useState } from 'react';
 
+const BOOT_LINES = [
+  '[ OK ] Starting boot sequence for PixaOS...',
+  '[ OK ] Running startup functions...',
+  '[ OK ] - startTerminal()',
+  '[ OK ] - mountPortfolioFS()',
+  '[ OK ] - hydrateUI()',
+  '[ OK ] - initAnimations()',
+  '[ OK ] - connectGitHub()',
+  '[ OK ] - warmupCache()',
+  '[ OK ] Finished running startup functions.',
+  '[ OK ] Starting graphical user interface...',
+];
+
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
+  const [linesShown, setLinesShown] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        // Accelerate towards the end
-        const increment = prev < 70 ? Math.random() * 15 + 5 : Math.random() * 8 + 2;
-        return Math.min(prev + increment, 100);
-      });
+    const MIN_DURATION_MS = 3600;
+    const startedAt = performance.now();
+
+    setProgress(0);
+    setLinesShown(0);
+    setFadeOut(false);
+    setVisible(true);
+
+    let progressValue = 0;
+    let linesValue = 0;
+
+    const progressId = window.setInterval(() => {
+      if (progressValue >= 100) return;
+      const increment = progressValue < 60 ? Math.random() * 10 + 6 : Math.random() * 6 + 2;
+      progressValue = Math.min(progressValue + increment, 100);
+      setProgress(progressValue);
+    }, 140);
+
+    const linesId = window.setInterval(() => {
+      if (linesValue >= BOOT_LINES.length) return;
+      linesValue = Math.min(linesValue + 1, BOOT_LINES.length);
+      setLinesShown(linesValue);
+    }, 240);
+
+    const doneCheckId = window.setInterval(() => {
+      const elapsed = performance.now() - startedAt;
+      const linesDone = linesValue >= BOOT_LINES.length;
+      const progressDone = progressValue >= 100;
+      if (elapsed >= MIN_DURATION_MS && linesDone && progressDone) {
+        window.clearInterval(doneCheckId);
+        window.clearInterval(progressId);
+        window.clearInterval(linesId);
+        setFadeOut(true);
+        window.setTimeout(() => setVisible(false), 650);
+      }
     }, 120);
 
-    return () => clearInterval(interval);
+    return () => {
+      window.clearInterval(progressId);
+      window.clearInterval(linesId);
+      window.clearInterval(doneCheckId);
+    };
   }, []);
-
-  useEffect(() => {
-    if (progress >= 100) {
-      const timeout = setTimeout(() => setFadeOut(true), 300);
-      const hideTimeout = setTimeout(() => setVisible(false), 800);
-      return () => {
-        clearTimeout(timeout);
-        clearTimeout(hideTimeout);
-      };
-    }
-  }, [progress]);
 
   if (!visible) return null;
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg-900 transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-500 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      <div className="relative">
-        {/* Animated logo */}
-        <div className="relative mb-8 flex items-center justify-center">
-          <div className="absolute h-20 w-20 animate-ping rounded-full bg-accent-500/20" />
-          <div className="absolute h-16 w-16 animate-pulse rounded-full bg-accent-500/30" />
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-xl border border-accent-500/30 bg-gradient-to-b from-bg-800 to-bg-850 text-[11px] font-semibold tracking-[0.2em] text-fg-100 shadow-glow">
-            PX
+      <div className="relative w-full max-w-4xl px-6">
+        <div className="mb-10 text-center">
+          <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5">
+            <div className="h-4 w-4 rounded-sm bg-white" />
           </div>
+          <div className="font-mono text-3xl tracking-[0.35em] text-white">PIXA OS</div>
+          <div className="mt-2 font-mono text-sm text-white/60">Version 1.0 ¯\\_(ツ)_/¯</div>
         </div>
 
-        {/* Terminal-style text */}
-        <div className="font-mono text-sm text-fg-300">
-          <div className="mb-2 flex items-center gap-2">
-            <span className="text-accent-500">$</span>
-            <span className="typing-animation">initializing pixaloom...</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-accent-500">$</span>
-            <span>boot sequence [{Math.round(progress)}%]</span>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-6 h-1 w-64 overflow-hidden rounded-full bg-bg-700">
+        <div className="mx-auto mb-8 h-1 w-full max-w-3xl overflow-hidden rounded-full bg-white/10">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-600 transition-all duration-200"
+            className="h-full bg-white transition-all duration-150"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        {/* Animated dots */}
-        <div className="mt-4 flex justify-center gap-1">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent-500"
-              style={{ animationDelay: `${i * 0.15}s` }}
-            />
+        <div className="mx-auto max-w-3xl font-mono text-[13px] leading-relaxed text-white/60">
+          {BOOT_LINES.slice(0, linesShown).map((l) => (
+            <div key={l} className="whitespace-pre-wrap">
+              {l}
+            </div>
           ))}
+          <div className="mt-2 text-white/40">▮</div>
         </div>
       </div>
 
-      {/* Scanline effect */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.03)_50%)] bg-[length:100%_4px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(255,255,255,0.03)_50%)] bg-[length:100%_4px]" />
     </div>
   );
 }
