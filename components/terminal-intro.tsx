@@ -14,6 +14,8 @@ type Line =
 type TerminalIntroProps = {
   embedded?: boolean;
   onMinimizeAction?: () => void;
+  hideHeader?: boolean;
+  hideExit?: boolean;
 };
 
 type CommandCtx = {
@@ -260,7 +262,7 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
   return { out };
 }
 
-export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIntroProps) {
+export function TerminalIntro({ embedded = false, onMinimizeAction, hideHeader = false, hideExit = false }: TerminalIntroProps) {
   const router = useRouter();
   const shellRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -537,113 +539,121 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
     </div>
   );
 
+  const inner = (
+    <>
+      <div
+        ref={shellRef}
+        className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
+      >
+        {lines.map((l) => {
+          if (l.kind === 'banner') {
+            return (
+              <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
+                {l.text}
+              </pre>
+            );
+          }
+          if (l.kind === 'prompt') {
+            return (
+              <div key={l.id} className="mt-2">
+                <span style={{ color: accent }} className="mr-2">
+                  pixaloom:{l.cwd}$
+                </span>
+                <span className="text-fg-100">{l.input}</span>
+              </div>
+            );
+          }
+          if (l.kind === 'out_html') {
+            return (
+              <div
+                key={l.id}
+                className="mt-2 text-fg-200"
+                dangerouslySetInnerHTML={{ __html: l.html }}
+              />
+            );
+          }
+          return (
+            <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
+              {l.text}
+            </pre>
+          );
+        })}
+
+        <div className="mt-4 flex items-center gap-2">
+          <span style={{ color: accent }} className="shrink-0">
+            pixaloom:{cwd}$
+          </span>
+          <input
+            ref={inputRef}
+            value={currentInput}
+            onChange={(e) => setCurrentInput(e.target.value)}
+            onKeyDown={onKeyDown}
+            spellCheck={false}
+            className="w-full bg-transparent font-mono text-fg-100 outline-none"
+            placeholder="type a command…"
+          />
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <button
+          className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+          onClick={() => typeAndRun('help')}
+        >
+          help
+        </button>
+        <button
+          className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+          onClick={() => typeAndRun('github')}
+        >
+          github
+        </button>
+        {!hideExit ? (
+          <button
+            className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
+            onClick={() => onMinimizeAction?.()}
+          >
+            exit
+          </button>
+        ) : null}
+      </div>
+    </>
+  );
+
   return (
     <section id={embedded ? undefined : 'top'} className={embedded ? 'relative' : 'relative overflow-hidden pt-10 sm:pt-14'}>
       <div className={embedded ? 'mx-auto w-[min(1200px,95vw)]' : 'mx-auto w-full max-w-7xl px-4 sm:px-6'}>
-        <div className={`overflow-hidden rounded-lg border ${themeClasses}`}>
-          <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
-            <div className="flex items-center gap-3">
-              {windowControls}
-              <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
-                <span className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px]">Terminal</span>
+        <div className={hideHeader ? '' : `overflow-hidden rounded-lg border ${themeClasses}`}>
+          {!hideHeader ? (
+            <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
+              <div className="flex items-center gap-3">
+                {windowControls}
+                <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
+                  <span className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px]">Terminal</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  {[
+                    { label: 'about', cmd: 'about' },
+                    { label: 'services', cmd: 'services' },
+                    { label: 'portfolio', cmd: 'portfolio' },
+                    { label: 'contact', cmd: 'contact' },
+                  ].map((t) => (
+                    <button
+                      key={t.cmd}
+                      onClick={() => typeAndRun(t.cmd)}
+                      className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                {[
-                  { label: 'about', cmd: 'about' },
-                  { label: 'services', cmd: 'services' },
-                  { label: 'portfolio', cmd: 'portfolio' },
-                  { label: 'contact', cmd: 'contact' },
-                ].map((t) => (
-                  <button
-                    key={t.cmd}
-                    onClick={() => typeAndRun(t.cmd)}
-                    className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          ) : null}
 
-          <div className="p-4 sm:p-6">
-            <div
-              ref={shellRef}
-              className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
-            >
-              {lines.map((l) => {
-                if (l.kind === 'banner') {
-                  return (
-                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
-                      {l.text}
-                    </pre>
-                  );
-                }
-                if (l.kind === 'prompt') {
-                  return (
-                    <div key={l.id} className="mt-2">
-                      <span style={{ color: accent }} className="mr-2">
-                        pixaloom:{l.cwd}$
-                      </span>
-                      <span className="text-fg-100">{l.input}</span>
-                    </div>
-                  );
-                }
-                if (l.kind === 'out_html') {
-                  return (
-                    <div
-                      key={l.id}
-                      className="mt-2 text-fg-200"
-                      dangerouslySetInnerHTML={{ __html: l.html }}
-                    />
-                  );
-                }
-                return (
-                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
-                    {l.text}
-                  </pre>
-                );
-              })}
-
-              <div className="mt-4 flex items-center gap-2">
-                <span style={{ color: accent }} className="shrink-0">
-                  pixaloom:{cwd}$
-                </span>
-                <input
-                  ref={inputRef}
-                  value={currentInput}
-                  onChange={(e) => setCurrentInput(e.target.value)}
-                  onKeyDown={onKeyDown}
-                  spellCheck={false}
-                  className="w-full bg-transparent font-mono text-fg-100 outline-none"
-                  placeholder="type a command…"
-                />
-              </div>
-            </div>
-
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('help')}
-              >
-                help
-              </button>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('github')}
-              >
-                github
-              </button>
-              <button
-                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
-                onClick={() => onMinimizeAction?.()}
-              >
-                exit
-              </button>
-            </div>
-          </div>
+          <div className={hideHeader ? 'p-0' : 'p-4 sm:p-6'}>{inner}</div>
         </div>
       </div>
     </section>

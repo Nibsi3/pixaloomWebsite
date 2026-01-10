@@ -68,7 +68,8 @@ function TerminalLikePanel({ title, children }: { title: string; children: React
 }
 
 export function DesktopShell() {
-  const [zTop, setZTop] = useState(10);
+  const zTopRef = useRef(10);
+  const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
   const dragRef = useRef<{
     id: string | null;
     startX: number;
@@ -156,11 +157,10 @@ export function DesktopShell() {
   }, []);
 
   function focusWindow(id: string) {
-    setZTop((z) => z + 1);
-    setWindows((prev) => {
-      const nextZ = zTop + 1;
-      return prev.map((w) => (w.id === id ? { ...w, z: nextZ, minimized: false } : w));
-    });
+    zTopRef.current += 1;
+    const nextZ = zTopRef.current;
+    setActiveWindowId(id);
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, z: nextZ, minimized: false } : w)));
   }
 
   function openApp(app: AppId) {
@@ -175,8 +175,8 @@ export function DesktopShell() {
     const title = appTitle(app);
     const b = bootScript(app);
 
-    setZTop((z) => z + 1);
-    const z = zTop + 1;
+    zTopRef.current += 1;
+    const z = zTopRef.current;
 
     setWindows((prev) => [
       ...prev,
@@ -196,14 +196,17 @@ export function DesktopShell() {
         bootIndex: 0,
       },
     ]);
+    setActiveWindowId(id);
   }
 
   function closeWindow(id: string) {
     setWindows((prev) => prev.filter((w) => w.id !== id));
+    setActiveWindowId((cur) => (cur === id ? null : cur));
   }
 
   function minimizeWindow(id: string) {
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, minimized: true } : w)));
+    setActiveWindowId((cur) => (cur === id ? null : cur));
   }
 
   function toggleMaximize(id: string) {
@@ -240,11 +243,11 @@ export function DesktopShell() {
 
   const taskbarApps = useMemo(
     () => [
-      { app: 'terminal' as const, icon: '🖥️', label: 'Terminal' },
-      { app: 'about' as const, icon: '👤', label: 'About' },
-      { app: 'services' as const, icon: '🧰', label: 'Services' },
-      { app: 'portfolio' as const, icon: '📁', label: 'Portfolio' },
-      { app: 'contact' as const, icon: '☎️', label: 'Contact' },
+      { app: 'terminal' as const, icon: '/os/terminal.png', label: 'Terminal' },
+      { app: 'about' as const, icon: '/os/about.png', label: 'About' },
+      { app: 'services' as const, icon: '/os/services.png', label: 'Services' },
+      { app: 'portfolio' as const, icon: '/os/portfolio.png', label: 'Portfolio' },
+      { app: 'contact' as const, icon: '/os/contact.png', label: 'Contact' },
     ],
     [],
   );
@@ -276,7 +279,9 @@ export function DesktopShell() {
           return (
             <div
               key={w.id}
-              className="absolute rounded-xl border border-white/10 bg-bg-900/55 shadow-2xl backdrop-blur-md"
+              className={`absolute rounded-xl border border-white/10 shadow-2xl backdrop-blur-md ${
+                w.id === activeWindowId ? 'bg-bg-900/55' : 'bg-bg-900/45'
+              }`}
               style={style as CSSProperties}
               onMouseDown={() => focusWindow(w.id)}
             >
@@ -295,7 +300,11 @@ export function DesktopShell() {
                       onPointerDown={(e) => e.stopPropagation()}
                       onClick={(e) => {
                         e.stopPropagation();
-                        closeWindow(w.id);
+                        if (w.app === 'terminal') {
+                          minimizeWindow(w.id);
+                        } else {
+                          closeWindow(w.id);
+                        }
                       }}
                       title="Close"
                     />
@@ -333,7 +342,9 @@ export function DesktopShell() {
                     </div>
                   ) : isTerminal ? (
                     <div className="h-full">
-                      <TerminalIntro embedded onMinimizeAction={() => minimizeWindow(w.id)} />
+                      <div className="rounded-lg border border-white/10 bg-black/25 p-3">
+                        <TerminalIntro embedded hideHeader hideExit />
+                      </div>
                     </div>
                   ) : w.app === 'about' ? (
                     <TerminalLikePanel title="about">
@@ -390,27 +401,44 @@ export function DesktopShell() {
           );
         })}
 
-      {/* Taskbar */}
-      <div className="absolute bottom-0 left-0 right-0 z-[80] h-12 border-t border-white/10 bg-bg-900/50 backdrop-blur-md">
-        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-3">
-          <div className="flex items-center gap-2">
-            {taskbarApps.map((a) => (
+      {/* Taskbar - Linux dock style */}
+      <div className="absolute bottom-2 left-1/2 z-[80] -translate-x-1/2">
+        <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-bg-900/70 px-2 py-2 shadow-2xl backdrop-blur-xl">
+          {taskbarApps.map((a) => {
+            const win = windows.find((w) => w.app === a.app);
+            const active = win && !win.minimized && win.id === activeWindowId;
+            const open = !!win && !win.minimized;
+            return (
               <button
                 key={a.app}
                 onClick={() => openApp(a.app)}
-                className="flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-fg-100 hover:bg-white/10"
+                title={a.label}
+                className={`group relative flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-150 hover:scale-110 hover:bg-white/10 ${
+                  active ? 'bg-white/15' : open ? 'bg-white/5' : ''
+                }`}
               >
-                <span>{a.icon}</span>
-                <span className="hidden sm:inline">{a.label}</span>
+                <img src={a.icon} alt={a.label} className="h-8 w-8 object-contain" />
+                {open && (
+                  <span className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent-500" />
+                )}
+                <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-bg-900/90 px-2 py-1 text-xs text-fg-100 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  {a.label}
+                </span>
               </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-3 font-mono text-[11px] text-fg-200">
-            <div className="hidden sm:block text-fg-400">{weather?.temp != null ? `${Math.round(weather.temp)}°C` : '--'} · {weather?.city || 'George, WC'}</div>
-            <div>
-              {now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: '2-digit' })}
+            );
+          })}
+
+          {/* Separator */}
+          <div className="mx-1 h-8 w-px bg-white/10" />
+
+          {/* Clock/Weather widget */}
+          <div className="flex flex-col items-center justify-center px-3 text-center">
+            <div className="font-mono text-[11px] text-fg-200">
+              {now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
             </div>
-            <div>{now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</div>
+            <div className="font-mono text-[9px] text-fg-400">
+              {weather?.temp != null ? `${Math.round(weather.temp)}°C` : '--'}
+            </div>
           </div>
         </div>
       </div>
