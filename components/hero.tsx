@@ -25,7 +25,7 @@ export function Hero() {
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7">
                 <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-bg-700 bg-bg-850 px-3 py-1 text-xs text-fg-200">
-                  <span className="h-2 w-2 rounded-full bg-success-500" />
+                  <span className="h-2 w-2 rounded-full bg-accent-500" />
                   <span>George, Western Cape · 5 years experience</span>
                 </div>
 
@@ -83,7 +83,7 @@ export function Hero() {
                       <div key={i.t} className="rounded-md border border-bg-700 bg-bg-850/40 p-3">
                         <div className="flex items-center justify-between">
                           <div className="text-sm font-medium">{i.t}</div>
-                          <span className="text-xs text-success-500">pass</span>
+                          <span className="text-xs text-accent-500">pass</span>
                         </div>
                         <div className="mt-1 text-xs text-fg-300">{i.d}</div>
                       </div>

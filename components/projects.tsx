@@ -61,7 +61,7 @@ export function Projects() {
 
             <div className="mt-5 flex items-center justify-between">
               <div className="text-xs text-fg-300">Lead score</div>
-              <div className="text-xs font-medium text-success-500">A+</div>
+              <div className="text-xs font-medium text-accent-500">A+</div>
             </div>
           </div>
         ))}

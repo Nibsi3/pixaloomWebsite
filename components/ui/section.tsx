@@ -28,7 +28,7 @@ export function Section({
                 </h2>
                 {eyebrow ? (
                   <span className="inline-flex items-center gap-2 rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[11px] text-fg-200">
-                    <span className="h-2 w-2 rounded-full bg-success-500" />
+                    <span className="h-2 w-2 rounded-full bg-accent-500" />
                     <span>{eyebrow}</span>
                   </span>
                 ) : null}

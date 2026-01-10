@@ -36,7 +36,7 @@ const config: Config = {
       },
       backgroundImage: {
         'grid-fade':
-          'radial-gradient(ellipse at top, rgba(47,129,247,0.12), transparent 55%), radial-gradient(ellipse at bottom, rgba(63,185,80,0.10), transparent 55%)',
+          'radial-gradient(ellipse at top, rgba(47,129,247,0.12), transparent 55%), radial-gradient(ellipse at bottom, rgba(47,129,247,0.10), transparent 55%)',
       },
     },
   },

@@ -168,7 +168,7 @@ export function ContactCTA() {
             </div>
 
             {status === 'sent' ? (
-              <div className="mt-3 text-xs text-success-500">Thanks — your enquiry was sent.</div>
+              <div className="mt-3 text-xs text-accent-500">Thanks — your enquiry was sent.</div>
             ) : null}
 
             {status === 'error' ? (
