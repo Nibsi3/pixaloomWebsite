@@ -35,13 +35,13 @@ function appTitle(app: AppId) {
     case 'terminal':
       return 'Terminal';
     case 'about':
-      return 'About';
+      return 'About Pixaloom';
     case 'services':
       return 'Services';
     case 'portfolio':
       return 'Portfolio';
     case 'contact':
-      return 'Contact';
+      return 'Contact Us';
   }
 }
 
@@ -56,13 +56,247 @@ function bootScript(app: AppId) {
   ].join('\n');
 }
 
-function TerminalLikePanel({ title, children }: { title: string; children: React.ReactNode }) {
+function AboutApp() {
   return (
-    <div className="h-full w-full rounded-md border border-bg-700 bg-bg-900/40">
-      <div className="border-b border-bg-700 bg-bg-900/25 px-4 py-3">
-        <div className="font-mono text-[11px] text-fg-200">{title}</div>
+    <div className="h-full overflow-auto bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800">
+      <div className="p-6">
+        <div className="mb-6 flex items-center gap-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 text-3xl">
+            🚀
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Pixaloom</h1>
+            <p className="text-purple-200">Web Design & Development Studio</p>
+          </div>
+        </div>
+        
+        <div className="mb-6 rounded-xl bg-white/10 p-4">
+          <h2 className="mb-2 font-semibold text-white">Who We Are</h2>
+          <p className="text-sm leading-relaxed text-purple-100">
+            Pixaloom is a web design and development studio focused on shipping websites that convert. 
+            We combine conversion-first UX, clean engineering, and performance that feels instant.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="rounded-xl bg-white/10 p-4 text-center">
+            <div className="text-3xl font-bold text-white">50+</div>
+            <div className="text-xs text-purple-200">Projects Delivered</div>
+          </div>
+          <div className="rounded-xl bg-white/10 p-4 text-center">
+            <div className="text-3xl font-bold text-white">100%</div>
+            <div className="text-xs text-purple-200">Client Satisfaction</div>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h2 className="mb-3 font-semibold text-white">What We Care About</h2>
+          <div className="space-y-2">
+            {[
+              { icon: '🎯', text: 'Conversion-first UX and clear messaging' },
+              { icon: '⚡', text: 'Performance + SEO (Core Web Vitals)' },
+              { icon: '🛠️', text: 'Clean engineering, fast iterations' },
+              { icon: '🎨', text: 'Modern, beautiful design' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-lg bg-white/5 p-3">
+                <span className="text-xl">{item.icon}</span>
+                <span className="text-sm text-purple-100">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-gradient-to-r from-pink-500/20 to-purple-500/20 p-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📍</span>
+            <div>
+              <div className="font-medium text-white">George, Western Cape</div>
+              <div className="text-sm text-purple-200">South Africa</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="p-4">{children}</div>
+    </div>
+  );
+}
+
+function ServicesApp() {
+  const services = [
+    {
+      icon: '🌐',
+      title: 'Landing Pages',
+      desc: 'High-converting landing pages with compelling copy, strategic layouts, and clear CTAs',
+      color: 'from-cyan-500 to-blue-500',
+    },
+    {
+      icon: '🏢',
+      title: 'Business Websites',
+      desc: 'Fast, modern, SEO-ready websites that represent your brand professionally',
+      color: 'from-emerald-500 to-teal-500',
+    },
+    {
+      icon: '📊',
+      title: 'Web Applications',
+      desc: 'Dashboards, portals, and admin panels with seamless integrations',
+      color: 'from-orange-500 to-red-500',
+    },
+    {
+      icon: '🔧',
+      title: 'Maintenance & Support',
+      desc: 'Ongoing updates, performance tuning, and technical support',
+      color: 'from-violet-500 to-purple-500',
+    },
+  ];
+
+  return (
+    <div className="h-full overflow-auto bg-slate-900">
+      <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-6">
+        <h1 className="text-2xl font-bold text-white">Our Services</h1>
+        <p className="text-cyan-100">What Pixaloom builds for you</p>
+      </div>
+      
+      <div className="p-4 space-y-4">
+        {services.map((s, i) => (
+          <div key={i} className="rounded-xl bg-slate-800 p-4 border border-slate-700">
+            <div className="flex items-start gap-4">
+              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${s.color} text-2xl`}>
+                {s.icon}
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">{s.title}</h3>
+                <p className="mt-1 text-sm text-slate-300">{s.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <div className="mt-6 rounded-xl bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/30 p-4">
+          <h3 className="font-semibold text-cyan-100 mb-2">Tech Stack</h3>
+          <div className="flex flex-wrap gap-2">
+            {['React', 'Next.js', 'TypeScript', 'Tailwind', 'Node.js', 'PostgreSQL'].map((t) => (
+              <span key={t} className="rounded-full bg-slate-700 px-3 py-1 text-xs text-slate-200">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PortfolioApp() {
+  return (
+    <div className="h-full overflow-auto bg-neutral-900">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-6">
+        <h1 className="text-2xl font-bold text-white">Portfolio</h1>
+        <p className="text-amber-100">Our recent work</p>
+      </div>
+      
+      <div className="p-4 space-y-4">
+        {workItems.map((project) => (
+          <div key={project.slug} className="group rounded-xl bg-neutral-800 overflow-hidden border border-neutral-700">
+            {project.png && (
+              <div className="h-32 overflow-hidden">
+                <img 
+                  src={project.png} 
+                  alt={project.name}
+                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                />
+              </div>
+            )}
+            <div className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-semibold text-white">{project.name}</h3>
+                  <p className="text-xs text-neutral-400">{project.meta}</p>
+                </div>
+              </div>
+              {project.stack && (
+                <div className="mt-3 flex flex-wrap gap-1">
+                  {project.stack.slice(0, 4).map((t) => (
+                    <span key={t} className="rounded bg-neutral-700 px-2 py-0.5 text-[10px] text-neutral-300">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ContactApp() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  return (
+    <div className="h-full overflow-auto bg-gradient-to-br from-rose-900 via-pink-900 to-rose-800">
+      <div className="p-6">
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-3xl">
+            💬
+          </div>
+          <h1 className="text-2xl font-bold text-white">Get In Touch</h1>
+          <p className="text-rose-200">Let&apos;s build something amazing together</p>
+        </div>
+
+        <div className="mb-6 grid grid-cols-1 gap-3">
+          <a href="tel:+27662995533" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20 text-xl">📞</span>
+            <div>
+              <div className="text-xs text-rose-300">Phone</div>
+              <div className="font-medium text-white">066 299 5533</div>
+            </div>
+          </a>
+          <a href="mailto:info@pixaloom.co.za" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20 text-xl">✉️</span>
+            <div>
+              <div className="text-xs text-rose-300">Email</div>
+              <div className="font-medium text-white">info@pixaloom.co.za</div>
+            </div>
+          </a>
+          <a href="https://wa.me/27662995533" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20 text-xl">💬</span>
+            <div>
+              <div className="text-xs text-rose-300">WhatsApp</div>
+              <div className="font-medium text-white">Send a message</div>
+            </div>
+          </a>
+        </div>
+
+        <div className="rounded-xl bg-white/10 p-4">
+          <h2 className="mb-4 font-semibold text-white">Quick Message</h2>
+          <div className="space-y-3">
+            <input
+              type="text"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500"
+            />
+            <input
+              type="email"
+              placeholder="Your email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500"
+            />
+            <textarea
+              placeholder="Your message"
+              rows={3}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+            />
+            <button className="w-full rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 py-2 font-medium text-white hover:from-pink-600 hover:to-rose-600 transition">
+              Send Message
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -256,14 +490,14 @@ export function DesktopShell() {
     <div className="fixed inset-0 overflow-hidden">
       {/* Wallpaper */}
       <div
-        className="absolute inset-0 bg-black"
+        className="absolute inset-0 bg-[#1a1a2e]"
         style={{
           backgroundImage: "url('/os/kali-wallpaper.png')",
-          backgroundSize: 'cover',
+          backgroundSize: 'contain',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
-      <div className="absolute inset-0 bg-black/35" />
 
       {/* Windows */}
       {windows
@@ -279,15 +513,15 @@ export function DesktopShell() {
           return (
             <div
               key={w.id}
-              className={`absolute rounded-xl border border-white/10 shadow-2xl backdrop-blur-md ${
-                w.id === activeWindowId ? 'bg-bg-900/55' : 'bg-bg-900/45'
+              className={`absolute rounded-xl border border-neutral-700 shadow-2xl overflow-hidden ${
+                w.id === activeWindowId ? 'ring-1 ring-white/20' : ''
               }`}
               style={style as CSSProperties}
               onMouseDown={() => focusWindow(w.id)}
             >
               {/* Titlebar */}
               <div
-                className="flex cursor-default items-center justify-between gap-3 rounded-t-xl border-b border-white/10 bg-bg-900/45 px-3 py-2"
+                className="flex cursor-default items-center justify-between gap-3 border-b border-neutral-700 bg-neutral-800 px-3 py-2"
                 onPointerDown={(e) => startDrag(w.id, e)}
                 onPointerMove={onDragMove}
                 onPointerUp={endDrag}
@@ -333,69 +567,25 @@ export function DesktopShell() {
               </div>
 
               {/* Content */}
-              <div className="h-[calc(100%-40px)] p-3">
-                <div className="h-full">
-                  {w.booting ? (
-                    <div className="h-full rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-xs text-fg-200">
-                      <pre className="whitespace-pre-wrap">{w.bootText.slice(0, w.bootIndex)}</pre>
-                      <div className="mt-2 text-fg-500">▮</div>
-                    </div>
-                  ) : isTerminal ? (
-                    <div className="h-full">
-                      <div className="rounded-lg border border-white/10 bg-black/25 p-3">
-                        <TerminalIntro embedded hideHeader hideExit />
-                      </div>
-                    </div>
-                  ) : w.app === 'about' ? (
-                    <TerminalLikePanel title="about">
-                      <div className="text-sm text-fg-100">Pixaloom is a web design + development studio.</div>
-                      <div className="mt-3 text-sm text-fg-300">
-                        Conversion-first UX, clean engineering, and performance that feels instant.
-                      </div>
-                    </TerminalLikePanel>
-                  ) : w.app === 'services' ? (
-                    <TerminalLikePanel title="services">
-                      <div className="text-sm text-fg-100">Websites + web apps that convert.</div>
-                      <div className="mt-3 space-y-2 text-sm text-fg-300">
-                        <div>- Landing pages</div>
-                        <div>- Business sites</div>
-                        <div>- Dashboards + portals</div>
-                        <div>- SEO + performance</div>
-                      </div>
-                    </TerminalLikePanel>
-                  ) : w.app === 'portfolio' ? (
-                    <TerminalLikePanel title="portfolio">
-                      <div className="text-sm text-fg-100">Projects</div>
-                      <div className="mt-3 space-y-3">
-                        {workItems.slice(0, 5).map((p) => (
-                          <div key={p.slug} className="rounded-md border border-bg-700 bg-bg-850/30 p-3">
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="text-sm font-medium text-fg-100">{p.name}</div>
-                              <button
-                                className="rounded border border-accent-500/30 bg-accent-500/10 px-2 py-1 text-xs text-accent-400 hover:border-accent-500/60"
-                                onClick={() => {
-                                  // open in browser
-                                  window.location.href = `/work/${p.slug}`;
-                                }}
-                              >
-                                Open
-                              </button>
-                            </div>
-                            <div className="mt-1 text-xs text-fg-300">{p.meta}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </TerminalLikePanel>
-                  ) : (
-                    <TerminalLikePanel title="contact">
-                      <div className="text-sm text-fg-100">Let’s build something.</div>
-                      <div className="mt-3 space-y-2 font-mono text-sm text-fg-200">
-                        <div>phone: 0662995533</div>
-                        <div>email: info@pixaloom.co.za</div>
-                      </div>
-                    </TerminalLikePanel>
-                  )}
-                </div>
+              <div className="h-[calc(100%-40px)] overflow-hidden">
+                {w.booting ? (
+                  <div className="h-full bg-neutral-900 p-4 font-mono text-xs text-green-400">
+                    <pre className="whitespace-pre-wrap">{w.bootText.slice(0, w.bootIndex)}</pre>
+                    <div className="mt-2 animate-pulse">▮</div>
+                  </div>
+                ) : isTerminal ? (
+                  <div className="h-full bg-[#1e1e2e]">
+                    <TerminalIntro embedded hideHeader hideExit />
+                  </div>
+                ) : w.app === 'about' ? (
+                  <AboutApp />
+                ) : w.app === 'services' ? (
+                  <ServicesApp />
+                ) : w.app === 'portfolio' ? (
+                  <PortfolioApp />
+                ) : (
+                  <ContactApp />
+                )}
               </div>
             </div>
           );
@@ -417,7 +607,7 @@ export function DesktopShell() {
                   active ? 'bg-white/15' : open ? 'bg-white/5' : ''
                 }`}
               >
-                <img src={a.icon} alt={a.label} className="h-8 w-8 object-contain" />
+                <img src={a.icon} alt={a.label} className="h-8 w-8 object-contain brightness-0 invert" />
                 {open && (
                   <span className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent-500" />
                 )}
