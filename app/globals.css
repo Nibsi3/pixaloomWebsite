@@ -74,4 +74,13 @@ body {
     width: min(460px, 78vw);
     flex: 0 0 auto;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

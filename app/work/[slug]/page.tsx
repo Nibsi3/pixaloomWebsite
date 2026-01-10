@@ -18,114 +18,135 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
       <div className="md:pl-[280px]">
-        <main className="py-10 sm:py-12">
+        <main className="py-8 sm:py-10">
           <Container>
-        <div className="mb-6">
-          <Link
-            href="/#work"
-            className="inline-flex items-center gap-2 text-sm text-fg-300 hover:text-fg-100"
-          >
-            <span className="text-lg">←</span>
-            Back to websites
-          </Link>
+            <Link
+              href="/#work"
+              className="inline-flex items-center gap-2 text-xs text-fg-300 transition hover:text-fg-100"
+            >
+              <span>←</span>
+              <span>Back to projects</span>
+            </Link>
 
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-fg-100 sm:text-3xl">
-            {item.name}
-          </h1>
-          <p className="mt-2 max-w-3xl text-sm text-fg-300">{item.meta}</p>
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <WorkGallery
-              title={item.name}
-              heroPng={item.png}
-              heroFallback={item.fallback}
-              gallery={gallery}
-            />
-          </div>
-
-          <div className="lg:col-span-5">
-            <div className="card p-5 lg:sticky lg:top-6">
-              <div className="text-sm font-semibold text-fg-100">Tech stack</div>
-              <div className="mt-3 flex flex-col gap-2">
-                {item.stack.map((t) => (
-                  <div
-                    key={t}
-                    className="inline-flex w-full items-center justify-between rounded-md border border-bg-700 bg-bg-850 px-3 py-2 text-xs text-fg-200"
-                  >
-                    <span>{t}</span>
-                    <span className="text-[11px] text-fg-300">Stack</span>
-                  </div>
-                ))}
+            <div className="mt-6 rounded-lg border border-bg-700 bg-bg-800/50 p-4 sm:p-6">
+              <div className="flex flex-col gap-1 border-b border-bg-700 pb-4">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-lg font-semibold tracking-tight text-fg-100 sm:text-xl">
+                    {item.name}
+                  </h1>
+                  <span className="rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[10px] text-fg-300">
+                    {item.meta.split('·')[0]?.trim()}
+                  </span>
+                </div>
+                <p className="text-xs text-fg-300">{item.meta}</p>
               </div>
 
-              {facts.length ? (
-                <div className="mt-6">
-                  <div className="text-sm font-semibold text-fg-100">Quick facts</div>
-                  <div className="mt-3 space-y-2">
-                    {facts.map((f) => (
-                      <div
-                        key={f.label}
-                        className="rounded-md border border-bg-700 bg-bg-850/40 px-3 py-2"
-                      >
-                        <div className="text-[11px] font-medium text-fg-200">{f.label}</div>
-                        <div className="mt-1 text-xs text-fg-300">{f.value}</div>
+              <div className="mt-4 grid gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  <WorkGallery
+                    title={item.name}
+                    heroPng={item.png}
+                    heroFallback={item.fallback}
+                    gallery={gallery}
+                  />
+
+                  <div className="mt-6">
+                    <div className="text-xs font-medium uppercase tracking-wide text-fg-300">
+                      About this project
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-fg-200">
+                      {item.scope}
+                    </p>
+                  </div>
+
+                  {item.highlights.length > 0 && (
+                    <div className="mt-6">
+                      <div className="text-xs font-medium uppercase tracking-wide text-fg-300">
+                        Key highlights
                       </div>
-                    ))}
-                  </div>
+                      <ul className="mt-3 space-y-2">
+                        {item.highlights.map((h) => (
+                          <li key={h} className="flex items-start gap-2 text-sm text-fg-200">
+                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-500" />
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              ) : null}
 
-              <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
-                <div className="text-xs font-medium text-fg-200">Note</div>
-                <div className="mt-2 text-xs text-fg-300">
-                  This portfolio page intentionally has no outbound links.
+                <div className="space-y-5">
+                  {facts.length > 0 && (
+                    <div className="rounded-lg border border-bg-700 bg-bg-850/30 p-4">
+                      <div className="text-xs font-medium uppercase tracking-wide text-fg-300">
+                        Quick facts
+                      </div>
+                      <dl className="mt-3 space-y-3">
+                        {facts.map((f) => (
+                          <div key={f.label}>
+                            <dt className="text-[11px] text-fg-300">{f.label}</dt>
+                            <dd className="text-sm font-medium text-fg-100">{f.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  )}
+
+                  <div className="rounded-lg border border-bg-700 bg-bg-850/30 p-4">
+                    <div className="text-xs font-medium uppercase tracking-wide text-fg-300">
+                      Tech stack
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {item.stack.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full border border-bg-700 bg-bg-800 px-2 py-1 text-[11px] text-fg-200"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-4 card p-5">
-          <div className="text-sm font-semibold text-fg-100">Project scope</div>
-          <div className="mt-3 text-sm leading-relaxed text-fg-300">{item.scope}</div>
-
-          <div className="mt-6">
-            <div className="text-sm font-semibold text-fg-100">Highlights</div>
-            <ul className="mt-3 space-y-2 text-sm text-fg-300">
-              {item.highlights.map((h) => (
-                <li key={h} className="flex gap-3">
-                  <span className="mt-[7px] h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                  <span className="leading-relaxed">{h}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {sections.length ? (
-            <div className="mt-8 grid gap-4 lg:grid-cols-2">
-              {sections.map((s) => (
-                <div key={s.title} className="rounded-lg border border-bg-700 bg-bg-850/20 p-4">
-                  <div className="text-sm font-semibold text-fg-100">{s.title}</div>
-                  {s.description ? (
-                    <div className="mt-2 text-sm leading-relaxed text-fg-300">{s.description}</div>
-                  ) : null}
-                  {s.bullets?.length ? (
-                    <ul className="mt-3 space-y-2 text-sm text-fg-300">
-                      {s.bullets.map((b) => (
-                        <li key={b} className="flex gap-3">
-                          <span className="mt-[7px] h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                          <span className="leading-relaxed">{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
+            {sections.length > 0 && (
+              <div className="mt-6">
+                <div className="text-xs font-medium uppercase tracking-wide text-fg-300">
+                  Detailed breakdown
                 </div>
-              ))}
-            </div>
-          ) : null}
-        </div>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {sections.map((s) => (
+                    <div
+                      key={s.title}
+                      className="rounded-lg border border-bg-700 bg-bg-800/40 p-4"
+                    >
+                      <div className="text-sm font-medium text-fg-100">{s.title}</div>
+                      {s.description && (
+                        <p className="mt-2 text-xs leading-relaxed text-fg-300">
+                          {s.description}
+                        </p>
+                      )}
+                      {s.bullets && s.bullets.length > 0 && (
+                        <ul className="mt-3 space-y-1.5">
+                          {s.bullets.map((b) => (
+                            <li
+                              key={b}
+                              className="flex items-start gap-2 text-xs text-fg-300"
+                            >
+                              <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-accent-500" />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </Container>
         </main>
         <Footer />
