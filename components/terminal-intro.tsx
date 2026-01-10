@@ -43,19 +43,45 @@ function formatProjectsList() {
   return items.join('\n');
 }
 
+function formatPortfolioDetails() {
+  const items = workItems.map((w) => {
+    const meta = w.meta ? ` — ${w.meta}` : '';
+    const stack = (w.stack || []).slice(0, 6).join(' · ');
+    const highlights = (w.highlights || []).slice(0, 4);
+
+    const lines = [
+      `- ${w.name}${meta}`,
+      `  slug: ${w.slug}`,
+      `  stack: ${stack || '-'}`,
+    ];
+
+    if (highlights.length) {
+      lines.push('  highlights:');
+      for (const h of highlights) lines.push(`    • ${h}`);
+    }
+
+    lines.push(`  open: open ${w.slug}`);
+    return lines.join('\n');
+  });
+
+  return items.join('\n\n');
+}
+
 function helpText() {
   return [
     'Available commands:',
     '  help                         Show this help',
     '  about                        Who Pixaloom is',
     '  services                     What Pixaloom builds',
-    '  projects                     List projects (open <slug>)',
+    '  portfolio                    Portfolio overview (open <slug>)',
+    '  projects                     Alias of portfolio',
     '  open <slug>                  Open project detail page',
     '  goto <section>               Scroll to section (projects|work|skills|timeline|contact)',
     '  github                       Show latest GitHub activity',
     '  weather                      Show live weather (George, WC)',
     '  joke                         Fetch a random dev joke',
     '  hack                         Open built-in mini games menu',
+    '  contact                      Show contact details',
     '  clear                        Clear terminal',
   ].join('\n');
 }
@@ -110,12 +136,14 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
       id: uid(),
       kind: 'out',
       text: [
-        'Pixaloom builds modern websites and web apps:',
-        '  - conversion-first UX',
-        '  - performance + SEO',
-        '  - clean engineering',
+        'Pixaloom is a web design + development studio focused on shipping websites that convert.',
         '',
-        "type: services  |  projects  |  goto contact",
+        'What I care about:',
+        '  - conversion-first UX and clear messaging',
+        '  - performance + SEO (Core Web Vitals, metadata, structure)',
+        '  - clean engineering (fast iterations, maintainable code)',
+        '',
+        'Try: services | portfolio | contact',
       ].join('\n'),
     });
     return { out };
@@ -126,19 +154,40 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
       id: uid(),
       kind: 'out',
       text: [
-        'Services:',
-        '  - Web design + development (Next.js)',
-        '  - Landing pages that convert',
-        '  - Web apps / dashboards',
-        '  - SEO foundations + performance tuning',
+        'Services (what Pixaloom does):',
+        '',
+        'Websites:',
+        '  - Landing pages that convert (copy, layout, CTAs)',
+        '  - Business websites (fast, modern, SEO-ready)',
+        '',
+        'Web apps:',
+        '  - Dashboards, portals, admin panels',
+        '  - Integrations + automation',
+        '',
+        'Quality:',
+        '  - SEO foundations, analytics, performance tuning',
         '  - Ongoing support + iteration',
       ].join('\n'),
     });
     return { out };
   }
 
-  if (cmd === 'projects') {
-    out.push({ id: uid(), kind: 'out', text: formatProjectsList() || 'No projects found.' });
+  if (cmd === 'portfolio' || cmd === 'projects') {
+    out.push({ id: uid(), kind: 'out', text: formatPortfolioDetails() || 'No projects found.' });
+    return { out };
+  }
+
+  if (cmd === 'contact') {
+    out.push({
+      id: uid(),
+      kind: 'out',
+      text: [
+        'Contact:',
+        '  phone: 0662995533',
+        '  email: info@pixaloom.co.za',
+        '  whatsapp: https://wa.me/27662995533?text=',
+      ].join('\n'),
+    });
     return { out };
   }
 
@@ -192,8 +241,31 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
     out.push({
       id: uid(),
       kind: 'out',
-      text: ['about', 'services', 'projects', 'contact'].join('   '),
+      text: [
+        'help',
+        'about',
+        'services',
+        'portfolio',
+        'projects',
+        'open',
+        'goto',
+        'github',
+        'weather',
+        'joke',
+        'hack',
+        'contact',
+        'clear',
+        'cd',
+        'ls',
+        'jokes?',
+      ].join('   '),
     });
+    return { out };
+  }
+
+  if (cmd === 'jokes') {
+    out.push({ id: uid(), kind: 'out', text: 'opening /jokes …' });
+    ctx.router.push('/jokes');
     return { out };
   }
 
@@ -225,11 +297,11 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   const [activeGame, setActiveGame] = useState<HackGameId | null>(null);
 
   const themeClasses = useMemo(() => {
-    return 'bg-white border-bg-200 text-bg-950';
+    return 'bg-bg-900 border-bg-700 text-fg-100';
   }, []);
 
   const accent = useMemo(() => {
-    return '#2563eb';
+    return '#2f81f7';
   }, []);
 
   function scrollToId(id: string) {
@@ -322,8 +394,8 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
     el.scrollTop = el.scrollHeight;
   }, [lines, currentInput]);
 
-  function onSubmit() {
-    const input = currentInput;
+  function submitValue(value: string) {
+    const input = value;
 
     const trimmed = sanitizeText(input).trim();
     const [cmd] = trimmed.split(/\s+/);
@@ -350,6 +422,25 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
     setHistory((prev) => [input, ...prev]);
     setHistoryIndex(-1);
     setCurrentInput('');
+  }
+
+  function onSubmit() {
+    submitValue(currentInput);
+  }
+
+  function typeAndRun(value: string) {
+    const target = value;
+    inputRef.current?.focus();
+    setCurrentInput('');
+    let i = 0;
+    const id = window.setInterval(() => {
+      i++;
+      setCurrentInput(target.slice(0, i));
+      if (i >= target.length) {
+        window.clearInterval(id);
+        window.setTimeout(() => submitValue(target), 120);
+      }
+    }, 18);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -384,6 +475,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
         'help',
         'about',
         'services',
+        'portfolio',
         'projects',
         'open',
         'goto',
@@ -391,6 +483,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
         'weather',
         'joke',
         'hack',
+        'contact',
         'clear',
         'ls',
         'cd',
@@ -401,7 +494,8 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   }
 
   const windowControls = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
       <button
         aria-label="Close"
         onClick={() => onMinimizeAction?.()}
@@ -416,6 +510,8 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
         aria-label="Maximize"
         className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
       />
+      </div>
+      <div className="hidden sm:block font-mono text-[11px] text-fg-400">info: click to close</div>
     </div>
   );
 
@@ -423,28 +519,27 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
     <section id={embedded ? undefined : 'top'} className={embedded ? 'relative' : 'relative overflow-hidden pt-10 sm:pt-14'}>
       <div className={embedded ? 'mx-auto w-[min(1200px,95vw)]' : 'mx-auto w-full max-w-7xl px-4 sm:px-6'}>
         <div className={`overflow-hidden rounded-lg border ${themeClasses}`}>
-          <div className="flex items-center justify-between border-b border-bg-200 bg-bg-50 px-4 py-3">
+          <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
             <div className="flex items-center gap-3">
               {windowControls}
-              <div className="flex items-center gap-2 text-sm font-medium text-bg-900">
-                <span className="rounded-md border border-bg-200 bg-white px-2 py-1 text-[11px]">Terminal</span>
-                <span className="hidden sm:inline">pixaloom</span>
+              <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
+                <span className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px]">Terminal</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-bg-600">EN</span>
+              <span className="text-xs text-fg-300">EN</span>
             </div>
           </div>
 
           <div className="p-4 sm:p-6">
             <div
               ref={shellRef}
-              className="h-[520px] overflow-y-auto rounded-lg border border-bg-200 bg-white p-4 font-mono text-sm leading-relaxed"
+              className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
             >
               {lines.map((l) => {
                 if (l.kind === 'banner') {
                   return (
-                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-bg-800">
+                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
                       {l.text}
                     </pre>
                   );
@@ -455,7 +550,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
                       <span style={{ color: accent }} className="mr-2">
                         pixaloom:{l.cwd}$
                       </span>
-                      <span className="text-bg-950">{l.input}</span>
+                      <span className="text-fg-100">{l.input}</span>
                     </div>
                   );
                 }
@@ -463,13 +558,13 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
                   return (
                     <div
                       key={l.id}
-                      className="mt-2 text-bg-800"
+                      className="mt-2 text-fg-200"
                       dangerouslySetInnerHTML={{ __html: l.html }}
                     />
                   );
                 }
                 return (
-                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-bg-800">
+                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
                     {l.text}
                   </pre>
                 );
@@ -485,48 +580,67 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
                   onChange={(e) => setCurrentInput(e.target.value)}
                   onKeyDown={onKeyDown}
                   spellCheck={false}
-                  className="w-full bg-transparent font-mono text-bg-950 outline-none"
+                  className="w-full bg-transparent font-mono text-fg-100 outline-none"
                   placeholder="type a command…"
                 />
               </div>
             </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[11px] text-bg-600">More:</span>
+              <span className="font-mono text-[11px] text-fg-400">Quick:</span>
               <button
-                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
-                onClick={() => {
-                  setCurrentInput('github');
-                  inputRef.current?.focus();
-                }}
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('help')}
+              >
+                help
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('about')}
+              >
+                about
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('services')}
+              >
+                services
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('portfolio')}
+              >
+                portfolio
+              </button>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('contact')}
+              >
+                contact
+              </button>
+              <span className="mx-1 text-fg-600">|</span>
+              <span className="font-mono text-[11px] text-fg-400">More:</span>
+              <button
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('github')}
               >
                 github
               </button>
               <button
-                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
-                onClick={() => {
-                  setCurrentInput('weather');
-                  inputRef.current?.focus();
-                }}
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('weather')}
               >
                 weather
               </button>
               <button
-                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
-                onClick={() => {
-                  setCurrentInput('joke');
-                  inputRef.current?.focus();
-                }}
+                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                onClick={() => typeAndRun('joke')}
               >
                 joke
               </button>
-              <span className="mx-1 text-bg-300">|</span>
               <button
-                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-600 hover:border-accent-500/60"
-                onClick={() => {
-                  setHackOpen(true);
-                  inputRef.current?.focus();
-                }}
+                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
+                onClick={() => typeAndRun('hack')}
               >
                 hack
               </button>
