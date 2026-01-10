@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 import { workItems } from '@/components/work-items';
 
 type Line =
@@ -342,16 +341,9 @@ export function TerminalIntro() {
     }
   }
 
-  const quickCommands = [
-    { label: 'help', cmd: 'help' },
-    { label: 'services', cmd: 'services' },
-    { label: 'projects', cmd: 'projects' },
-    { label: 'goto contact', cmd: 'goto contact' },
-  ];
-
   return (
     <section id="top" className="relative overflow-hidden pt-10 sm:pt-14">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
         <div className={`overflow-hidden rounded-lg border ${themeClasses}`}>
           <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
@@ -372,128 +364,57 @@ export function TerminalIntro() {
           </div>
 
           <div className="p-4 sm:p-6">
-            <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-7">
-                <div
-                  ref={shellRef}
-                  className="h-[420px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
-                >
-                  {lines.map((l) => {
-                    if (l.kind === 'banner') {
-                      return (
-                        <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
-                          {l.text}
-                        </pre>
-                      );
-                    }
-                    if (l.kind === 'prompt') {
-                      return (
-                        <div key={l.id} className="mt-2">
-                          <span style={{ color: accent }} className="mr-2">
-                            pixaloom:{l.cwd}$
-                          </span>
-                          <span className="text-fg-100">{l.input}</span>
-                        </div>
-                      );
-                    }
-                    if (l.kind === 'out_html') {
-                      return (
-                        <div
-                          key={l.id}
-                          className="mt-2 text-fg-200"
-                          dangerouslySetInnerHTML={{ __html: l.html }}
-                        />
-                      );
-                    }
-                    return (
-                      <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
-                        {l.text}
-                      </pre>
-                    );
-                  })}
-
-                  <div className="mt-4 flex items-center gap-2">
-                    <span style={{ color: accent }} className="shrink-0">
-                      pixaloom:{cwd}$
-                    </span>
-                    <input
-                      ref={inputRef}
-                      value={currentInput}
-                      onChange={(e) => setCurrentInput(e.target.value)}
-                      onKeyDown={onKeyDown}
-                      spellCheck={false}
-                      className="w-full bg-transparent font-mono text-fg-100 outline-none"
-                      placeholder="type a command…"
+            <div
+              ref={shellRef}
+              className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
+            >
+              {lines.map((l) => {
+                if (l.kind === 'banner') {
+                  return (
+                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
+                      {l.text}
+                    </pre>
+                  );
+                }
+                if (l.kind === 'prompt') {
+                  return (
+                    <div key={l.id} className="mt-2">
+                      <span style={{ color: accent }} className="mr-2">
+                        pixaloom:{l.cwd}$
+                      </span>
+                      <span className="text-fg-100">{l.input}</span>
+                    </div>
+                  );
+                }
+                if (l.kind === 'out_html') {
+                  return (
+                    <div
+                      key={l.id}
+                      className="mt-2 text-fg-200"
+                      dangerouslySetInnerHTML={{ __html: l.html }}
                     />
-                  </div>
-                </div>
+                  );
+                }
+                return (
+                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
+                    {l.text}
+                  </pre>
+                );
+              })}
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {quickCommands.map((c) => (
-                    <button
-                      key={c.label}
-                      className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 text-[11px] text-fg-200 hover:border-accent-500"
-                      onClick={() => {
-                        setCurrentInput(c.cmd);
-                        inputRef.current?.focus();
-                      }}
-                    >
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="lg:col-span-5">
-                <div className="card card-hover p-5">
-                  <div className="text-sm font-medium">Quick actions</div>
-                  <div className="mt-1 text-xs text-fg-300">Skip typing if you want</div>
-
-                  <div className="mt-5 grid gap-2">
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={() => {
-                        scrollToId('contact');
-                      }}
-                    >
-                      Start a project
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      onClick={() => {
-                        scrollToId('work');
-                      }}
-                    >
-                      View work
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      onClick={() => {
-                        setCurrentInput('help');
-                        inputRef.current?.focus();
-                      }}
-                    >
-                      Show commands
-                    </Button>
-                  </div>
-
-                  <div className="mt-5 rounded-md border border-bg-700 bg-bg-850/30 p-3 text-xs text-fg-300">
-                    Tip: press <span className="kbd">Tab</span> to autocomplete and <span className="kbd">↑</span> for history.
-                  </div>
-                </div>
-
-                <div className="mt-4 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
-                  <div className="font-mono text-[11px] text-fg-300">Try:</div>
-                  <div className="mt-2 space-y-2 font-mono text-[11px]">
-                    <div className="text-fg-200">projects</div>
-                    <div className="text-fg-200">open caps-tutor</div>
-                    <div className="text-fg-200">goto contact</div>
-                    <div className="text-fg-200">theme dracula</div>
-                  </div>
-                </div>
+              <div className="mt-4 flex items-center gap-2">
+                <span style={{ color: accent }} className="shrink-0">
+                  pixaloom:{cwd}$
+                </span>
+                <input
+                  ref={inputRef}
+                  value={currentInput}
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  spellCheck={false}
+                  className="w-full bg-transparent font-mono text-fg-100 outline-none"
+                  placeholder="type a command…"
+                />
               </div>
             </div>
           </div>
