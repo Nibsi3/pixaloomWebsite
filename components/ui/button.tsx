@@ -5,6 +5,7 @@ type CommonProps = {
   className?: string;
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
 };
 
 const base =
@@ -32,11 +33,18 @@ export function Button(
       | { href?: never; onClick?: () => void; type?: 'button' | 'submit' }
     ) & { children: React.ReactNode }
 ) {
-  const { className, variant = 'secondary', size = 'md', children } = props;
+  const { className, variant = 'secondary', size = 'md', children, disabled } = props;
 
   const cls = cn(base, variants[variant], sizes[size], className);
 
   if ('href' in props && props.href) {
+    if (disabled) {
+      return (
+        <span className={cls} aria-disabled="true">
+          {children}
+        </span>
+      );
+    }
     return (
       <Link className={cls} href={props.href}>
         {children}
@@ -45,7 +53,12 @@ export function Button(
   }
 
   return (
-    <button className={cls} onClick={props.onClick} type={props.type ?? 'button'}>
+    <button
+      className={cls}
+      onClick={props.onClick}
+      type={props.type ?? 'button'}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

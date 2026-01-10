@@ -66,17 +66,17 @@ body {
   }
 
   .work-marquee-card {
-    width: min(520px, 84vw);
+    width: min(460px, 78vw);
     flex: 0 0 auto;
   }
 }
 
 @keyframes work-marquee {
   0% {
-    transform: translateX(-50%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(0);
+    transform: translateX(-50%);
   }
 }
 

@@ -10,22 +10,26 @@ const emailTo = 'info@pixaloom.co.za';
 
 export function ContactCTA() {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [budget, setBudget] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [error, setError] = useState('');
 
   const composed = useMemo(() => {
     const lines = [
       'Project enquiry',
       '',
       `Name: ${name || '-'}`,
+      `Email: ${email || '-'}`,
       `Company: ${company || '-'}`,
       `Budget: ${budget || '-'}`,
       '',
       message ? `Message: ${message}` : 'Message: -',
     ];
     return lines.join('\n');
-  }, [name, company, budget, message]);
+  }, [name, email, company, budget, message]);
 
   const mailHref = useMemo(() => {
     if (!emailTo) return '';
@@ -40,6 +44,36 @@ export function ContactCTA() {
   }, [composed]);
 
   const isValid = message.trim().length >= 10;
+  const canSubmit = isValid && status !== 'sending';
+
+  async function onSubmit() {
+    if (!canSubmit) return;
+    setStatus('sending');
+    setError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name, email, company, budget, message }),
+      });
+      const json = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !json.ok) {
+        setStatus('error');
+        setError(json.error || 'Failed to send. Try WhatsApp instead.');
+        return;
+      }
+
+      setStatus('sent');
+      setName('');
+      setEmail('');
+      setCompany('');
+      setBudget('');
+      setMessage('');
+    } catch {
+      setStatus('error');
+      setError('Failed to send. Try WhatsApp instead.');
+    }
+  }
 
   return (
     <>
@@ -59,6 +93,16 @@ export function ContactCTA() {
                   onChange={(e) => setName(e.target.value)}
                   className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
                   placeholder="John"
+                />
+              </label>
+
+              <label className="text-sm">
+                <div className="mb-1 text-xs text-fg-300">Email (optional)</div>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  placeholder="you@company.com"
                 />
               </label>
 
@@ -102,8 +146,16 @@ export function ContactCTA() {
             </div>
 
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-              <Button href={waHref} variant="primary" size="lg">
-                Send via WhatsApp
+              <Button
+                onClick={onSubmit}
+                variant="primary"
+                size="lg"
+                disabled={!canSubmit}
+              >
+                {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send enquiry'}
+              </Button>
+              <Button href={waHref} variant="secondary" size="lg">
+                WhatsApp
               </Button>
               {emailTo ? (
                 <Button href={mailHref} variant="secondary" size="lg">
@@ -114,6 +166,14 @@ export function ContactCTA() {
                 Call {phone}
               </Button>
             </div>
+
+            {status === 'sent' ? (
+              <div className="mt-3 text-xs text-success-500">Thanks — your enquiry was sent.</div>
+            ) : null}
+
+            {status === 'error' ? (
+              <div className="mt-3 text-xs text-danger-500">{error}</div>
+            ) : null}
 
             {!isValid ? (
               <div className="mt-3 text-xs text-warn-500">
