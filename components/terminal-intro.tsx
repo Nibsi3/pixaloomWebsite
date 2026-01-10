@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Game2048, GuessGame, HackOverlay, SnakeGame } from '@/components/hack-overlay';
 import { workItems } from '@/components/work-items';
 
 type Line =
@@ -11,8 +10,6 @@ type Line =
   | { id: string; kind: 'out'; text: string }
   | { id: string; kind: 'out_typing'; text: string; full: string }
   | { id: string; kind: 'out_html'; html: string };
-
-type HackGameId = 'snake' | '2048' | 'guess';
 
 type TerminalIntroProps = {
   embedded?: boolean;
@@ -80,8 +77,6 @@ function helpText() {
     '  goto <section>               Scroll to section (projects|work|skills|timeline|contact)',
     '  github                       Show latest GitHub activity',
     '  weather                      Show live weather (George, WC)',
-    '  joke                         Fetch a random dev joke',
-    '  hack                         Open built-in mini games menu',
     '  contact                      Show contact details',
     '  clear                        Clear terminal',
   ].join('\n');
@@ -252,21 +247,12 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
         'goto',
         'github',
         'weather',
-        'joke',
-        'hack',
         'contact',
         'clear',
         'cd',
         'ls',
-        'jokes?',
       ].join('   '),
     });
-    return { out };
-  }
-
-  if (cmd === 'jokes') {
-    out.push({ id: uid(), kind: 'out', text: 'opening /jokes …' });
-    ctx.router.push('/jokes');
     return { out };
   }
 
@@ -294,9 +280,6 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [currentInput, setCurrentInput] = useState('');
-
-  const [hackOpen, setHackOpen] = useState(false);
-  const [activeGame, setActiveGame] = useState<HackGameId | null>(null);
 
   const themeClasses = useMemo(() => {
     return 'bg-bg-900 border-bg-700 text-fg-100';
@@ -364,7 +347,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
     };
   }, [lines]);
 
-  async function runAsyncCommand(cmd: 'github' | 'weather' | 'joke') {
+  async function runAsyncCommand(cmd: 'github' | 'weather') {
     try {
       if (cmd === 'github') {
         const res = await fetch('/api/github', { cache: 'no-store' });
@@ -409,13 +392,6 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
         return;
       }
 
-      const res = await fetch('/api/joke', { cache: 'no-store' });
-      const data = (await res.json()) as { ok: true; joke: string } | { ok: false; error: string };
-      if (!('ok' in data) || !data.ok) {
-        appendOut(`joke: ${'error' in data ? data.error : 'failed'}`);
-        return;
-      }
-      appendOut(data.joke);
     } catch {
       appendOut(`${cmd}: unexpected error`);
     }
@@ -451,12 +427,9 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
       { id: uid(), kind: 'prompt', cwd, input },
     ]);
 
-    if (cmd === 'github' || cmd === 'weather' || cmd === 'joke') {
+    if (cmd === 'github' || cmd === 'weather') {
       appendOut('fetching…');
       void runAsyncCommand(cmd);
-    } else if (cmd === 'hack') {
-      appendOut('opening hack menu…');
-      setHackOpen(true);
     } else {
       const { out } = runCommand(input, ctx);
 
@@ -533,8 +506,6 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
         'goto',
         'github',
         'weather',
-        'joke',
-        'hack',
         'contact',
         'clear',
         'ls',
@@ -548,22 +519,21 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
   const windowControls = (
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2">
-      <button
-        aria-label="Close"
-        onClick={() => onMinimizeAction?.()}
-        className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
-      />
-      <button
-        aria-label="Minimize"
-        onClick={() => onMinimizeAction?.()}
-        className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
-      />
-      <button
-        aria-label="Maximize"
-        className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
-      />
+        <button
+          aria-label="Close"
+          onClick={() => onMinimizeAction?.()}
+          className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+        />
+        <button
+          aria-label="Minimize"
+          onClick={() => onMinimizeAction?.()}
+          className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+        />
+        <button
+          aria-label="Maximize"
+          className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+        />
       </div>
-      <div className="hidden sm:block font-mono text-[11px] text-fg-400">info: click to close</div>
     </div>
   );
 
@@ -579,7 +549,22 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-fg-300">EN</span>
+              <div className="flex items-center gap-1">
+                {[
+                  { label: 'about', cmd: 'about' },
+                  { label: 'services', cmd: 'services' },
+                  { label: 'portfolio', cmd: 'portfolio' },
+                  { label: 'contact', cmd: 'contact' },
+                ].map((t) => (
+                  <button
+                    key={t.cmd}
+                    onClick={() => typeAndRun(t.cmd)}
+                    className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -639,7 +624,6 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
             </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[11px] text-fg-400">Quick:</span>
               <button
                 className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
                 onClick={() => typeAndRun('help')}
@@ -648,70 +632,20 @@ export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIn
               </button>
               <button
                 className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('about')}
-              >
-                about
-              </button>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('services')}
-              >
-                services
-              </button>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('portfolio')}
-              >
-                portfolio
-              </button>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('contact')}
-              >
-                contact
-              </button>
-              <span className="mx-1 text-fg-600">|</span>
-              <span className="font-mono text-[11px] text-fg-400">More:</span>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
                 onClick={() => typeAndRun('github')}
               >
                 github
               </button>
               <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('weather')}
-              >
-                weather
-              </button>
-              <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
-                onClick={() => typeAndRun('joke')}
-              >
-                joke
-              </button>
-              <button
                 className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
-                onClick={() => typeAndRun('hack')}
+                onClick={() => onMinimizeAction?.()}
               >
-                hack
+                exit
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      <HackOverlay
-        open={hackOpen}
-        onCloseAction={() => setHackOpen(false)}
-        onSelectAction={(id) => {
-          setHackOpen(false);
-          setActiveGame(id);
-        }}
-      />
-      <SnakeGame open={activeGame === 'snake'} onCloseAction={() => setActiveGame(null)} />
-      <Game2048 open={activeGame === '2048'} onCloseAction={() => setActiveGame(null)} />
-      <GuessGame open={activeGame === 'guess'} onCloseAction={() => setActiveGame(null)} />
     </section>
   );
 }
