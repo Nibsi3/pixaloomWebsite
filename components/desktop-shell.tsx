@@ -317,6 +317,7 @@ function CalculatorApp() {
   const [display, setDisplay] = useState('0');
   const [prev, setPrev] = useState<number | null>(null);
   const [op, setOp] = useState<string | null>(null);
+  const [history, setHistory] = useState('');
 
   const handleNum = (n: string) => {
     setDisplay((d) => (d === '0' ? n : d + n));
@@ -325,6 +326,7 @@ function CalculatorApp() {
   const handleOp = (o: string) => {
     setPrev(parseFloat(display));
     setOp(o);
+    setHistory(`${display} ${o}`);
     setDisplay('0');
   };
 
@@ -335,10 +337,11 @@ function CalculatorApp() {
     switch (op) {
       case '+': result = prev + curr; break;
       case '-': result = prev - curr; break;
-      case '*': result = prev * curr; break;
-      case '/': result = curr !== 0 ? prev / curr : 0; break;
+      case '×': result = prev * curr; break;
+      case '÷': result = curr !== 0 ? prev / curr : 0; break;
     }
-    setDisplay(String(result));
+    setHistory(`${prev} ${op} ${curr} =`);
+    setDisplay(String(Math.round(result * 1000000) / 1000000));
     setPrev(null);
     setOp(null);
   };
@@ -347,31 +350,47 @@ function CalculatorApp() {
     setDisplay('0');
     setPrev(null);
     setOp(null);
+    setHistory('');
   };
 
+  const buttons = [
+    { label: 'C', action: clear, style: 'bg-red-500/80 hover:bg-red-500 text-white' },
+    { label: '±', action: () => setDisplay((d) => String(-parseFloat(d))), style: 'bg-neutral-600 hover:bg-neutral-500 text-white' },
+    { label: '%', action: () => setDisplay((d) => String(parseFloat(d) / 100)), style: 'bg-neutral-600 hover:bg-neutral-500 text-white' },
+    { label: '÷', action: () => handleOp('÷'), style: 'bg-amber-500 hover:bg-amber-400 text-white' },
+    { label: '7', action: () => handleNum('7'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '8', action: () => handleNum('8'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '9', action: () => handleNum('9'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '×', action: () => handleOp('×'), style: 'bg-amber-500 hover:bg-amber-400 text-white' },
+    { label: '4', action: () => handleNum('4'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '5', action: () => handleNum('5'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '6', action: () => handleNum('6'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '-', action: () => handleOp('-'), style: 'bg-amber-500 hover:bg-amber-400 text-white' },
+    { label: '1', action: () => handleNum('1'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '2', action: () => handleNum('2'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '3', action: () => handleNum('3'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '+', action: () => handleOp('+'), style: 'bg-amber-500 hover:bg-amber-400 text-white' },
+    { label: '0', action: () => handleNum('0'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white col-span-2' },
+    { label: '.', action: () => handleNum('.'), style: 'bg-neutral-700 hover:bg-neutral-600 text-white' },
+    { label: '=', action: calculate, style: 'bg-green-500 hover:bg-green-400 text-white' },
+  ];
+
   return (
-    <div className="h-full bg-gray-900 p-4">
-      <div className="mb-4 rounded-lg bg-gray-800 p-4 text-right font-mono text-3xl text-white">
-        {display}
+    <div className="h-full bg-gradient-to-b from-neutral-900 to-neutral-800 flex flex-col">
+      <div className="flex-1 flex flex-col justify-end p-4">
+        <div className="text-right text-neutral-500 text-sm h-6 truncate">{history}</div>
+        <div className="text-right font-light text-5xl text-white truncate">{display}</div>
       </div>
-      <div className="grid grid-cols-4 gap-2">
-        {['7', '8', '9', '/'].map((b) => (
-          <button key={b} onClick={() => (b === '/' ? handleOp(b) : handleNum(b))} className="rounded-lg bg-gray-700 p-4 text-xl text-white hover:bg-gray-600">{b}</button>
+      <div className="grid grid-cols-4 gap-1 p-3 bg-neutral-900/50">
+        {buttons.map((b, i) => (
+          <button
+            key={i}
+            onClick={b.action}
+            className={`${b.style} rounded-xl p-4 text-xl font-medium transition-all active:scale-95 ${b.label === '0' ? 'col-span-2' : ''}`}
+          >
+            {b.label}
+          </button>
         ))}
-        {['4', '5', '6', '*'].map((b) => (
-          <button key={b} onClick={() => (b === '*' ? handleOp(b) : handleNum(b))} className="rounded-lg bg-gray-700 p-4 text-xl text-white hover:bg-gray-600">{b}</button>
-        ))}
-        {['1', '2', '3', '-'].map((b) => (
-          <button key={b} onClick={() => (b === '-' ? handleOp(b) : handleNum(b))} className="rounded-lg bg-gray-700 p-4 text-xl text-white hover:bg-gray-600">{b}</button>
-        ))}
-        {['0', '.', '=', '+'].map((b) => (
-          <button key={b} onClick={() => {
-            if (b === '=') calculate();
-            else if (b === '+') handleOp(b);
-            else handleNum(b);
-          }} className={`rounded-lg p-4 text-xl text-white ${b === '=' ? 'bg-orange-500 hover:bg-orange-400' : 'bg-gray-700 hover:bg-gray-600'}`}>{b}</button>
-        ))}
-        <button onClick={clear} className="col-span-4 rounded-lg bg-red-500 p-3 text-white hover:bg-red-400">Clear</button>
       </div>
     </div>
   );
@@ -379,6 +398,7 @@ function CalculatorApp() {
 
 function WeatherApp() {
   const [weatherData, setWeatherData] = useState<{ temp: number | null; city: string; wind: number | null } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/weather')
@@ -386,39 +406,158 @@ function WeatherApp() {
       .then((d) => {
         if (d.ok) setWeatherData({ temp: d.temperatureC, city: d.city, wind: d.windKmh });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
+  const hour = new Date().getHours();
+  const isNight = hour < 6 || hour > 18;
+  const bgClass = isNight 
+    ? 'from-indigo-900 via-purple-900 to-slate-900' 
+    : 'from-sky-400 via-blue-500 to-indigo-500';
+
   return (
-    <div className="h-full bg-gradient-to-br from-sky-400 to-blue-600 p-6">
-      <div className="text-center">
-        <div className="text-6xl mb-4">🌤️</div>
-        <h2 className="text-3xl font-bold text-white mb-2">{weatherData?.city || 'George, WC'}</h2>
-        <div className="text-7xl font-light text-white mb-4">
-          {weatherData?.temp != null ? `${Math.round(weatherData.temp)}°` : '--°'}
-        </div>
-        <div className="text-white/80">
-          Wind: {weatherData?.wind != null ? `${Math.round(weatherData.wind)} km/h` : '--'}
-        </div>
+    <div className={`h-full bg-gradient-to-br ${bgClass} p-6 relative overflow-hidden`}>
+      <div className="absolute inset-0 opacity-20">
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className="absolute rounded-full bg-white animate-pulse" style={{
+            width: Math.random() * 4 + 2,
+            height: Math.random() * 4 + 2,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+          }} />
+        ))}
+      </div>
+      <div className="relative z-10 h-full flex flex-col items-center justify-center">
+        {loading ? (
+          <div className="text-white/60 animate-pulse">Loading weather...</div>
+        ) : (
+          <>
+            <div className="text-8xl mb-4 drop-shadow-lg">{isNight ? '🌙' : '☀️'}</div>
+            <h2 className="text-2xl font-medium text-white/90 mb-1">{weatherData?.city || 'George, WC'}</h2>
+            <div className="text-8xl font-extralight text-white mb-6 tracking-tighter">
+              {weatherData?.temp != null ? `${Math.round(weatherData.temp)}°` : '--°'}
+            </div>
+            <div className="flex gap-6 text-white/70">
+              <div className="flex items-center gap-2">
+                <span>💨</span>
+                <span>{weatherData?.wind != null ? `${Math.round(weatherData.wind)} km/h` : '--'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>💧</span>
+                <span>62%</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-function NotesApp() {
-  const [note, setNote] = useState('Welcome to Notes!\n\nStart typing here...');
+function NotesApp({ onSaveToDesktop }: { onSaveToDesktop?: (name: string, content: string) => void }) {
+  const [notes, setNotes] = useState<{ id: string; name: string; content: string }[]>([
+    { id: '1', name: 'Welcome', content: 'Welcome to Notes!\n\nStart typing here...' }
+  ]);
+  const [activeNote, setActiveNote] = useState('1');
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveName, setSaveName] = useState('');
+
+  const currentNote = notes.find(n => n.id === activeNote);
+
+  const updateNote = (content: string) => {
+    setNotes(notes.map(n => n.id === activeNote ? { ...n, content } : n));
+  };
+
+  const addNote = () => {
+    const id = Math.random().toString(36).slice(2);
+    setNotes([...notes, { id, name: `Note ${notes.length + 1}`, content: '' }]);
+    setActiveNote(id);
+  };
+
+  const deleteNote = (id: string) => {
+    if (notes.length === 1) return;
+    const newNotes = notes.filter(n => n.id !== id);
+    setNotes(newNotes);
+    if (activeNote === id) setActiveNote(newNotes[0].id);
+  };
+
+  const saveToDesktop = () => {
+    if (saveName.trim() && currentNote) {
+      onSaveToDesktop?.(saveName.trim(), currentNote.content);
+      setShowSaveModal(false);
+      setSaveName('');
+    }
+  };
 
   return (
-    <div className="h-full bg-amber-50">
-      <div className="bg-amber-100 border-b border-amber-200 p-3">
-        <h2 className="font-semibold text-amber-800">📝 Notes</h2>
+    <div className="h-full flex bg-stone-100">
+      <div className="w-48 bg-stone-200 border-r border-stone-300 flex flex-col">
+        <div className="p-2 border-b border-stone-300 flex items-center justify-between">
+          <span className="text-xs font-semibold text-stone-600">Notes</span>
+          <button onClick={addNote} className="text-stone-500 hover:text-stone-700 text-lg leading-none">+</button>
+        </div>
+        <div className="flex-1 overflow-auto">
+          {notes.map(n => (
+            <div
+              key={n.id}
+              onClick={() => setActiveNote(n.id)}
+              className={`p-2 cursor-pointer border-b border-stone-300 ${activeNote === n.id ? 'bg-amber-200' : 'hover:bg-stone-300'}`}
+            >
+              <div className="text-sm font-medium text-stone-800 truncate">{n.name}</div>
+              <div className="text-xs text-stone-500 truncate">{n.content.slice(0, 30) || 'Empty note'}</div>
+            </div>
+          ))}
+        </div>
       </div>
-      <textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        className="h-[calc(100%-48px)] w-full resize-none bg-transparent p-4 text-amber-900 outline-none font-mono"
-        style={{ lineHeight: '1.8' }}
-      />
+      <div className="flex-1 flex flex-col">
+        <div className="bg-amber-100 border-b border-amber-200 p-2 flex items-center justify-between">
+          <input
+            value={currentNote?.name || ''}
+            onChange={(e) => setNotes(notes.map(n => n.id === activeNote ? { ...n, name: e.target.value } : n))}
+            className="bg-transparent font-semibold text-amber-800 outline-none"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowSaveModal(true)}
+              className="px-3 py-1 bg-amber-500 text-white text-xs rounded hover:bg-amber-600 transition"
+            >
+              Save to Desktop
+            </button>
+            <button
+              onClick={() => deleteNote(activeNote)}
+              className="px-2 py-1 bg-red-400 text-white text-xs rounded hover:bg-red-500 transition"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+        <textarea
+          value={currentNote?.content || ''}
+          onChange={(e) => updateNote(e.target.value)}
+          className="flex-1 w-full resize-none bg-amber-50 p-4 text-stone-800 outline-none"
+          style={{ lineHeight: '1.8' }}
+          placeholder="Start typing..."
+        />
+      </div>
+      {showSaveModal && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-80 shadow-2xl">
+            <h3 className="font-bold text-lg mb-4">Save Note to Desktop</h3>
+            <input
+              value={saveName}
+              onChange={(e) => setSaveName(e.target.value)}
+              placeholder="Enter file name..."
+              className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-amber-500"
+            />
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setShowSaveModal(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
+              <button onClick={saveToDesktop} className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Save</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -426,9 +565,24 @@ function NotesApp() {
 function SnakeApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+  const [highScore, setHighScore] = useState(0);
+  const [gameState, setGameState] = useState<'menu' | 'playing' | 'gameover'>('menu');
+  const gameRef = useRef<{ snake: { x: number; y: number }[]; food: { x: number; y: number }; dx: number; dy: number; running: boolean } | null>(null);
+
+  const startGame = () => {
+    setScore(0);
+    setGameState('playing');
+    gameRef.current = {
+      snake: [{ x: 10, y: 10 }],
+      food: { x: 15, y: 15 },
+      dx: 1,
+      dy: 0,
+      running: true,
+    };
+  };
 
   useEffect(() => {
+    if (gameState !== 'playing') return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -439,75 +593,130 @@ function SnakeApp() {
     canvas.width = gridSize * tileCount;
     canvas.height = gridSize * tileCount;
 
-    let snake = [{ x: 10, y: 10 }];
-    let food = { x: 15, y: 15 };
-    let dx = 0, dy = 0;
-    let running = true;
-
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
-      if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
-      if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
-      if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
+      if (!gameRef.current) return;
+      const { dx, dy } = gameRef.current;
+      if (e.key === 'ArrowUp' && dy !== 1) { gameRef.current.dx = 0; gameRef.current.dy = -1; }
+      if (e.key === 'ArrowDown' && dy !== -1) { gameRef.current.dx = 0; gameRef.current.dy = 1; }
+      if (e.key === 'ArrowLeft' && dx !== 1) { gameRef.current.dx = -1; gameRef.current.dy = 0; }
+      if (e.key === 'ArrowRight' && dx !== -1) { gameRef.current.dx = 1; gameRef.current.dy = 0; }
     };
     window.addEventListener('keydown', handleKey);
 
     const gameLoop = setInterval(() => {
-      if (!running) return;
+      if (!gameRef.current?.running) return;
+      const { snake, food, dx, dy } = gameRef.current;
       const head = { x: snake[0].x + dx, y: snake[0].y + dy };
       
-      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-        running = false;
-        setGameOver(true);
-        return;
-      }
-
-      if (snake.some((s) => s.x === head.x && s.y === head.y)) {
-        running = false;
-        setGameOver(true);
+      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount ||
+          snake.some((s) => s.x === head.x && s.y === head.y)) {
+        gameRef.current.running = false;
+        setHighScore(h => Math.max(h, score));
+        setGameState('gameover');
         return;
       }
 
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         setScore((s) => s + 10);
-        food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+        gameRef.current.food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
       } else {
         snake.pop();
       }
 
-      ctx.fillStyle = '#1a1a2e';
+      ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#4ade80';
-      snake.forEach((s) => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+      
+      // Draw grid
+      ctx.strokeStyle = '#1e293b';
+      for (let i = 0; i <= tileCount; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0);
+        ctx.lineTo(i * gridSize, canvas.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * gridSize);
+        ctx.lineTo(canvas.width, i * gridSize);
+        ctx.stroke();
+      }
+
+      // Draw snake with gradient
+      snake.forEach((s, i) => {
+        const alpha = 1 - (i / snake.length) * 0.5;
+        ctx.fillStyle = i === 0 ? '#22c55e' : `rgba(74, 222, 128, ${alpha})`;
+        ctx.beginPath();
+        ctx.roundRect(s.x * gridSize + 1, s.y * gridSize + 1, gridSize - 2, gridSize - 2, 4);
+        ctx.fill();
+      });
+
+      // Draw food with glow
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 10;
       ctx.fillStyle = '#ef4444';
-      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-    }, 100);
+      ctx.beginPath();
+      ctx.arc(gameRef.current.food.x * gridSize + gridSize / 2, gameRef.current.food.y * gridSize + gridSize / 2, gridSize / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }, 80);
 
     return () => {
       clearInterval(gameLoop);
       window.removeEventListener('keydown', handleKey);
     };
-  }, []);
+  }, [gameState, score]);
 
   return (
-    <div className="h-full bg-[#1a1a2e] flex flex-col items-center justify-center p-4">
-      <div className="text-white mb-2">Score: {score}</div>
-      {gameOver && <div className="text-red-400 mb-2">Game Over! Refresh to restart</div>}
-      <canvas ref={canvasRef} className="border border-white/20 rounded" />
-      <div className="text-white/50 text-xs mt-2">Use arrow keys to move</div>
+    <div className="h-full bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4">
+      {gameState === 'menu' && (
+        <div className="text-center">
+          <div className="text-6xl mb-4">🐍</div>
+          <h1 className="text-3xl font-bold text-white mb-2">Snake</h1>
+          <p className="text-slate-400 mb-6">Use arrow keys to move</p>
+          <button
+            onClick={startGame}
+            className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg"
+          >
+            Start Game
+          </button>
+          {highScore > 0 && <p className="text-slate-500 mt-4">High Score: {highScore}</p>}
+        </div>
+      )}
+      {gameState === 'playing' && (
+        <>
+          <div className="text-white mb-3 text-xl font-bold">Score: {score}</div>
+          <canvas ref={canvasRef} className="rounded-xl shadow-2xl" />
+        </>
+      )}
+      {gameState === 'gameover' && (
+        <div className="text-center">
+          <div className="text-6xl mb-4">💀</div>
+          <h1 className="text-3xl font-bold text-red-400 mb-2">Game Over!</h1>
+          <p className="text-2xl text-white mb-2">Score: {score}</p>
+          {score >= highScore && score > 0 && <p className="text-yellow-400 mb-4">🎉 New High Score!</p>}
+          <button
+            onClick={startGame}
+            className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg"
+          >
+            Play Again
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 function Game2048App() {
-  const [grid, setGrid] = useState(() => {
+  const [gameState, setGameState] = useState<'menu' | 'playing' | 'won' | 'lost'>('menu');
+  const [grid, setGrid] = useState<number[][]>([]);
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  function createGrid() {
     const g = Array(4).fill(null).map(() => Array(4).fill(0));
     addRandom(g);
     addRandom(g);
     return g;
-  });
-  const [score, setScore] = useState(0);
+  }
 
   function addRandom(g: number[][]) {
     const empty: [number, number][] = [];
@@ -518,7 +727,14 @@ function Game2048App() {
     }
   }
 
+  const startGame = () => {
+    setGrid(createGrid());
+    setScore(0);
+    setGameState('playing');
+  };
+
   function move(dir: string) {
+    if (gameState !== 'playing') return;
     const newGrid = grid.map((r) => [...r]);
     let moved = false;
     let pts = 0;
@@ -529,6 +745,7 @@ function Game2048App() {
         if (filtered[i] === filtered[i + 1]) {
           filtered[i] *= 2;
           pts += filtered[i];
+          if (filtered[i] === 2048) setGameState('won');
           filtered.splice(i + 1, 1);
         }
       }
@@ -567,39 +784,85 @@ function Game2048App() {
     if (moved) {
       addRandom(newGrid);
       setGrid(newGrid);
-      setScore((s) => s + pts);
+      const newScore = score + pts;
+      setScore(newScore);
+      setBestScore(b => Math.max(b, newScore));
     }
   }
 
   useEffect(() => {
+    if (gameState !== 'playing') return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowUp') move('up');
-      if (e.key === 'ArrowDown') move('down');
-      if (e.key === 'ArrowLeft') move('left');
-      if (e.key === 'ArrowRight') move('right');
+      if (e.key === 'ArrowUp') { e.preventDefault(); move('up'); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); move('down'); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); move('left'); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); move('right'); }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   });
 
   const colors: Record<number, string> = {
-    0: 'bg-gray-700', 2: 'bg-gray-200 text-gray-800', 4: 'bg-gray-300 text-gray-800',
-    8: 'bg-orange-300 text-white', 16: 'bg-orange-400 text-white', 32: 'bg-orange-500 text-white',
-    64: 'bg-orange-600 text-white', 128: 'bg-yellow-400 text-white', 256: 'bg-yellow-500 text-white',
-    512: 'bg-yellow-600 text-white', 1024: 'bg-yellow-700 text-white', 2048: 'bg-yellow-800 text-white',
+    0: 'bg-stone-700/50',
+    2: 'bg-stone-200 text-stone-800',
+    4: 'bg-stone-300 text-stone-800',
+    8: 'bg-orange-400 text-white',
+    16: 'bg-orange-500 text-white',
+    32: 'bg-orange-600 text-white',
+    64: 'bg-red-500 text-white',
+    128: 'bg-yellow-400 text-white shadow-lg shadow-yellow-400/30',
+    256: 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/30',
+    512: 'bg-yellow-600 text-white shadow-lg shadow-yellow-600/30',
+    1024: 'bg-amber-500 text-white shadow-xl shadow-amber-500/40',
+    2048: 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-xl shadow-amber-500/50',
   };
 
   return (
-    <div className="h-full bg-gray-800 flex flex-col items-center justify-center p-4">
-      <div className="text-white mb-4 text-xl">Score: {score}</div>
-      <div className="grid grid-cols-4 gap-2 bg-gray-700 p-2 rounded-lg">
-        {grid.flat().map((v, i) => (
-          <div key={i} className={`w-16 h-16 rounded flex items-center justify-center font-bold text-lg ${colors[v] || 'bg-purple-500 text-white'}`}>
-            {v || ''}
+    <div className="h-full bg-gradient-to-br from-stone-800 to-stone-900 flex flex-col items-center justify-center p-4">
+      {gameState === 'menu' && (
+        <div className="text-center">
+          <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-4">2048</div>
+          <p className="text-stone-400 mb-6">Join the tiles, get to 2048!</p>
+          <button
+            onClick={startGame}
+            className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg"
+          >
+            Start Game
+          </button>
+          {bestScore > 0 && <p className="text-stone-500 mt-4">Best: {bestScore}</p>}
+        </div>
+      )}
+      {(gameState === 'playing' || gameState === 'won') && (
+        <>
+          <div className="flex gap-8 mb-4">
+            <div className="bg-stone-700 rounded-lg px-4 py-2 text-center">
+              <div className="text-stone-400 text-xs">SCORE</div>
+              <div className="text-white font-bold text-xl">{score}</div>
+            </div>
+            <div className="bg-stone-700 rounded-lg px-4 py-2 text-center">
+              <div className="text-stone-400 text-xs">BEST</div>
+              <div className="text-white font-bold text-xl">{bestScore}</div>
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="text-white/50 text-xs mt-4">Use arrow keys to play</div>
+          <div className="grid grid-cols-4 gap-2 bg-stone-700 p-3 rounded-xl">
+            {grid.flat().map((v, i) => (
+              <div
+                key={i}
+                className={`w-16 h-16 rounded-lg flex items-center justify-center font-bold transition-all duration-100 ${colors[v] || 'bg-purple-500 text-white'} ${v >= 100 ? 'text-xl' : 'text-2xl'}`}
+              >
+                {v || ''}
+              </div>
+            ))}
+          </div>
+          <p className="text-stone-500 text-xs mt-4">Use arrow keys to play</p>
+          {gameState === 'won' && (
+            <div className="mt-4 text-center">
+              <p className="text-yellow-400 text-xl font-bold mb-2">🎉 You Won!</p>
+              <button onClick={startGame} className="px-4 py-2 bg-amber-500 text-white rounded-lg">Play Again</button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
@@ -623,6 +886,17 @@ function SecretApp() {
   );
 }
 
+type DesktopIcon = {
+  id: string;
+  app: AppId | null;
+  icon: string;
+  label: string;
+  x: number;
+  y: number;
+  isFile?: boolean;
+  fileContent?: string;
+};
+
 export function DesktopShell() {
   const zTopRef = useRef(10);
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
@@ -633,6 +907,109 @@ export function DesktopShell() {
     startLeft: number;
     startTop: number;
   }>({ id: null, startX: 0, startY: 0, startLeft: 0, startTop: 0 });
+
+  const iconDragRef = useRef<{
+    id: string | null;
+    startX: number;
+    startY: number;
+    startLeft: number;
+    startTop: number;
+  }>({ id: null, startX: 0, startY: 0, startLeft: 0, startTop: 0 });
+
+  const [desktopIcons, setDesktopIcons] = useState<DesktopIcon[]>([
+    { id: '1', app: 'terminal', icon: '🖥️', label: 'Terminal', x: 20, y: 20 },
+    { id: '2', app: 'calculator', icon: '🧮', label: 'Calculator', x: 20, y: 110 },
+    { id: '3', app: 'weather', icon: '⛅', label: 'Weather', x: 20, y: 200 },
+    { id: '4', app: 'notes', icon: '📝', label: 'Notes', x: 20, y: 290 },
+    { id: '5', app: 'snake', icon: '🐍', label: 'Snake', x: 110, y: 20 },
+    { id: '6', app: 'game2048', icon: '🎮', label: '2048', x: 110, y: 110 },
+    { id: '7', app: 'about', icon: 'ℹ️', label: 'About', x: 110, y: 200 },
+    { id: '8', app: 'portfolio', icon: '📁', label: 'Portfolio', x: 110, y: 290 },
+    { id: '9', app: 'secret', icon: '📂', label: 'Secret', x: 200, y: 20 },
+    { id: '10', app: null, icon: '🗑️', label: 'Trash', x: 200, y: 110 },
+  ]);
+
+  const [selectedIcons, setSelectedIcons] = useState<string[]>([]);
+  const [selectionBox, setSelectionBox] = useState<{ startX: number; startY: number; endX: number; endY: number } | null>(null);
+
+  const handleSaveNoteToDesktop = (name: string, content: string) => {
+    const newIcon: DesktopIcon = {
+      id: uid(),
+      app: null,
+      icon: '📄',
+      label: `${name}.txt`,
+      x: 200 + Math.random() * 100,
+      y: 200 + Math.random() * 100,
+      isFile: true,
+      fileContent: content,
+    };
+    setDesktopIcons((prev) => [...prev, newIcon]);
+  };
+
+  const startIconDrag = (iconId: string, e: React.PointerEvent) => {
+    const icon = desktopIcons.find((i) => i.id === iconId);
+    if (!icon) return;
+    e.stopPropagation();
+    iconDragRef.current = { id: iconId, startX: e.clientX, startY: e.clientY, startLeft: icon.x, startTop: icon.y };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if (!selectedIcons.includes(iconId)) {
+      setSelectedIcons([iconId]);
+    }
+  };
+
+  const onIconDragMove = (e: React.PointerEvent) => {
+    if (!iconDragRef.current.id) return;
+    const dx = e.clientX - iconDragRef.current.startX;
+    const dy = e.clientY - iconDragRef.current.startY;
+    
+    setDesktopIcons((prev) =>
+      prev.map((icon) => {
+        if (selectedIcons.includes(icon.id)) {
+          const baseIcon = prev.find((i) => i.id === iconDragRef.current.id);
+          if (!baseIcon) return icon;
+          const offsetX = icon.x - iconDragRef.current.startLeft;
+          const offsetY = icon.y - iconDragRef.current.startTop;
+          return {
+            ...icon,
+            x: Math.max(0, iconDragRef.current.startLeft + dx + offsetX),
+            y: Math.max(0, iconDragRef.current.startTop + dy + offsetY),
+          };
+        }
+        return icon;
+      })
+    );
+  };
+
+  const endIconDrag = () => {
+    iconDragRef.current.id = null;
+  };
+
+  const startSelectionBox = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('[data-window]')) return;
+    setSelectionBox({ startX: e.clientX, startY: e.clientY, endX: e.clientX, endY: e.clientY });
+    setSelectedIcons([]);
+  };
+
+  const updateSelectionBox = (e: React.MouseEvent) => {
+    if (!selectionBox) return;
+    setSelectionBox({ ...selectionBox, endX: e.clientX, endY: e.clientY });
+    
+    const minX = Math.min(selectionBox.startX, e.clientX);
+    const maxX = Math.max(selectionBox.startX, e.clientX);
+    const minY = Math.min(selectionBox.startY, e.clientY);
+    const maxY = Math.max(selectionBox.startY, e.clientY);
+
+    const selected = desktopIcons.filter((icon) => {
+      const iconCenterX = icon.x + 40;
+      const iconCenterY = icon.y + 40;
+      return iconCenterX >= minX && iconCenterX <= maxX && iconCenterY >= minY && iconCenterY <= maxY;
+    });
+    setSelectedIcons(selected.map((i) => i.id));
+  };
+
+  const endSelectionBox = () => {
+    setSelectionBox(null);
+  };
 
   const [windows, setWindows] = useState<WindowState[]>(() => {
     // Start with terminal open
@@ -809,7 +1186,12 @@ export function DesktopShell() {
   );
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div 
+      className="fixed inset-0 overflow-hidden select-none"
+      onMouseDown={startSelectionBox}
+      onMouseMove={updateSelectionBox}
+      onMouseUp={endSelectionBox}
+    >
       {/* Wallpaper */}
       <div
         className="absolute inset-0"
@@ -821,30 +1203,39 @@ export function DesktopShell() {
       />
       <div className="absolute inset-0 bg-black/20" />
 
+      {/* Selection Box */}
+      {selectionBox && (
+        <div
+          className="absolute border border-blue-400 bg-blue-400/20 z-50 pointer-events-none"
+          style={{
+            left: Math.min(selectionBox.startX, selectionBox.endX),
+            top: Math.min(selectionBox.startY, selectionBox.endY),
+            width: Math.abs(selectionBox.endX - selectionBox.startX),
+            height: Math.abs(selectionBox.endY - selectionBox.startY),
+          }}
+        />
+      )}
+
       {/* Desktop Icons */}
-      <div className="absolute left-4 top-4 z-10 grid grid-cols-2 gap-4">
-        {[
-          { app: 'terminal' as AppId, icon: '🖥️', label: 'Terminal' },
-          { app: 'calculator' as AppId, icon: '🧮', label: 'Calculator' },
-          { app: 'weather' as AppId, icon: '⛅', label: 'Weather' },
-          { app: 'notes' as AppId, icon: '📝', label: 'Notes' },
-          { app: 'snake' as AppId, icon: '🐍', label: 'Snake' },
-          { app: 'game2048' as AppId, icon: '🎮', label: '2048' },
-          { app: 'about' as AppId, icon: 'ℹ️', label: 'About' },
-          { app: 'portfolio' as AppId, icon: '📁', label: 'Portfolio' },
-          { app: 'secret' as AppId, icon: '📂', label: 'Secret' },
-          { app: null as unknown as AppId, icon: '🗑️', label: 'Trash' },
-        ].map((item, i) => (
-          <button
-            key={i}
-            onClick={() => item.app && openApp(item.app)}
-            className="flex flex-col items-center gap-1 rounded-lg p-2 text-white hover:bg-white/10 transition w-20"
-          >
-            <span className="text-4xl drop-shadow-lg">{item.icon}</span>
-            <span className="text-[10px] text-white/90 drop-shadow">{item.label}</span>
-          </button>
-        ))}
-      </div>
+      {desktopIcons.map((icon) => (
+        <button
+          key={icon.id}
+          onPointerDown={(e) => startIconDrag(icon.id, e)}
+          onPointerMove={onIconDragMove}
+          onPointerUp={endIconDrag}
+          onPointerCancel={endIconDrag}
+          onDoubleClick={() => icon.app && openApp(icon.app)}
+          className={`absolute flex flex-col items-center gap-1 rounded-lg p-2 text-white transition w-20 cursor-default ${
+            selectedIcons.includes(icon.id) ? 'bg-blue-500/30 ring-1 ring-blue-400' : 'hover:bg-white/10'
+          }`}
+          style={{ left: icon.x, top: icon.y }}
+        >
+          <span className="text-4xl drop-shadow-lg select-none">{icon.icon}</span>
+          <span className="text-[10px] text-white text-center drop-shadow select-none leading-tight px-1 rounded bg-black/30">
+            {icon.label}
+          </span>
+        </button>
+      ))}
 
       {/* Windows */}
       {windows
@@ -937,7 +1328,7 @@ export function DesktopShell() {
                 ) : w.app === 'weather' ? (
                   <WeatherApp />
                 ) : w.app === 'notes' ? (
-                  <NotesApp />
+                  <NotesApp onSaveToDesktop={handleSaveNoteToDesktop} />
                 ) : w.app === 'snake' ? (
                   <SnakeApp />
                 ) : w.app === 'game2048' ? (
