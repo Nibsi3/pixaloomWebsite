@@ -1469,6 +1469,51 @@ export function DesktopShell() {
             );
           })}
 
+          {/* Dynamic icons for open apps not in taskbar */}
+          {(() => {
+            const taskbarAppIds: Set<AppId> = new Set(taskbarApps.map(a => a.app));
+            const openNonTaskbarApps = windows.filter(w => !taskbarAppIds.has(w.app) && !w.minimized);
+            if (openNonTaskbarApps.length === 0) return null;
+            
+            const appIcons: Record<string, string> = {
+              calculator: '🧮',
+              weather: '⛅',
+              notes: '📝',
+              snake: '🐍',
+              game2048: '🎮',
+              secret: '📂',
+            };
+            
+            return (
+              <>
+                <div className="mx-1 h-8 w-px bg-white/20 rounded-full" />
+                {openNonTaskbarApps.map((w) => {
+                  const active = w.id === activeWindowId;
+                  return (
+                    <button
+                      key={w.id}
+                      onClick={() => focusWindow(w.id)}
+                      title={w.title}
+                      className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-200 ${
+                        active 
+                          ? 'bg-white/20 shadow-lg shadow-white/10 scale-105' 
+                          : 'bg-white/10 hover:scale-110'
+                      }`}
+                    >
+                      <span className="text-2xl">{appIcons[w.app] || '📱'}</span>
+                      <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full transition-all ${
+                        active ? 'h-1.5 w-4 bg-cyan-400' : 'h-1 w-1 bg-white/60'
+                      }`} />
+                      <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-neutral-900 border border-neutral-700 px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-xl transition-all duration-200 group-hover:opacity-100 group-hover:-top-10">
+                        {w.title}
+                      </span>
+                    </button>
+                  );
+                })}
+              </>
+            );
+          })()}
+
           {/* Separator */}
           <div className="mx-1 h-8 w-px bg-white/20 rounded-full" />
 
