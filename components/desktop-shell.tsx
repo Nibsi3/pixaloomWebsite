@@ -198,43 +198,87 @@ function ServicesApp() {
 }
 
 function PortfolioApp() {
+  const [selectedProject, setSelectedProject] = useState<typeof workItems[0] | null>(null);
+
+  if (selectedProject) {
+    return (
+      <div className="h-full overflow-auto bg-neutral-900">
+        <div className="sticky top-0 z-10 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-4 flex items-center gap-3">
+          <button 
+            onClick={() => setSelectedProject(null)}
+            className="flex items-center gap-2 text-neutral-400 hover:text-white transition"
+          >
+            <span>←</span> Back
+          </button>
+          <h1 className="font-semibold text-white">{selectedProject.name}</h1>
+        </div>
+        <div className="p-4">
+          {selectedProject.png && (
+            <div className="rounded-xl overflow-hidden mb-4">
+              <img src={selectedProject.png} alt={selectedProject.name} className="w-full h-48 object-cover" />
+            </div>
+          )}
+          <p className="text-neutral-400 mb-4">{selectedProject.meta}</p>
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-neutral-300 mb-2">Scope</h3>
+            <p className="text-neutral-400 text-sm">{selectedProject.scope}</p>
+          </div>
+          {selectedProject.highlights && (
+            <div className="mb-4">
+              <h3 className="text-sm font-semibold text-neutral-300 mb-2">Highlights</h3>
+              <ul className="space-y-1">
+                {selectedProject.highlights.map((h, i) => (
+                  <li key={i} className="text-neutral-400 text-sm flex gap-2">
+                    <span className="text-amber-500">•</span> {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {selectedProject.stack.map((t) => (
+              <span key={t} className="rounded-full bg-amber-500/20 border border-amber-500/30 px-3 py-1 text-xs text-amber-300">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full overflow-auto bg-neutral-900">
       <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-6">
         <h1 className="text-2xl font-bold text-white">Portfolio</h1>
-        <p className="text-amber-100">Our recent work</p>
+        <p className="text-amber-100">Our recent work - Click to view details</p>
       </div>
       
-      <div className="p-4 space-y-4">
+      <div className="p-4 grid grid-cols-2 gap-3">
         {workItems.map((project) => (
-          <div key={project.slug} className="group rounded-xl bg-neutral-800 overflow-hidden border border-neutral-700">
+          <button
+            key={project.slug}
+            onClick={() => setSelectedProject(project)}
+            className="group rounded-xl bg-neutral-800 overflow-hidden border border-neutral-700 hover:border-amber-500/50 transition-all text-left"
+          >
             {project.png && (
-              <div className="h-32 overflow-hidden">
+              <div className="h-24 overflow-hidden">
                 <img 
                   src={project.png} 
                   alt={project.name}
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform group-hover:scale-110"
                 />
               </div>
             )}
-            <div className="p-4">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="font-semibold text-white">{project.name}</h3>
-                  <p className="text-xs text-neutral-400">{project.meta}</p>
-                </div>
+            <div className="p-3">
+              <h3 className="font-semibold text-white text-sm truncate">{project.name}</h3>
+              <p className="text-[10px] text-neutral-400 truncate">{project.meta}</p>
+              <div className="mt-2 flex items-center gap-1 text-[10px] text-amber-400">
+                <span>View details</span>
+                <span>→</span>
               </div>
-              {project.stack && (
-                <div className="mt-3 flex flex-wrap gap-1">
-                  {project.stack.slice(0, 4).map((t) => (
-                    <span key={t} className="rounded bg-neutral-700 px-2 py-0.5 text-[10px] text-neutral-300">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -243,70 +287,85 @@ function PortfolioApp() {
 
 function ContactApp() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = () => {
+    if (!formData.name || !formData.email || !formData.message) return;
+    setSending(true);
+    setTimeout(() => {
+      setSending(false);
+      setFormData({ name: '', email: '', message: '' });
+    }, 1500);
+  };
 
   return (
-    <div className="h-full overflow-auto bg-gradient-to-br from-rose-900 via-pink-900 to-rose-800">
+    <div className="h-full overflow-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="p-6">
-        <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-3xl">
-            💬
-          </div>
-          <h1 className="text-2xl font-bold text-white">Get In Touch</h1>
-          <p className="text-rose-200">Let&apos;s build something amazing together</p>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-white mb-1">Contact Us</h1>
+          <p className="text-slate-400 text-sm">We&apos;d love to hear from you</p>
         </div>
 
-        <div className="mb-6 grid grid-cols-1 gap-3">
-          <a href="tel:+27662995533" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20 text-xl">📞</span>
-            <div>
-              <div className="text-xs text-rose-300">Phone</div>
-              <div className="font-medium text-white">066 299 5533</div>
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <a href="tel:+27662995533" className="flex flex-col items-center gap-2 rounded-xl bg-slate-800 border border-slate-700 p-4 hover:border-cyan-500/50 transition group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-xl shadow-lg">
+              📞
             </div>
+            <span className="text-xs text-slate-400 group-hover:text-white transition">Call</span>
           </a>
-          <a href="mailto:info@pixaloom.co.za" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20 text-xl">✉️</span>
-            <div>
-              <div className="text-xs text-rose-300">Email</div>
-              <div className="font-medium text-white">info@pixaloom.co.za</div>
+          <a href="mailto:info@pixaloom.co.za" className="flex flex-col items-center gap-2 rounded-xl bg-slate-800 border border-slate-700 p-4 hover:border-cyan-500/50 transition group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-xl shadow-lg">
+              ✉️
             </div>
+            <span className="text-xs text-slate-400 group-hover:text-white transition">Email</span>
           </a>
-          <a href="https://wa.me/27662995533" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl bg-white/10 p-4 hover:bg-white/15 transition">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20 text-xl">💬</span>
-            <div>
-              <div className="text-xs text-rose-300">WhatsApp</div>
-              <div className="font-medium text-white">Send a message</div>
+          <a href="https://wa.me/27662995533" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 rounded-xl bg-slate-800 border border-slate-700 p-4 hover:border-cyan-500/50 transition group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-xl shadow-lg">
+              💬
             </div>
+            <span className="text-xs text-slate-400 group-hover:text-white transition">WhatsApp</span>
           </a>
         </div>
 
-        <div className="rounded-xl bg-white/10 p-4">
-          <h2 className="mb-4 font-semibold text-white">Quick Message</h2>
+        <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-5">
+          <h2 className="mb-4 font-semibold text-white flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-cyan-500"></span>
+            Send a Message
+          </h2>
           <div className="space-y-3">
             <input
               type="text"
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full rounded-lg bg-slate-900 border border-slate-600 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500 transition"
             />
             <input
               type="email"
               placeholder="Your email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full rounded-lg bg-slate-900 border border-slate-600 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500 transition"
             />
             <textarea
-              placeholder="Your message"
-              rows={3}
+              placeholder="How can we help?"
+              rows={4}
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full rounded-lg bg-white/10 px-4 py-2 text-sm text-white placeholder-rose-300/50 outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+              className="w-full rounded-lg bg-slate-900 border border-slate-600 px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-500 transition resize-none"
             />
-            <button className="w-full rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 py-2 font-medium text-white hover:from-pink-600 hover:to-rose-600 transition">
-              Send Message
+            <button
+              onClick={handleSubmit}
+              disabled={sending}
+              className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 py-3 font-medium text-white hover:from-cyan-600 hover:to-blue-700 transition disabled:opacity-50 shadow-lg shadow-cyan-500/20"
+            >
+              {sending ? 'Sending...' : 'Send Message'}
             </button>
           </div>
+        </div>
+
+        <div className="mt-4 text-center text-xs text-slate-500">
+          George, Western Cape • info@pixaloom.co.za
         </div>
       </div>
     </div>
@@ -657,7 +716,7 @@ function SnakeApp() {
       ctx.arc(gameRef.current.food.x * gridSize + gridSize / 2, gameRef.current.food.y * gridSize + gridSize / 2, gridSize / 2 - 2, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-    }, 80);
+    }, 150);
 
     return () => {
       clearInterval(gameLoop);
@@ -959,21 +1018,19 @@ export function DesktopShell() {
 
   const onIconDragMove = (e: React.PointerEvent) => {
     if (!iconDragRef.current.id) return;
+    e.stopPropagation();
     const dx = e.clientX - iconDragRef.current.startX;
     const dy = e.clientY - iconDragRef.current.startY;
+    
+    const maxX = window.innerWidth - 80;
+    const maxY = window.innerHeight - 120;
     
     setDesktopIcons((prev) =>
       prev.map((icon) => {
         if (selectedIcons.includes(icon.id)) {
-          const baseIcon = prev.find((i) => i.id === iconDragRef.current.id);
-          if (!baseIcon) return icon;
-          const offsetX = icon.x - iconDragRef.current.startLeft;
-          const offsetY = icon.y - iconDragRef.current.startTop;
-          return {
-            ...icon,
-            x: Math.max(0, iconDragRef.current.startLeft + dx + offsetX),
-            y: Math.max(0, iconDragRef.current.startTop + dy + offsetY),
-          };
+          const newX = clamp(iconDragRef.current.startLeft + dx, 0, maxX);
+          const newY = clamp(iconDragRef.current.startTop + dy, 0, maxY);
+          return { ...icon, x: newX, y: newY };
         }
         return icon;
       })
@@ -1196,7 +1253,7 @@ export function DesktopShell() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('/os/kali-wallpaper.png')",
+          backgroundImage: "url('/os/wallpaper.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -1341,9 +1398,9 @@ export function DesktopShell() {
           );
         })}
 
-      {/* Taskbar - Linux dock style */}
-      <div className="absolute bottom-2 left-1/2 z-[80] -translate-x-1/2">
-        <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-bg-900/70 px-2 py-2 shadow-2xl backdrop-blur-xl">
+      {/* Taskbar - Modern dock */}
+      <div className="absolute bottom-3 left-1/2 z-[80] -translate-x-1/2">
+        <div className="flex items-center gap-2 rounded-2xl border border-white/20 bg-black/60 px-3 py-2.5 shadow-2xl backdrop-blur-2xl">
           {taskbarApps.map((a) => {
             const win = windows.find((w) => w.app === a.app);
             const active = win && !win.minimized && win.id === activeWindowId;
@@ -1353,15 +1410,21 @@ export function DesktopShell() {
                 key={a.app}
                 onClick={() => openApp(a.app)}
                 title={a.label}
-                className={`group relative flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-150 hover:scale-110 hover:bg-white/10 ${
-                  active ? 'bg-white/15' : open ? 'bg-white/5' : ''
+                className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-200 ${
+                  active 
+                    ? 'bg-white/20 shadow-lg shadow-white/10 scale-105' 
+                    : open 
+                    ? 'bg-white/10' 
+                    : 'hover:bg-white/10 hover:scale-110'
                 }`}
               >
-                <img src={a.icon} alt={a.label} className="h-8 w-8 object-contain brightness-0 invert" />
+                <img src={a.icon} alt={a.label} className="h-7 w-7 object-contain brightness-0 invert drop-shadow-lg" />
                 {open && (
-                  <span className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent-500" />
+                  <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full transition-all ${
+                    active ? 'h-1.5 w-4 bg-cyan-400' : 'h-1 w-1 bg-white/60'
+                  }`} />
                 )}
-                <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-bg-900/90 px-2 py-1 text-xs text-fg-100 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-neutral-900 border border-neutral-700 px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-xl transition-all duration-200 group-hover:opacity-100 group-hover:-top-10">
                   {a.label}
                 </span>
               </button>
@@ -1369,14 +1432,14 @@ export function DesktopShell() {
           })}
 
           {/* Separator */}
-          <div className="mx-1 h-8 w-px bg-white/10" />
+          <div className="mx-1 h-8 w-px bg-white/20 rounded-full" />
 
           {/* Clock/Weather widget */}
-          <div className="flex flex-col items-center justify-center px-3 text-center">
-            <div className="font-mono text-[11px] text-fg-200">
+          <div className="flex flex-col items-center justify-center px-2 min-w-[60px]">
+            <div className="font-mono text-sm font-medium text-white">
               {now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
             </div>
-            <div className="font-mono text-[9px] text-fg-400">
+            <div className="font-mono text-[10px] text-white/60">
               {weather?.temp != null ? `${Math.round(weather.temp)}°C` : '--'}
             </div>
           </div>

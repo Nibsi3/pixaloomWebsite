@@ -18,7 +18,8 @@ const BOOT_LINES = [
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [dots, setDots] = useState('');
+  const [showDots, setShowDots] = useState(false);
   const [linesShown, setLinesShown] = useState(0);
 
   useEffect(() => {
@@ -27,7 +28,8 @@ export function LoadingScreen() {
 
     setProgress(0);
     setLinesShown(0);
-    setFadeOut(false);
+    setDots('');
+    setShowDots(false);
     setVisible(true);
 
     let progressValue = 0;
@@ -54,8 +56,16 @@ export function LoadingScreen() {
         window.clearInterval(doneCheckId);
         window.clearInterval(progressId);
         window.clearInterval(linesId);
-        setFadeOut(true);
-        window.setTimeout(() => setVisible(false), 650);
+        setShowDots(true);
+        let dotCount = 0;
+        const dotInterval = setInterval(() => {
+          dotCount++;
+          setDots('.'.repeat(dotCount));
+          if (dotCount >= 3) {
+            clearInterval(dotInterval);
+            setTimeout(() => setVisible(false), 400);
+          }
+        }, 400);
       }
     }, 120);
 
@@ -69,11 +79,7 @@ export function LoadingScreen() {
   if (!visible) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-500 ${
-        fadeOut ? 'opacity-0' : 'opacity-100'
-      }`}
-    >
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black">
       <div className="relative w-full max-w-4xl px-6">
         <div className="mb-10 text-center">
           <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5">
@@ -96,7 +102,11 @@ export function LoadingScreen() {
               {l}
             </div>
           ))}
-          <div className="mt-2 text-white/40">▮</div>
+          {showDots ? (
+            <div className="mt-4 text-2xl text-white font-mono tracking-widest">{dots}</div>
+          ) : (
+            <div className="mt-2 text-white/40">▮</div>
+          )}
         </div>
       </div>
 
