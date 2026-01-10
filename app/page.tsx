@@ -1,7 +1,7 @@
 import { ContactCTA } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { HeroGame } from '@/components/hero-game';
+import { Hero } from '@/components/hero';
 import { Metrics } from '@/components/metrics';
 import { Projects } from '@/components/projects';
 import { Skills } from '@/components/skills';
@@ -10,11 +10,11 @@ import { WebsitesMade } from '@/components/websites-made';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-bg-900">
+    <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
       <div className="md:pl-[280px]">
         <main>
-          <HeroGame />
+          <Hero />
           <Metrics />
           <Projects />
           <WebsitesMade />
