@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { cn } from '@/components/utils';
 
 type Props = {
@@ -13,23 +13,20 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
 
+  const pausedRef = useRef(false);
   const dragRef = useRef({
     active: false,
     startX: 0,
     startScrollLeft: 0,
-    dragged: false,
+    moved: false,
+    blockClickUntil: 0,
   });
-
-  const [paused, setPaused] = useState(false);
 
   const msPerPx = useMemo(() => 1000 / Math.max(1, speedPxPerSec), [speedPxPerSec]);
 
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
-
-    // Start in the first half.
-    el.scrollLeft = 0;
 
     let last = performance.now();
 
@@ -38,7 +35,7 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
       if (!node) return;
 
       const state = dragRef.current;
-      const shouldPause = paused || state.active;
+      const shouldPause = pausedRef.current || state.active;
 
       if (!shouldPause) {
         const dt = now - last;
@@ -61,14 +58,14 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
-  }, [msPerPx, paused]);
+  }, [msPerPx]);
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const el = viewportRef.current;
     if (!el) return;
 
     dragRef.current.active = true;
-    dragRef.current.dragged = false;
+    dragRef.current.moved = false;
     dragRef.current.startX = e.clientX;
     dragRef.current.startScrollLeft = el.scrollLeft;
 
@@ -83,7 +80,7 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
     if (!s.active) return;
 
     const dx = e.clientX - s.startX;
-    if (!s.dragged && Math.abs(dx) > 6) s.dragged = true;
+    if (!s.moved && Math.abs(dx) > 10) s.moved = true;
 
     el.scrollLeft = s.startScrollLeft - dx;
 
@@ -98,6 +95,7 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
     const el = viewportRef.current;
     if (!el) return;
 
+    const wasDrag = dragRef.current.moved;
     dragRef.current.active = false;
     try {
       el.releasePointerCapture(e.pointerId);
@@ -105,14 +103,13 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
       // ignore
     }
 
-    // Let clicks through only if it wasn't a drag.
-    setTimeout(() => {
-      dragRef.current.dragged = false;
-    }, 0);
+    if (wasDrag) {
+      dragRef.current.blockClickUntil = performance.now() + 350;
+    }
   }
 
   function onClickCapture(e: React.MouseEvent<HTMLDivElement>) {
-    if (dragRef.current.dragged) {
+    if (performance.now() < dragRef.current.blockClickUntil) {
       e.preventDefault();
       e.stopPropagation();
     }
@@ -127,8 +124,12 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onMouseEnter={() => {
+          pausedRef.current = true;
+        }}
+        onMouseLeave={() => {
+          pausedRef.current = false;
+        }}
         onClickCapture={onClickCapture}
       >
         {children}
