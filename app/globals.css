@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #0d1117;
+  color: #f0f6fc;
+}
+
+::selection {
+  background: rgba(47, 129, 247, 0.35);
+}
+
+@layer components {
+  .card {
+    @apply rounded-lg border border-bg-700 bg-bg-800/70 backdrop-blur;
+  }
+
+  .card-hover {
+    @apply transition hover:border-fg-300/40 hover:bg-bg-800 hover:shadow-glow;
+  }
+
+  .muted {
+    @apply text-fg-300;
+  }
+
+  .kbd {
+    @apply rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-xs text-fg-200;
+  }
+
+  .nav-item {
+    @apply flex items-center justify-between rounded-md border border-transparent px-3 py-2 text-sm text-fg-200 transition;
+  }
+
+  .nav-item:hover {
+    @apply border-bg-700 bg-bg-800/70 text-fg-100;
+  }
+}

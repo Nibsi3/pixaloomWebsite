@@ -1,0 +1,154 @@
+ 'use client';
+
+ import { useState } from 'react';
+ import { cn } from '@/components/utils';
+ import { Container } from '@/components/ui/container';
+ import { Button } from '@/components/ui/button';
+
+const phone = '0662995533';
+const github = 'https://github.com/Nibsi3';
+
+const nav = [
+  { href: '#projects', label: 'Projects' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#contact', label: 'Contact' },
+];
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <header className="sticky top-0 z-50 border-b border-bg-700/70 bg-bg-900/70 backdrop-blur md:hidden">
+        <Container className="flex h-14 items-center justify-between">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800 px-3 py-2 text-sm text-fg-200"
+            onClick={() => setOpen(true)}
+          >
+            <span className="text-xs">≡</span>
+            <span>Menu</span>
+          </button>
+
+          <a href="#top" className="flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 text-sm font-semibold">
+              cf
+            </span>
+            <span className="text-sm font-medium text-fg-200">cameronfalck.dev</span>
+          </a>
+
+          <Button href="#contact" variant="primary" size="sm">
+            Hire
+          </Button>
+        </Container>
+      </header>
+
+      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[280px] border-r border-bg-700/70 bg-bg-900/60 backdrop-blur md:block">
+        <div className="flex h-full flex-col p-4">
+          <a href="#top" className="flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800/60 px-3 py-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-850 text-sm font-semibold">
+              cf
+            </span>
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold">Cameron Falck</div>
+              <div className="truncate text-xs text-fg-300">Full-Stack Developer</div>
+            </div>
+          </a>
+
+          <div className="mt-4">
+            <div className="px-2 text-xs font-medium text-fg-300">Navigation</div>
+            <nav className="mt-2 space-y-1">
+              {nav.map((n) => (
+                <a key={n.href} className="nav-item" href={n.href}>
+                  {n.label}
+                </a>
+              ))}
+              <a className="nav-item" href={github}>
+                GitHub
+              </a>
+            </nav>
+          </div>
+
+          <div className="mt-4 space-y-2">
+            <Button href="#contact" variant="primary" size="md" className="w-full">
+              Start a project
+            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              <Button href={`tel:${phone}`} variant="secondary" size="md" className="w-full">
+                Call
+              </Button>
+              <Button href={github} variant="secondary" size="md" className="w-full">
+                Repo
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-auto rounded-lg border border-bg-700 bg-bg-800/50 p-3 text-xs text-fg-300">
+            Based in George, Western Cape
+          </div>
+        </div>
+      </aside>
+
+      <div
+        className={cn(
+          'fixed inset-0 z-50 md:hidden',
+          open ? 'pointer-events-auto' : 'pointer-events-none'
+        )}
+        aria-hidden={!open}
+      >
+        <div
+          className={cn(
+            'absolute inset-0 bg-black/55 transition-opacity',
+            open ? 'opacity-100' : 'opacity-0'
+          )}
+          onClick={() => setOpen(false)}
+        />
+        <div
+          className={cn(
+            'absolute left-0 top-0 h-full w-[86%] max-w-[320px] border-r border-bg-700 bg-bg-900/95 backdrop-blur transition-transform',
+            open ? 'translate-x-0' : '-translate-x-full'
+          )}
+        >
+          <div className="flex h-14 items-center justify-between border-b border-bg-700 px-4">
+            <div className="text-sm font-semibold">Menu</div>
+            <button
+              type="button"
+              className="rounded-lg border border-bg-700 bg-bg-800 px-3 py-2 text-sm"
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+
+          <div className="p-4">
+            <nav className="space-y-1">
+              {nav.map((n) => (
+                <a
+                  key={n.href}
+                  className="nav-item"
+                  href={n.href}
+                  onClick={() => setOpen(false)}
+                >
+                  {n.label}
+                </a>
+              ))}
+              <a className="nav-item" href={github} onClick={() => setOpen(false)}>
+                GitHub
+              </a>
+            </nav>
+
+            <div className="mt-4 space-y-2">
+              <Button href="#contact" variant="primary" size="md" className="w-full">
+                Start a project
+              </Button>
+              <Button href={`tel:${phone}`} variant="secondary" size="md" className="w-full">
+                Call {phone}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
