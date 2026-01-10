@@ -11,17 +11,18 @@ type Line =
   | { id: string; kind: 'out'; text: string }
   | { id: string; kind: 'out_html'; html: string };
 
-type ThemeName = 'pixaloom' | 'dracula' | 'dark';
-
 type HackGameId = 'snake' | '2048' | 'guess';
+
+type TerminalIntroProps = {
+  embedded?: boolean;
+  onMinimizeAction?: () => void;
+};
 
 type CommandCtx = {
   cwd: string;
   setCwd: (cwd: string) => void;
   router: ReturnType<typeof useRouter>;
   clear: () => void;
-  setTheme: (t: ThemeName) => void;
-  theme: ThemeName;
   scrollToId: (id: string) => void;
 };
 
@@ -56,10 +57,6 @@ function helpText() {
     '  joke                         Fetch a random dev joke',
     '  hack                         Open built-in mini games menu',
     '  clear                        Clear terminal',
-    '  theme <pixaloom|dracula|dark> Change terminal theme',
-    '  whoami                       Identify',
-    '  date                         Current time',
-    '  echo <text>                  Print text',
   ].join('\n');
 }
 
@@ -95,7 +92,6 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
   if (!input) return { out: [] };
 
   const [cmd, ...args] = input.split(/\s+/);
-  const argStr = input.slice(cmd.length).trim();
 
   const out: Line[] = [];
 
@@ -107,32 +103,6 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
   if (cmd === 'clear') {
     ctx.clear();
     return { out: [] };
-  }
-
-  if (cmd === 'whoami') {
-    out.push({ id: uid(), kind: 'out', text: 'pixaloom' });
-    return { out };
-  }
-
-  if (cmd === 'date') {
-    out.push({ id: uid(), kind: 'out', text: new Date().toString() });
-    return { out };
-  }
-
-  if (cmd === 'echo') {
-    out.push({ id: uid(), kind: 'out', text: argStr || '' });
-    return { out };
-  }
-
-  if (cmd === 'theme') {
-    const t = (args[0] || '').toLowerCase() as ThemeName;
-    if (t === 'pixaloom' || t === 'dracula' || t === 'dark') {
-      ctx.setTheme(t);
-      out.push({ id: uid(), kind: 'out', text: `theme: ${t}` });
-    } else {
-      out.push({ id: uid(), kind: 'out', text: 'usage: theme <pixaloom|dracula|dark>' });
-    }
-    return { out };
   }
 
   if (cmd === 'about') {
@@ -222,7 +192,7 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
     out.push({
       id: uid(),
       kind: 'out',
-      text: ['about', 'services', 'projects', 'contact', 'themes'].join('   '),
+      text: ['about', 'services', 'projects', 'contact'].join('   '),
     });
     return { out };
   }
@@ -231,12 +201,11 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
   return { out };
 }
 
-export function TerminalIntro() {
+export function TerminalIntro({ embedded = false, onMinimizeAction }: TerminalIntroProps) {
   const router = useRouter();
   const shellRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [theme, setTheme] = useState<ThemeName>('pixaloom');
   const [cwd, setCwd] = useState('~/pixaloom');
 
   const [lines, setLines] = useState<Line[]>(() => [
@@ -256,16 +225,12 @@ export function TerminalIntro() {
   const [activeGame, setActiveGame] = useState<HackGameId | null>(null);
 
   const themeClasses = useMemo(() => {
-    if (theme === 'dracula') return 'bg-[#282a36] border-[#6272a4] text-[#f8f8f2]';
-    if (theme === 'dark') return 'bg-bg-900 border-bg-700 text-fg-100';
-    return 'bg-bg-900 border-bg-700 text-fg-100';
-  }, [theme]);
+    return 'bg-white border-bg-200 text-bg-950';
+  }, []);
 
   const accent = useMemo(() => {
-    if (theme === 'dracula') return '#bd93f9';
-    if (theme === 'dark') return '#2f81f7';
-    return '#2f81f7';
-  }, [theme]);
+    return '#2563eb';
+  }, []);
 
   function scrollToId(id: string) {
     const el = document.getElementById(id);
@@ -343,8 +308,6 @@ export function TerminalIntro() {
     setCwd,
     router,
     clear,
-    theme,
-    setTheme,
     scrollToId,
   };
 
@@ -429,49 +392,59 @@ export function TerminalIntro() {
         'joke',
         'hack',
         'clear',
-        'theme',
-        'whoami',
-        'date',
-        'echo',
         'ls',
         'cd',
       ];
       const match = candidates.find((c) => c.startsWith(v));
-      if (match) setCurrentInput(match + (match === 'open' || match === 'goto' || match === 'theme' || match === 'cd' || match === 'echo' ? ' ' : ''));
+      if (match) setCurrentInput(match + (match === 'open' || match === 'goto' || match === 'cd' ? ' ' : ''));
     }
   }
 
+  const windowControls = (
+    <div className="flex items-center gap-2">
+      <button
+        aria-label="Close"
+        onClick={() => onMinimizeAction?.()}
+        className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+      />
+      <button
+        aria-label="Minimize"
+        onClick={() => onMinimizeAction?.()}
+        className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+      />
+      <button
+        aria-label="Maximize"
+        className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)]"
+      />
+    </div>
+  );
+
   return (
-    <section id="top" className="relative overflow-hidden pt-10 sm:pt-14">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+    <section id={embedded ? undefined : 'top'} className={embedded ? 'relative' : 'relative overflow-hidden pt-10 sm:pt-14'}>
+      <div className={embedded ? 'mx-auto w-[min(1200px,95vw)]' : 'mx-auto w-full max-w-7xl px-4 sm:px-6'}>
         <div className={`overflow-hidden rounded-lg border ${themeClasses}`}>
-          <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
-            <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
-              <span className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px]">Terminal</span>
-              <span className="hidden sm:inline">pixaloom</span>
+          <div className="flex items-center justify-between border-b border-bg-200 bg-bg-50 px-4 py-3">
+            <div className="flex items-center gap-3">
+              {windowControls}
+              <div className="flex items-center gap-2 text-sm font-medium text-bg-900">
+                <span className="rounded-md border border-bg-200 bg-white px-2 py-1 text-[11px]">Terminal</span>
+                <span className="hidden sm:inline">pixaloom</span>
+              </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-fg-300">EN</span>
-              <span className="text-xs text-fg-400">|</span>
-              <span className="text-xs text-fg-300">theme:</span>
-              <button
-                className="text-xs text-accent-500 hover:text-accent-400"
-                onClick={() => setTheme((t) => (t === 'pixaloom' ? 'dracula' : t === 'dracula' ? 'dark' : 'pixaloom'))}
-              >
-                {theme}
-              </button>
+              <span className="text-xs text-bg-600">EN</span>
             </div>
           </div>
 
           <div className="p-4 sm:p-6">
             <div
               ref={shellRef}
-              className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
+              className="h-[520px] overflow-y-auto rounded-lg border border-bg-200 bg-white p-4 font-mono text-sm leading-relaxed"
             >
               {lines.map((l) => {
                 if (l.kind === 'banner') {
                   return (
-                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-fg-200">
+                    <pre key={l.id} className="mb-4 text-[11px] leading-tight text-bg-800">
                       {l.text}
                     </pre>
                   );
@@ -482,7 +455,7 @@ export function TerminalIntro() {
                       <span style={{ color: accent }} className="mr-2">
                         pixaloom:{l.cwd}$
                       </span>
-                      <span className="text-fg-100">{l.input}</span>
+                      <span className="text-bg-950">{l.input}</span>
                     </div>
                   );
                 }
@@ -490,13 +463,13 @@ export function TerminalIntro() {
                   return (
                     <div
                       key={l.id}
-                      className="mt-2 text-fg-200"
+                      className="mt-2 text-bg-800"
                       dangerouslySetInnerHTML={{ __html: l.html }}
                     />
                   );
                 }
                 return (
-                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-fg-200">
+                  <pre key={l.id} className="mt-2 whitespace-pre-wrap text-bg-800">
                     {l.text}
                   </pre>
                 );
@@ -512,16 +485,16 @@ export function TerminalIntro() {
                   onChange={(e) => setCurrentInput(e.target.value)}
                   onKeyDown={onKeyDown}
                   spellCheck={false}
-                  className="w-full bg-transparent font-mono text-fg-100 outline-none"
+                  className="w-full bg-transparent font-mono text-bg-950 outline-none"
                   placeholder="type a command…"
                 />
               </div>
             </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[11px] text-fg-400">More:</span>
+              <span className="font-mono text-[11px] text-bg-600">More:</span>
               <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
                 onClick={() => {
                   setCurrentInput('github');
                   inputRef.current?.focus();
@@ -530,7 +503,7 @@ export function TerminalIntro() {
                 github
               </button>
               <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
                 onClick={() => {
                   setCurrentInput('weather');
                   inputRef.current?.focus();
@@ -539,7 +512,7 @@ export function TerminalIntro() {
                 weather
               </button>
               <button
-                className="rounded-full border border-bg-700 bg-bg-850 px-3 py-1 font-mono text-[11px] text-fg-200 hover:border-accent-500"
+                className="rounded-full border border-bg-200 bg-white px-3 py-1 font-mono text-[11px] text-bg-800 hover:border-accent-500"
                 onClick={() => {
                   setCurrentInput('joke');
                   inputRef.current?.focus();
@@ -547,9 +520,9 @@ export function TerminalIntro() {
               >
                 joke
               </button>
-              <span className="mx-1 text-fg-600">|</span>
+              <span className="mx-1 text-bg-300">|</span>
               <button
-                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-400 hover:border-accent-500/60"
+                className="rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 font-mono text-[11px] text-accent-600 hover:border-accent-500/60"
                 onClick={() => {
                   setHackOpen(true);
                   inputRef.current?.focus();

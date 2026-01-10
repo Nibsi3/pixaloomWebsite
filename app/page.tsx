@@ -4,7 +4,7 @@ import { Header } from '@/components/header';
 import { Metrics } from '@/components/metrics';
 import { Projects } from '@/components/projects';
 import { Skills } from '@/components/skills';
-import { TerminalIntro } from '@/components/terminal-intro';
+import { TerminalLanding } from '@/components/terminal-landing';
 import { Timeline } from '@/components/timeline';
 import { WebsitesMade } from '@/components/websites-made';
 
@@ -14,7 +14,7 @@ export default function HomePage() {
       <Header />
       <div className="md:pl-[280px]">
         <main>
-          <TerminalIntro />
+          <TerminalLanding />
           <Metrics />
           <Projects />
           <WebsitesMade />
