@@ -49,9 +49,14 @@ body {
     @apply relative overflow-hidden rounded-lg border border-bg-700 bg-bg-900/10;
   }
 
+  .work-marquee-viewport {
+    @apply relative flex gap-4;
+  }
+
   .work-marquee-track {
     @apply flex w-max gap-4 p-4;
-    animation: work-marquee 40s linear infinite;
+    animation: work-marquee 45s linear infinite;
+    will-change: transform;
   }
 
   .work-marquee:hover .work-marquee-track {
@@ -69,7 +74,7 @@ body {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 

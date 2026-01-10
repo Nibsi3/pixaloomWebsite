@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   description:
     'Modern, performance-focused websites and web apps. Based in George, Western Cape. Available for freelance and full-time work.',
   applicationName: 'Cameron Falck Portfolio',
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+  },
   alternates: {
     canonical: '/',
   },
