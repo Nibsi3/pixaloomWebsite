@@ -44,4 +44,37 @@ body {
   .nav-item:hover {
     @apply border-bg-700 bg-bg-800/70 text-fg-100;
   }
+
+  .work-marquee {
+    @apply relative overflow-hidden rounded-lg border border-bg-700 bg-bg-900/10;
+  }
+
+  .work-marquee-track {
+    @apply flex w-max gap-4 p-4;
+    animation: work-marquee 40s linear infinite;
+  }
+
+  .work-marquee:hover .work-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .work-marquee-card {
+    width: min(520px, 84vw);
+    flex: 0 0 auto;
+  }
+}
+
+@keyframes work-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-marquee-track {
+    animation: none;
+  }
 }
