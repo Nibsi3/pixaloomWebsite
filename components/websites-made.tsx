@@ -4,55 +4,64 @@ const items = [
   {
     name: 'CAPS Tutor',
     href: '#',
-    image: '/work/caps-tutor.svg',
+    png: '/work/capstutor.png',
+    fallback: '/work/caps-tutor.svg',
     meta: 'EdTech · UI/UX · Web App',
   },
   {
     name: 'VicBay',
     href: '#',
-    image: '/work/vicbay.svg',
+    png: '/work/vicbay.png',
+    fallback: '/work/vicbay.svg',
     meta: 'Ecommerce · Branding · Landing',
   },
   {
     name: 'NexAI',
     href: '#',
-    image: '/work/nexai.svg',
+    png: '/work/nexai.png',
+    fallback: '/work/nexai.svg',
     meta: 'B2B · SaaS · Lead Gen',
   },
   {
     name: 'Team Colours',
     href: '#',
-    image: '/work/team-colours.svg',
+    png: '/work/teamcolours.png',
+    fallback: '/work/team-colours.svg',
     meta: 'Storefront · Catalog · Search',
   },
   {
     name: 'Kikay Pharma Consultants',
     href: '#',
-    image: '/work/kikay.svg',
+    png: '/work/kikay.png',
+    fallback: '/work/kikay.svg',
     meta: 'Corporate · Trust · CTA Focus',
   },
   {
     name: 'Paws On Route',
     href: '#',
-    image: '/work/paws-on-route.svg',
+    png: '/work/pawsonroute.png',
+    fallback: '/work/paws-on-route.svg',
     meta: 'Local Business · Service Site',
   },
   {
     name: 'AI Testing',
     href: '#',
-    image: '/work/ai-testing.svg',
+    png: '/work/ai.png',
+    fallback: '/work/ai-testing.svg',
     meta: 'Landing · Product',
   },
   {
     name: 'Physiotherapy',
     href: '#',
-    image: '/work/physiotherapy.svg',
+    png: '/work/physiope.png',
+    fallback: '/work/physiotherapy.svg',
     meta: 'Healthcare · Bookings',
   },
   {
     name: 'Key Masters',
     href: '#',
-    image: '/work/key-masters.svg',
+    png: '/work/keymasters.png',
+    fallback: '/work/key-masters.svg',
     meta: 'Service · Lead Form',
   },
 ];
@@ -92,12 +101,15 @@ export function WebsitesMade() {
                   </div>
 
                   <div className="aspect-[16/9] w-full bg-bg-850">
-                    <img
-                      src={i.image}
-                      alt={i.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcSet={i.png} type="image/png" />
+                      <img
+                        src={i.fallback}
+                        alt={i.name}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                 </a>
               ))}
@@ -123,12 +135,15 @@ export function WebsitesMade() {
                   </div>
 
                   <div className="aspect-[16/9] w-full bg-bg-850">
-                    <img
-                      src={i.image}
-                      alt={i.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcSet={i.png} type="image/png" />
+                      <img
+                        src={i.fallback}
+                        alt={i.name}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                 </a>
               ))}
