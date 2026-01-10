@@ -46,17 +46,17 @@ body {
   }
 
   .work-marquee {
-    @apply relative overflow-hidden rounded-lg border border-bg-700 bg-bg-900/10;
-  }
-
-  .work-marquee-viewport {
-    @apply relative flex gap-4;
+    @apply relative overflow-hidden;
   }
 
   .work-marquee-track {
-    @apply flex w-max gap-4 p-4;
+    @apply flex w-max;
     animation: work-marquee 45s linear infinite;
     will-change: transform;
+  }
+
+  .work-marquee-group {
+    @apply flex w-max gap-4 px-1 py-1;
   }
 
   .work-marquee:hover .work-marquee-track {
@@ -74,7 +74,7 @@ body {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
