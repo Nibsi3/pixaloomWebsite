@@ -9,6 +9,8 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
   if (!item) notFound();
 
   const gallery = (item.gallery || []).filter(Boolean);
+  const facts = (item.facts || []).filter((f) => f.label && f.value);
+  const sections = (item.sections || []).filter((s) => s.title);
 
   return (
     <div className="py-10 sm:py-12">
@@ -53,6 +55,23 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
                 ))}
               </div>
 
+              {facts.length ? (
+                <div className="mt-6">
+                  <div className="text-sm font-semibold text-fg-100">Quick facts</div>
+                  <div className="mt-3 space-y-2">
+                    {facts.map((f) => (
+                      <div
+                        key={f.label}
+                        className="rounded-md border border-bg-700 bg-bg-850/40 px-3 py-2"
+                      >
+                        <div className="text-[11px] font-medium text-fg-200">{f.label}</div>
+                        <div className="mt-1 text-xs text-fg-300">{f.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
               <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
                 <div className="text-xs font-medium text-fg-200">Note</div>
                 <div className="mt-2 text-xs text-fg-300">
@@ -78,6 +97,29 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
               ))}
             </ul>
           </div>
+
+          {sections.length ? (
+            <div className="mt-8 grid gap-4 lg:grid-cols-2">
+              {sections.map((s) => (
+                <div key={s.title} className="rounded-lg border border-bg-700 bg-bg-850/20 p-4">
+                  <div className="text-sm font-semibold text-fg-100">{s.title}</div>
+                  {s.description ? (
+                    <div className="mt-2 text-sm leading-relaxed text-fg-300">{s.description}</div>
+                  ) : null}
+                  {s.bullets?.length ? (
+                    <ul className="mt-3 space-y-2 text-sm text-fg-300">
+                      {s.bullets.map((b) => (
+                        <li key={b} className="flex gap-3">
+                          <span className="mt-[7px] h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                          <span className="leading-relaxed">{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
       </Container>
     </div>

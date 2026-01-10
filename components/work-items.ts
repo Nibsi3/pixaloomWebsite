@@ -8,6 +8,8 @@ export type WorkItem = {
   stack: string[];
   highlights: string[];
   gallery?: string[];
+  facts?: { label: string; value: string }[];
+  sections?: { title: string; description?: string; bullets?: string[] }[];
 };
 
 export const workItems: WorkItem[] = [
@@ -53,6 +55,60 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'PyMuPDF (fitz) (PDF extraction)',
       'OpenCV (diagram detection / image processing)',
     ],
+    facts: [
+      { label: 'Type', value: 'AI-powered learning platform' },
+      { label: 'Curriculum', value: 'CAPS (Grades 10–12)' },
+      { label: 'Users', value: 'Students · Teachers · Admins' },
+      { label: 'Core focus', value: 'Learning + practice + analytics at scale' },
+    ],
+    sections: [
+      {
+        title: 'Student experience',
+        bullets: [
+          'Personalized practice flow based on grade, subject, and weak areas',
+          'AI tutor for step-by-step explanations and concept support',
+          'Lesson hub that is searchable, structured, and easy to navigate',
+          'Progress tracking showing mastery per topic and time spent',
+          'Achievement-style motivation to keep learners engaged',
+        ],
+      },
+      {
+        title: 'Teacher & admin dashboards',
+        bullets: [
+          'View class/student progress and identify struggling topics quickly',
+          'Manage lessons, practice questions, and subject availability',
+          'Set weekly tasks and platform-wide announcements',
+          'Export reporting for progress and engagement snapshots',
+        ],
+      },
+      {
+        title: 'Past papers & lesson creation workflow',
+        bullets: [
+          'Upload and manage Grade 12 past papers (Paper 1/2 + memos)',
+          'Maintain authentic exam layouts and clear navigation between papers and memos',
+          'Support structured formats (PDF and structured data) for reuse and consistency',
+          'Processing tooling to extract content and handle diagrams/visual elements',
+        ],
+      },
+      {
+        title: 'AI + API usage',
+        description:
+          'AI is used to help learners get explanations and to support question generation and tutoring workflows. The platform integrates these features server-side to keep keys secure and to control/monitor usage.',
+        bullets: [
+          'Server-side API routes for validation, rate limiting foundations, and secure key usage',
+          'Logging-ready structure for monitoring failures and improving reliability over time',
+          'Designed so AI features can be expanded without rewriting the app architecture',
+        ],
+      },
+      {
+        title: 'News & blogs',
+        bullets: [
+          'Announcement-style updates for students and platform changes',
+          'Evergreen content pages for SEO-friendly educational content',
+          'Structured layout so content can grow without cluttering the learning UI',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/capstutor/Screenshot 2026-01-10 145539.png',
       '/pixa_pics/capstutor/Screenshot 2026-01-10 145544.png',
@@ -79,6 +135,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'SEO-focused headings, content structure, and performance basics',
     ],
     stack: ['WordPress', 'SEO setup', 'Performance tuning', 'Lead/contact flows'],
+    facts: [
+      { label: 'Platform', value: 'WordPress' },
+      { label: 'Industry', value: 'Pet grooming + pet sitting' },
+      { label: 'Location', value: 'George, Western Cape' },
+      { label: 'Goal', value: 'Bookings + enquiries' },
+    ],
+    sections: [
+      {
+        title: 'What was delivered',
+        bullets: [
+          'Service-first site structure for clarity and local SEO',
+          'Trust-building layout with clear calls-to-action',
+          'Fast contact flow for mobile users',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/pawsonroute/Screenshot 2026-01-10 145253.png',
       '/pixa_pics/pawsonroute/Screenshot 2026-01-10 145307.png',
@@ -100,6 +172,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Performance improvements for faster browsing',
     ],
     stack: ['WordPress', 'WooCommerce', 'SEO', 'Performance optimization'],
+    facts: [
+      { label: 'Platform', value: 'WordPress + WooCommerce' },
+      { label: 'Type', value: 'Ecommerce' },
+      { label: 'Location', value: 'George, South Africa' },
+      { label: 'Focus', value: 'SEO + conversion' },
+    ],
+    sections: [
+      {
+        title: 'Project scope',
+        bullets: [
+          'Product catalog structure designed for SEO and discoverability',
+          'Conversion-focused product presentation and calls-to-action',
+          'Performance tuning for a smoother shopping experience',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/teamcolours/Screenshot 2026-01-10 145124.png',
       '/pixa_pics/teamcolours/Screenshot 2026-01-10 145155.png',
@@ -120,6 +208,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Performance-focused tweaks for a smoother experience',
     ],
     stack: ['WordPress', 'WooCommerce', 'SEO setup', 'Performance tuning'],
+    facts: [
+      { label: 'Platform', value: 'WordPress + WooCommerce' },
+      { label: 'Type', value: 'Ecommerce' },
+      { label: 'Location', value: 'George, South Africa' },
+      { label: 'Goal', value: 'Sales + enquiries' },
+    ],
+    sections: [
+      {
+        title: 'Project scope',
+        bullets: [
+          'Brand-forward layout designed for credibility and conversion',
+          'SEO-ready structure to support local discovery',
+          'Performance tuning and cleanup for better user experience',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/vicbay/Screenshot 2026-01-10 145427.png',
       '/pixa_pics/vicbay/Screenshot 2026-01-10 145436.png',
@@ -140,6 +244,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Clean, credible layout to improve conversion rate',
     ],
     stack: ['WordPress', 'SEO', 'Lead forms', 'Conversion optimization'],
+    facts: [
+      { label: 'Platform', value: 'WordPress' },
+      { label: 'Type', value: 'Lead generation site' },
+      { label: 'Focus', value: 'SEO + conversion' },
+      { label: 'Goal', value: 'High-intent enquiries' },
+    ],
+    sections: [
+      {
+        title: 'Lead-gen approach',
+        bullets: [
+          'Service pages mapped to search intent',
+          'Strong CTA placement and simple contact path',
+          'SEO foundation to support local ranking',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/keymasters/Screenshot 2026-01-10 145829.png',
       '/pixa_pics/keymasters/Screenshot 2026-01-10 145833.png',
@@ -160,6 +280,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'SEO-ready content structure for local discovery',
     ],
     stack: ['WordPress', 'SEO', 'Contact forms', 'Content/portfolio sections'],
+    facts: [
+      { label: 'Platform', value: 'WordPress' },
+      { label: 'Industry', value: 'Physiotherapy' },
+      { label: 'Location', value: 'Port Elizabeth' },
+      { label: 'Goal', value: 'Contact + credibility' },
+    ],
+    sections: [
+      {
+        title: 'Project scope',
+        bullets: [
+          'Services and company profile for patient trust',
+          'Contact flow designed for quick enquiries',
+          'SEO-ready structure for local discovery',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/physiope/Screenshot 2026-01-10 145341.png',
       '/pixa_pics/physiope/Screenshot 2026-01-10 145349.png',
@@ -180,6 +316,22 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'SEO foundation for visibility',
     ],
     stack: ['WordPress', 'SEO', 'Lead generation forms'],
+    facts: [
+      { label: 'Platform', value: 'WordPress' },
+      { label: 'Industry', value: 'Pharmaceutical consulting' },
+      { label: 'Goal', value: 'Education + enquiries' },
+      { label: 'Focus', value: 'Clarity + trust' },
+    ],
+    sections: [
+      {
+        title: 'Project scope',
+        bullets: [
+          'Explain services clearly for a non-technical audience',
+          'Build trust through structure and messaging',
+          'Strong enquiry flow with easy contact actions',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/kikay/Screenshot 2026-01-10 145852.png',
       '/pixa_pics/kikay/Screenshot 2026-01-10 145858.png',
@@ -210,6 +362,23 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Mapbox GL JS',
       'Resend',
     ],
+    facts: [
+      { label: 'Type', value: 'Interactive map + admin platform' },
+      { label: 'Region', value: 'Garden Route' },
+      { label: 'Core features', value: 'Maps · Blog · Analytics' },
+      { label: 'Audience', value: 'Users + admins' },
+    ],
+    sections: [
+      {
+        title: 'Key capabilities',
+        bullets: [
+          'Map-first discovery flow with smooth UI',
+          'Admin panel with authentication and protected routes',
+          'Analytics tracking for interactions and reporting foundation',
+          'SEO-friendly blog system for content growth',
+        ],
+      },
+    ],
   },
   {
     slug: 'nexai',
@@ -226,6 +395,21 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Performance-minded approach to keep response times fast',
     ],
     stack: ['Backend services', 'API integrations', 'TypeScript/Node.js', 'Database + queue-ready architecture'],
+    facts: [
+      { label: 'Type', value: 'AI product (backend + integrations)' },
+      { label: 'Focus', value: 'Reliability + scaling' },
+      { label: 'Work', value: 'Backend services + API integrations' },
+    ],
+    sections: [
+      {
+        title: 'What I focused on',
+        bullets: [
+          'Stable integration layer with clear input validation',
+          'Production-minded error handling and logging foundations',
+          'Architecture that can scale as volume increases',
+        ],
+      },
+    ],
     gallery: [
       '/pixa_pics/nexai/Screenshot 2026-01-10 150029.png',
       '/pixa_pics/nexai/Screenshot 2026-01-10 150043.png',
@@ -247,6 +431,21 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       'Exportable reporting foundations for stakeholders',
     ],
     stack: ['Web app', 'API routes', 'Database-backed storage', 'Auth-ready admin tooling'],
+    facts: [
+      { label: 'Type', value: 'Internal platform + reporting' },
+      { label: 'Focus', value: 'Repeatable testing workflows' },
+      { label: 'Users', value: 'Internal teams + admins' },
+    ],
+    sections: [
+      {
+        title: 'Platform goals',
+        bullets: [
+          'Centralize test runs and results in one place',
+          'Make trends and regressions visible to the team',
+          'Keep review and reporting workflows simple and repeatable',
+        ],
+      },
+    ],
     gallery: ['/pixa_pics/ai/Screenshot 2026-01-10 145507.png'],
   },
 ];
