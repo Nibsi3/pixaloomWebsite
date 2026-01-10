@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/container';
+import { WorkGallery } from '@/components/work-gallery';
 import { workItems } from '@/components/work-items';
 
 export default function WorkDetailPage({ params }: { params: { slug: string } }) {
@@ -27,38 +28,12 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
           <p className="mt-2 max-w-3xl text-sm text-fg-300">{item.meta}</p>
         </div>
 
-        <div className="card overflow-hidden">
-          <div className="aspect-[16/9] w-full bg-bg-850">
-            <picture>
-              <source srcSet={item.png} type="image/png" />
-              <img
-                src={item.fallback}
-                alt={item.name}
-                className="h-full w-full object-cover"
-              />
-            </picture>
-          </div>
-        </div>
-
-        {gallery.length ? (
-          <div className="mt-6">
-            <div className="mb-3 text-sm font-semibold text-fg-100">More screenshots</div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {gallery.map((src) => (
-                <div key={src} className="card overflow-hidden">
-                  <div className="aspect-[16/9] w-full bg-bg-850">
-                    <img
-                      src={encodeURI(src)}
-                      alt={item.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
+        <WorkGallery
+          title={item.name}
+          heroPng={item.png}
+          heroFallback={item.fallback}
+          gallery={gallery}
+        />
 
         <div className="mt-6 grid gap-4 lg:grid-cols-12">
           <div className="card p-5 lg:col-span-7">
@@ -80,14 +55,15 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
 
           <div className="card p-5 lg:col-span-5">
             <div className="text-sm font-semibold text-fg-100">Tech stack</div>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-col gap-2">
               {item.stack.map((t) => (
-                <span
+                <div
                   key={t}
-                  className="rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[11px] text-fg-200"
+                  className="inline-flex w-full items-center justify-between rounded-md border border-bg-700 bg-bg-850 px-3 py-2 text-xs text-fg-200"
                 >
-                  {t}
-                </span>
+                  <span>{t}</span>
+                  <span className="text-[11px] text-fg-300">Stack</span>
+                </div>
               ))}
             </div>
 
