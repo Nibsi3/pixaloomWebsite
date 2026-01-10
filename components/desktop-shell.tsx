@@ -769,21 +769,30 @@ function Game2048App() {
   const [grid, setGrid] = useState<number[][]>([]);
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [newTiles, setNewTiles] = useState<Set<string>>(new Set());
+  const [mergedTiles, setMergedTiles] = useState<Set<string>>(new Set());
 
   function createGrid() {
     const g = Array(4).fill(null).map(() => Array(4).fill(0));
-    addRandom(g);
-    addRandom(g);
+    const pos1 = addRandom(g);
+    const pos2 = addRandom(g);
+    const newSet = new Set<string>();
+    if (pos1) newSet.add(`${pos1[0]}-${pos1[1]}`);
+    if (pos2) newSet.add(`${pos2[0]}-${pos2[1]}`);
+    setNewTiles(newSet);
+    setMergedTiles(new Set());
     return g;
   }
 
-  function addRandom(g: number[][]) {
+  function addRandom(g: number[][]): [number, number] | null {
     const empty: [number, number][] = [];
     for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) if (g[i][j] === 0) empty.push([i, j]);
     if (empty.length) {
       const [r, c] = empty[Math.floor(Math.random() * empty.length)];
       g[r][c] = Math.random() < 0.9 ? 2 : 4;
+      return [r, c];
     }
+    return null;
   }
 
   const startGame = () => {
@@ -797,14 +806,18 @@ function Game2048App() {
     const newGrid = grid.map((r) => [...r]);
     let moved = false;
     let pts = 0;
+    const merged = new Set<string>();
 
-    const slide = (row: number[]) => {
+    const slide = (row: number[], rowIdx: number, isCol: boolean, reversed: boolean) => {
       const filtered = row.filter((x) => x !== 0);
       for (let i = 0; i < filtered.length - 1; i++) {
         if (filtered[i] === filtered[i + 1]) {
           filtered[i] *= 2;
           pts += filtered[i];
           if (filtered[i] === 2048) setGameState('won');
+          const pos = reversed ? 3 - i : i;
+          const key = isCol ? `${pos}-${rowIdx}` : `${rowIdx}-${pos}`;
+          merged.add(key);
           filtered.splice(i + 1, 1);
         }
       }
@@ -815,33 +828,37 @@ function Game2048App() {
     if (dir === 'left') {
       for (let i = 0; i < 4; i++) {
         const old = [...newGrid[i]];
-        newGrid[i] = slide(newGrid[i]);
+        newGrid[i] = slide(newGrid[i], i, false, false);
         if (old.join() !== newGrid[i].join()) moved = true;
       }
     } else if (dir === 'right') {
       for (let i = 0; i < 4; i++) {
         const old = [...newGrid[i]];
-        newGrid[i] = slide(newGrid[i].reverse()).reverse();
+        newGrid[i] = slide(newGrid[i].reverse(), i, false, true).reverse();
         if (old.join() !== newGrid[i].join()) moved = true;
       }
     } else if (dir === 'up') {
       for (let j = 0; j < 4; j++) {
         const col = [newGrid[0][j], newGrid[1][j], newGrid[2][j], newGrid[3][j]];
-        const newCol = slide(col);
+        const newCol = slide(col, j, true, false);
         if (col.join() !== newCol.join()) moved = true;
         for (let i = 0; i < 4; i++) newGrid[i][j] = newCol[i];
       }
     } else if (dir === 'down') {
       for (let j = 0; j < 4; j++) {
         const col = [newGrid[0][j], newGrid[1][j], newGrid[2][j], newGrid[3][j]].reverse();
-        const newCol = slide(col).reverse();
+        const newCol = slide(col, j, true, true).reverse();
         if ([newGrid[0][j], newGrid[1][j], newGrid[2][j], newGrid[3][j]].join() !== newCol.join()) moved = true;
         for (let i = 0; i < 4; i++) newGrid[i][j] = newCol[i];
       }
     }
 
     if (moved) {
-      addRandom(newGrid);
+      const newPos = addRandom(newGrid);
+      const newSet = new Set<string>();
+      if (newPos) newSet.add(`${newPos[0]}-${newPos[1]}`);
+      setNewTiles(newSet);
+      setMergedTiles(merged);
       setGrid(newGrid);
       const newScore = score + pts;
       setScore(newScore);
@@ -878,6 +895,20 @@ function Game2048App() {
 
   return (
     <div className="h-full bg-gradient-to-br from-stone-800 to-stone-900 flex flex-col items-center justify-center p-4">
+      <style>{`
+        @keyframes tile-pop {
+          0% { transform: scale(0); opacity: 0; }
+          50% { transform: scale(1.2); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes tile-merge {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.2); }
+          100% { transform: scale(1); }
+        }
+        .tile-new { animation: tile-pop 0.2s ease-out; }
+        .tile-merged { animation: tile-merge 0.15s ease-out; }
+      `}</style>
       {gameState === 'menu' && (
         <div className="text-center">
           <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-4">2048</div>
@@ -904,14 +935,21 @@ function Game2048App() {
             </div>
           </div>
           <div className="grid grid-cols-4 gap-2 bg-stone-700 p-3 rounded-xl">
-            {grid.flat().map((v, i) => (
-              <div
-                key={i}
-                className={`w-16 h-16 rounded-lg flex items-center justify-center font-bold transition-all duration-100 ${colors[v] || 'bg-purple-500 text-white'} ${v >= 100 ? 'text-xl' : 'text-2xl'}`}
-              >
-                {v || ''}
-              </div>
-            ))}
+            {grid.flat().map((v, i) => {
+              const row = Math.floor(i / 4);
+              const col = i % 4;
+              const key = `${row}-${col}`;
+              const isNew = newTiles.has(key);
+              const isMerged = mergedTiles.has(key);
+              return (
+                <div
+                  key={i}
+                  className={`w-16 h-16 rounded-lg flex items-center justify-center font-bold ${colors[v] || 'bg-purple-500 text-white'} ${v >= 100 ? 'text-xl' : 'text-2xl'} ${isNew && v ? 'tile-new' : ''} ${isMerged ? 'tile-merged' : ''}`}
+                >
+                  {v || ''}
+                </div>
+              );
+            })}
           </div>
           <p className="text-stone-500 text-xs mt-4">Use arrow keys to play</p>
           {gameState === 'won' && (
