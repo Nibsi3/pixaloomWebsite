@@ -47,8 +47,8 @@ export function LoadingScreen() {
         <div className="relative mb-8 flex items-center justify-center">
           <div className="absolute h-20 w-20 animate-ping rounded-full bg-accent-500/20" />
           <div className="absolute h-16 w-16 animate-pulse rounded-full bg-accent-500/30" />
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-lg border border-bg-700 bg-bg-800 text-xl font-bold text-fg-100 shadow-glow">
-            cf
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-xl border border-accent-500/30 bg-gradient-to-b from-bg-800 to-bg-850 text-[11px] font-semibold tracking-[0.2em] text-fg-100 shadow-glow">
+            PX
           </div>
         </div>
 
@@ -56,11 +56,11 @@ export function LoadingScreen() {
         <div className="font-mono text-sm text-fg-300">
           <div className="mb-2 flex items-center gap-2">
             <span className="text-accent-500">$</span>
-            <span className="typing-animation">initializing portfolio...</span>
+            <span className="typing-animation">initializing pixaloom...</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-accent-500">$</span>
-            <span>loading assets [{Math.round(progress)}%]</span>
+            <span>boot sequence [{Math.round(progress)}%]</span>
           </div>
         </div>
 

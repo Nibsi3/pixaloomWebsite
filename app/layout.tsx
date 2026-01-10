@@ -8,12 +8,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Cameron Falck — Full-Stack Developer',
-    template: '%s · Cameron Falck',
+    default: 'Pixaloom — Web Design & Development',
+    template: '%s · Pixaloom',
   },
   description:
-    'Modern, performance-focused websites and web apps. Based in George, Western Cape. Available for freelance and full-time work.',
-  applicationName: 'Cameron Falck Portfolio',
+    'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
+  applicationName: 'Pixaloom',
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
   },
@@ -23,16 +23,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'Cameron Falck — Full-Stack Developer',
+    title: 'Pixaloom — Web Design & Development',
     description:
-      'Modern, performance-focused websites and web apps. Based in George, Western Cape.',
-    siteName: 'Cameron Falck',
+      'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
+    siteName: 'Pixaloom',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cameron Falck — Full-Stack Developer',
+    title: 'Pixaloom — Web Design & Development',
     description:
-      'Modern, performance-focused websites and web apps. Based in George, Western Cape.',
+      'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
   },
   robots: {
     index: true,
@@ -54,28 +54,13 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Cameron Falck',
-    jobTitle: 'Full-Stack Developer',
+    '@type': 'Organization',
+    name: 'Pixaloom',
     url: siteUrl,
     sameAs: ['https://github.com/Nibsi3'],
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'George',
-      addressRegion: 'Western Cape',
-      addressCountry: 'ZA',
-    },
     telephone: '+27662995533',
-    knowsAbout: [
-      'Frontend Development',
-      'Full-Stack Development',
-      'React',
-      'Next.js',
-      'TypeScript',
-      'UI Engineering',
-      'SEO',
-      'Performance Optimization',
-    ],
+    description:
+      'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
   };
 
   return (

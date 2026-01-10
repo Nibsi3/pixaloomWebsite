@@ -1,10 +1,10 @@
 import { ContactCTA } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { Hero } from '@/components/hero';
 import { Metrics } from '@/components/metrics';
 import { Projects } from '@/components/projects';
 import { Skills } from '@/components/skills';
+import { TerminalIntro } from '@/components/terminal-intro';
 import { Timeline } from '@/components/timeline';
 import { WebsitesMade } from '@/components/websites-made';
 
@@ -14,7 +14,7 @@ export default function HomePage() {
       <Header />
       <div className="md:pl-[280px]">
         <main>
-          <Hero />
+          <TerminalIntro />
           <Metrics />
           <Projects />
           <WebsitesMade />
