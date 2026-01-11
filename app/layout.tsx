@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
+import { StellarBackground } from '@/components/stellar-background';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -72,7 +73,13 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <StellarBackground />
+        <div
+          className="pointer-events-none fixed inset-0 z-10 opacity-[0.12] contrast-150"
+          style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}
+          aria-hidden="true"
+        />
+        <div className="relative z-20">{children}</div>
       </body>
     </html>
   );
