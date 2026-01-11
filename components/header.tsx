@@ -99,7 +99,7 @@ export function Header() {
           </div>
 
           <div className="mt-4 space-y-2">
-            <Button href={`${hashPrefix}#contact`} variant="cta" size="md" className="w-full">
+            <Button href={`${hashPrefix}#contact`} variant="primary" size="md" className="w-full">
               Start a project
             </Button>
           </div>
@@ -173,7 +173,7 @@ export function Header() {
             </div>
 
             <div className="mt-4 space-y-2">
-              <Button href="#contact" variant="cta" size="md" className="w-full">
+              <Button href="#contact" variant="primary" size="md" className="w-full">
                 Start a project
               </Button>
             </div>

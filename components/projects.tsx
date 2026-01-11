@@ -143,7 +143,7 @@ export function Projects() {
             Want your project here next? I can build the site and the conversion system.
           </div>
           <div className="flex gap-2">
-            <Button href="#contact" variant="cta">
+            <Button href="#contact" variant="primary">
               Get a quote
             </Button>
             <Button href="https://github.com/Nibsi3" variant="secondary">
