@@ -1,45 +1,91 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 
-import * as React from 'react';
+import { motion } from 'motion/react';
 import { cn } from '@/components/utils';
 
-type Props<T extends React.ElementType> = {
+type Direction = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT';
+
+type Props<T extends React.ElementType> = React.PropsWithChildren<{
   as?: T;
   containerClassName?: string;
   className?: string;
-  children: React.ReactNode;
-} & Omit<React.ComponentPropsWithoutRef<T>, 'as' | 'className' | 'children'>;
+  duration?: number;
+  clockwise?: boolean;
+}> &
+  Omit<React.ComponentPropsWithoutRef<T>, 'as' | 'children' | 'className'>;
 
-export function HoverBorderGradient<T extends React.ElementType = 'button'>(
-  props: Props<T>
-) {
-  const { as, containerClassName, className, children, ...rest } = props;
-  const Comp = (as ?? 'button') as React.ElementType;
+export function HoverBorderGradient<T extends React.ElementType = 'button'>({
+  children,
+  containerClassName,
+  className,
+  as,
+  duration = 1,
+  clockwise = true,
+  ...props
+}: Props<T>) {
+  const Tag = (as ?? 'button') as React.ElementType;
+  const [hovered, setHovered] = useState<boolean>(false);
+  const [direction, setDirection] = useState<Direction>('TOP');
+
+  const movingMap: Record<Direction, string> = {
+    TOP: 'radial-gradient(20.7% 50% at 50% 0%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)',
+    LEFT: 'radial-gradient(16.6% 43.1% at 0% 50%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)',
+    BOTTOM:
+      'radial-gradient(20.7% 50% at 50% 100%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)',
+    RIGHT:
+      'radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)',
+  };
+
+  const highlight =
+    'radial-gradient(75% 181.15942028985506% at 50% 50%, #3275F8 0%, rgba(255, 255, 255, 0) 100%)';
+
+  useEffect(() => {
+    if (!hovered) {
+      const interval = setInterval(() => {
+        setDirection((prevState) => {
+          const directions: Direction[] = ['TOP', 'LEFT', 'BOTTOM', 'RIGHT'];
+          const currentIndex = directions.indexOf(prevState);
+          const nextIndex = clockwise
+            ? (currentIndex - 1 + directions.length) % directions.length
+            : (currentIndex + 1) % directions.length;
+          return directions[nextIndex];
+        });
+      }, duration * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [hovered, duration, clockwise]);
 
   return (
-    <Comp
-      {...rest}
+    <Tag
+      onMouseEnter={() => {
+        setHovered(true);
+      }}
+      onMouseLeave={() => setHovered(false)}
       className={cn(
-        'group relative inline-flex items-center justify-center rounded-full p-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-0',
+        'relative flex rounded-full border content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit',
         containerClassName
       )}
+      {...(props as Record<string, unknown>)}
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(from_180deg_at_50%_50%,#2f81f7_0%,#38bdf8_25%,#8484ff_50%,#2f81f7_75%,#38bdf8_100%)] opacity-60 blur-[10px] transition-opacity duration-300 group-hover:opacity-90"
-      />
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(from_180deg_at_50%_50%,#2f81f7_0%,#38bdf8_25%,#8484ff_50%,#2f81f7_75%,#38bdf8_100%)] opacity-70 transition-opacity duration-300 group-hover:opacity-100"
-      />
-      <span
-        className={cn(
-          'relative z-10 inline-flex items-center gap-2 rounded-full border border-bg-700/60 bg-bg-900/70 px-5 py-3 text-sm font-semibold text-fg-100 backdrop-blur transition-colors duration-200 group-hover:border-bg-700 group-hover:bg-bg-900/60',
-          className
-        )}
-      >
+      <div className={cn('w-auto text-white z-10 bg-black px-4 py-2 rounded-[inherit]', className)}>
         {children}
-      </span>
-    </Comp>
+      </div>
+      <motion.div
+        className={cn('flex-none inset-0 overflow-hidden absolute z-0 rounded-[inherit]')}
+        style={{
+          filter: 'blur(2px)',
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}
+        initial={{ background: movingMap[direction] }}
+        animate={{
+          background: hovered ? [movingMap[direction], highlight] : movingMap[direction],
+        }}
+        transition={{ ease: 'linear', duration: duration ?? 1 }}
+      />
+      <div className="bg-black absolute z-[1] flex-none inset-[2px] rounded-[100px]" />
+    </Tag>
   );
 }

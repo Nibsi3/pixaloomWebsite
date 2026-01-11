@@ -41,7 +41,7 @@ export function Header() {
         <Container className="flex h-14 items-center justify-between">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800 px-3 py-2 text-sm text-fg-200"
+            className="inline-flex items-center gap-2 rounded-full border border-bg-700 bg-bg-800 px-3 py-2 text-sm text-fg-200"
             onClick={() => setOpen(true)}
           >
             <span className="text-xs">≡</span>
@@ -135,7 +135,7 @@ export function Header() {
             <div className="text-sm font-semibold">Menu</div>
             <button
               type="button"
-              className="rounded-lg border border-bg-700 bg-bg-800 px-3 py-2 text-sm"
+              className="rounded-full border border-bg-700 bg-bg-800 px-3 py-2 text-sm"
               onClick={() => setOpen(false)}
             >
               Close

@@ -9,7 +9,7 @@ type CommonProps = {
 };
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg border font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-0 disabled:opacity-60 disabled:pointer-events-none';
+  'inline-flex items-center justify-center gap-2 rounded-full border font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/60 focus-visible:ring-offset-0 disabled:opacity-60 disabled:pointer-events-none';
 
 const variants: Record<NonNullable<CommonProps['variant']>, string> = {
   primary:
