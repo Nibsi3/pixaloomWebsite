@@ -2,7 +2,7 @@ import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
-import { EncryptedText } from '@/components/ui/encrypted-text';
+import { FlipWords } from '@/components/ui/flip-words';
 
 const whatsapp = 'https://wa.me/27662995533?text=';
 
@@ -32,20 +32,12 @@ export function Hero() {
                 </div>
 
                 <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-                  <EncryptedText
-                    text="Cameron Falck"
-                    revealDelayMs={35}
-                    flipDelayMs={28}
-                    encryptedClassName="text-fg-300"
-                    revealedClassName="text-fg-100"
-                  />
+                  Cameron Falck
                   <span className="block text-fg-200">
-                    <EncryptedText
-                      text="Full-Stack Developer"
-                      revealDelayMs={28}
-                      flipDelayMs={22}
-                      encryptedClassName="text-fg-300"
-                      revealedClassName="text-fg-200"
+                    <FlipWords
+                      words={['Full-Stack Developer', 'Web Development', 'Mobile App Development', 'Software Development']}
+                      duration={3000}
+                      className="text-fg-200"
                     />
                   </span>
                 </h1>
@@ -56,14 +48,14 @@ export function Hero() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <HoverBorderGradient
-                    as={Link}
-                    href="#contact"
-                    containerClassName="rounded-full"
-                    className="px-7 py-3 text-sm font-semibold"
-                  >
-                    Start a project
-                  </HoverBorderGradient>
+                  <Link href="#contact">
+                    <HoverBorderGradient
+                      containerClassName="rounded-full"
+                      className="px-7 py-3 text-sm font-semibold"
+                    >
+                      Start a project
+                    </HoverBorderGradient>
+                  </Link>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
                     WhatsApp me
                   </Button>

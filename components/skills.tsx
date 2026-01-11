@@ -7,12 +7,12 @@ const groups = [
     items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'UI Systems'],
   },
   {
-    title: 'Backend / Integration',
-    items: ['APIs', 'Auth basics', 'Payments', 'Email flows', 'Headless CMS'],
+    title: 'Backend',
+    items: ['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Swift'],
   },
   {
-    title: 'Quality & Growth',
-    items: ['SEO', 'Performance', 'Accessibility', 'Analytics', 'Conversion UX'],
+    title: 'Integration',
+    items: ['APIs', 'Auth basics', 'Payments', 'Email flows', 'Headless CMS'],
   },
 ];
 

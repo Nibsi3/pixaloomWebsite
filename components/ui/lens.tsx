@@ -33,6 +33,7 @@ export const Lens: React.FC<LensProps> = ({
   const isHovering = hovering !== undefined ? hovering : localIsHovering;
   const setIsHovering = setHovering || setLocalIsHovering;
 
+  // const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 100, y: 100 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -55,7 +56,7 @@ export const Lens: React.FC<LensProps> = ({
       {children}
 
       {isStatic ? (
-        <div className="pointer-events-none">
+        <div>
           <motion.div
             initial={{ opacity: 0, scale: 0.58 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -63,8 +64,12 @@ export const Lens: React.FC<LensProps> = ({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute inset-0 overflow-hidden"
             style={{
-              maskImage: `radial-gradient(circle ${lensSize / 2}px at ${position.x}px ${position.y}px, black 100%, transparent 100%)`,
-              WebkitMaskImage: `radial-gradient(circle ${lensSize / 2}px at ${position.x}px ${position.y}px, black 100%, transparent 100%)`,
+              maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
+                position.x
+              }px ${position.y}px, black 100%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle ${lensSize / 2}px at ${
+                position.x
+              }px ${position.y}px, black 100%, transparent 100%)`,
               transformOrigin: `${position.x}px ${position.y}px`,
             }}
           >
@@ -82,7 +87,7 @@ export const Lens: React.FC<LensProps> = ({
       ) : (
         <AnimatePresence>
           {isHovering && (
-            <div className="pointer-events-none">
+            <div>
               <motion.div
                 initial={{ opacity: 0, scale: 0.58 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -90,8 +95,14 @@ export const Lens: React.FC<LensProps> = ({
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="absolute inset-0 overflow-hidden"
                 style={{
-                  maskImage: `radial-gradient(circle ${lensSize / 2}px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
-                  WebkitMaskImage: `radial-gradient(circle ${lensSize / 2}px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
+                  maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
+                    mousePosition.x
+                  }px ${mousePosition.y}px, black 100%, transparent 100%)`,
+                  WebkitMaskImage: `radial-gradient(circle ${
+                    lensSize / 2
+                  }px at ${mousePosition.x}px ${
+                    mousePosition.y
+                  }px, black 100%, transparent 100%)`,
                   transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
                   zIndex: 50,
                 }}

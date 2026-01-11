@@ -91,7 +91,13 @@ export function Header() {
             <div className="px-2 text-xs font-medium text-fg-300">Links</div>
             <nav className="mt-2 space-y-1">
               {links.map((l) => (
-                <a key={l.href} className="nav-item" href={l.href}>
+                <a
+                  key={l.href}
+                  className="nav-item"
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <span>{l.label}</span>
                   <span className="text-[11px] text-fg-400">↗</span>
                 </a>
@@ -164,6 +170,8 @@ export function Header() {
                     key={l.href}
                     className="nav-item"
                     href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
                   >
                     <span>{l.label}</span>
