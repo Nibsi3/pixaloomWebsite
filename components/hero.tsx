@@ -16,7 +16,17 @@ export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-10 sm:pt-14">
       <Container>
-        <div className="rounded-lg border border-bg-700 bg-bg-800/40">
+        <div className="relative overflow-hidden rounded-lg border border-bg-700 bg-bg-800/40">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.18]"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, rgba(255,255,255,0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+              maskImage: 'radial-gradient(ellipse at top left, black 45%, transparent 75%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at top left, black 45%, transparent 75%)',
+            }}
+          />
           <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-medium text-fg-200">
               <span className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px]">README.md</span>
