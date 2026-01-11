@@ -22,7 +22,7 @@ body {
 
 @layer components {
   .card {
-    @apply rounded-lg border border-bg-700 bg-bg-800/70 backdrop-blur;
+    @apply rounded-lg border border-bg-700 bg-gradient-to-br from-bg-800/80 via-bg-800/60 to-accent-500/10 backdrop-blur;
   }
 
   .card-hover {

@@ -306,13 +306,7 @@ function ContactApp() {
           <p className="text-slate-400 text-sm">We&apos;d love to hear from you</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <a href="tel:+27662995533" className="flex flex-col items-center gap-2 rounded-xl bg-slate-800 border border-slate-700 p-4 hover:border-cyan-500/50 transition group">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-xl shadow-lg">
-              📞
-            </div>
-            <span className="text-xs text-slate-400 group-hover:text-white transition">Call</span>
-          </a>
+        <div className="grid grid-cols-2 gap-3 mb-6">
           <a href="mailto:info@pixaloom.co.za" className="flex flex-col items-center gap-2 rounded-xl bg-slate-800 border border-slate-700 p-4 hover:border-cyan-500/50 transition group">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-xl shadow-lg">
               ✉️
@@ -1514,6 +1508,19 @@ export function DesktopShell() {
               </>
             );
           })()}
+
+          <button
+            onClick={() => {
+              window.location.href = '/';
+            }}
+            title="Power off"
+            className="group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-200 hover:bg-white/10 hover:scale-110"
+          >
+            <span className="text-lg text-white/90">⏻</span>
+            <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-neutral-900 border border-neutral-700 px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-xl transition-all duration-200 group-hover:opacity-100 group-hover:-top-10">
+              Power off
+            </span>
+          </button>
 
           {/* Separator */}
           <div className="mx-1 h-8 w-px bg-white/20 rounded-full" />

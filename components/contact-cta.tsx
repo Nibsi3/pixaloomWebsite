@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 
-const phone = '0662995533';
 const whatsappBase = 'https://wa.me/27662995533?text=';
 const emailTo = 'info@pixaloom.co.za';
 
@@ -162,9 +161,6 @@ export function ContactCTA() {
                   Email me
                 </Button>
               ) : null}
-              <Button href={`tel:${phone}`} variant="ghost" size="lg">
-                Call {phone}
-              </Button>
             </div>
 
             {status === 'sent' ? (

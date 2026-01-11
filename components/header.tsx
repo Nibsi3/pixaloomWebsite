@@ -6,7 +6,6 @@
  import { Container } from '@/components/ui/container';
  import { Button } from '@/components/ui/button';
 
-const phone = '0662995533';
 const github = 'https://github.com/Nibsi3';
 
 const nav = [
@@ -14,7 +13,11 @@ const nav = [
   { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
+];
+
+const links = [
   { href: '/os', label: 'Pixaloom OS' },
+  { href: github, label: 'GitHub' },
 ];
 
 export function Header() {
@@ -80,9 +83,18 @@ export function Header() {
                   {n.label}
                 </a>
               ))}
-              <a className="nav-item" href={github}>
-                GitHub
-              </a>
+            </nav>
+          </div>
+
+          <div className="mt-4">
+            <div className="px-2 text-xs font-medium text-fg-300">Links</div>
+            <nav className="mt-2 space-y-1">
+              {links.map((l) => (
+                <a key={l.href} className="nav-item" href={l.href}>
+                  <span>{l.label}</span>
+                  <span className="text-[11px] text-fg-400">↗</span>
+                </a>
+              ))}
             </nav>
           </div>
 
@@ -90,14 +102,9 @@ export function Header() {
             <Button href={`${hashPrefix}#contact`} variant="primary" size="md" className="w-full">
               Start a project
             </Button>
-            <div className="grid grid-cols-2 gap-2">
-              <Button href={`tel:${phone}`} variant="secondary" size="md" className="w-full">
-                Call
-              </Button>
-              <Button href={github} variant="secondary" size="md" className="w-full">
-                Repo
-              </Button>
-            </div>
+            <Button href={github} variant="secondary" size="md" className="w-full">
+              Repo
+            </Button>
           </div>
 
           <div className="mt-auto rounded-lg border border-bg-700 bg-bg-800/50 p-3 text-xs text-fg-300">
@@ -149,17 +156,31 @@ export function Header() {
                   {n.label}
                 </a>
               ))}
-              <a className="nav-item" href={github} onClick={() => setOpen(false)}>
-                GitHub
-              </a>
             </nav>
+
+            <div className="mt-4">
+              <div className="px-2 text-xs font-medium text-fg-300">Links</div>
+              <nav className="mt-2 space-y-1">
+                {links.map((l) => (
+                  <a
+                    key={l.href}
+                    className="nav-item"
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span>{l.label}</span>
+                    <span className="text-[11px] text-fg-400">↗</span>
+                  </a>
+                ))}
+              </nav>
+            </div>
 
             <div className="mt-4 space-y-2">
               <Button href="#contact" variant="primary" size="md" className="w-full">
                 Start a project
               </Button>
-              <Button href={`tel:${phone}`} variant="secondary" size="md" className="w-full">
-                Call {phone}
+              <Button href={github} variant="secondary" size="md" className="w-full">
+                Repo
               </Button>
             </div>
           </div>

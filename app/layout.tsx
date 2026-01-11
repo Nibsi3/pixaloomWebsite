@@ -58,7 +58,6 @@ export default function RootLayout({
     name: 'Pixaloom',
     url: siteUrl,
     sameAs: ['https://github.com/Nibsi3'],
-    telephone: '+27662995533',
     description:
       'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
   };

@@ -176,17 +176,19 @@ function runCommand(raw: string, ctx: CommandCtx): { out: Line[]; nextPromptCwd?
   }
 
   if (cmd === 'contact') {
-    out.push({
-      id: uid(),
-      kind: 'out',
-      text: [
-        'Contact:',
-        '  phone: 0662995533',
-        '  email: info@pixaloom.co.za',
-        '  whatsapp: https://wa.me/27662995533?text=',
-      ].join('\n'),
-    });
-    return { out };
+    return {
+      out: [
+        {
+          id: uid(),
+          kind: 'out',
+          text: [
+            'Contact:',
+            '  email: info@pixaloom.co.za',
+            '  whatsapp: https://wa.me/27662995533?text=',
+          ].join('\n'),
+        },
+      ],
+    };
   }
 
   if (cmd === 'open') {
@@ -551,7 +553,7 @@ export function TerminalIntro({ embedded = false, onMinimizeAction, hideHeader =
     <>
       <div
         ref={shellRef}
-        className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
+        className={`${embedded ? 'h-full rounded-none border-0' : 'h-[520px] rounded-lg border border-bg-700'} overflow-y-auto bg-black/20 p-4 font-mono text-sm leading-relaxed`}
         onPointerDown={() => {
           inputRef.current?.focus();
         }}
@@ -632,8 +634,8 @@ export function TerminalIntro({ embedded = false, onMinimizeAction, hideHeader =
   );
 
   return (
-    <section id={embedded ? undefined : 'top'} className={embedded ? 'relative' : 'relative overflow-hidden pt-10 sm:pt-14'}>
-      <div className={embedded ? 'mx-auto w-[min(1200px,95vw)]' : 'mx-auto w-full max-w-7xl px-4 sm:px-6'}>
+    <section id={embedded ? undefined : 'top'} className={embedded ? 'relative h-full' : 'relative overflow-hidden pt-10 sm:pt-14'}>
+      <div className={embedded ? 'h-full w-full' : 'mx-auto w-full max-w-7xl px-4 sm:px-6'}>
         <div className={hideHeader ? '' : `overflow-hidden rounded-lg border ${themeClasses}`}>
           {!hideHeader ? (
             <div className="flex items-center justify-between border-b border-bg-700 bg-bg-900/25 px-4 py-3">

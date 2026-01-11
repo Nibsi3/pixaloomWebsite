@@ -1,7 +1,6 @@
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 
-const phone = '0662995533';
 const whatsapp = 'https://wa.me/27662995533?text=';
 
 export function Hero() {
@@ -43,14 +42,8 @@ export function Hero() {
                   <Button href="#contact" variant="primary" size="lg">
                     Start a project
                   </Button>
-                  <Button href="/os" variant="secondary" size="lg">
-                    Launch Pixaloom OS
-                  </Button>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
                     WhatsApp me
-                  </Button>
-                  <Button href={`tel:${phone}`} variant="ghost" size="lg">
-                    {phone}
                   </Button>
                 </div>
 
