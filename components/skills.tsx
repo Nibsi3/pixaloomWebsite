@@ -1,5 +1,6 @@
 import { Section } from '@/components/ui/section';
 import { CometCard } from '@/components/ui/comet-card';
+import { SpotlightCard } from '@/components/ui/spotlight-card';
 
 const groups = [
   {
@@ -42,23 +43,23 @@ export function Skills() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="card p-5">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 group" data-spotlight>
+        <SpotlightCard>
           <div className="text-sm font-semibold">What clients usually ask for</div>
           <div className="mt-3 space-y-2 text-sm text-fg-300">
             <div>Landing pages that convert visitors into WhatsApp / calls</div>
             <div>Business sites that rank locally and look premium</div>
             <div>Web apps with clean dashboards and scalable UI</div>
           </div>
-        </div>
-        <div className="card p-5">
+        </SpotlightCard>
+        <SpotlightCard>
           <div className="text-sm font-semibold">My approach</div>
           <div className="mt-3 space-y-2 text-sm text-fg-300">
             <div>Start with your goal, not the tech</div>
             <div>Design the funnel (CTAs) before building the UI</div>
             <div>Ship fast, iterate, and measure</div>
           </div>
-        </div>
+        </SpotlightCard>
       </div>
     </Section>
   );

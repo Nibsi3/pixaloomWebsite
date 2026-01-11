@@ -148,16 +148,16 @@ export function ContactCTA() {
               <Button
                 onClick={onSubmit}
                 variant="primary"
-                size="lg"
+                size="md"
                 disabled={!canSubmit}
               >
                 {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send enquiry'}
               </Button>
-              <Button href={waHref} variant="secondary" size="lg">
+              <Button href={waHref} variant="secondary" size="md">
                 WhatsApp
               </Button>
               {emailTo ? (
-                <Button href={mailHref} variant="secondary" size="lg">
+                <Button href={mailHref} variant="secondary" size="md">
                   Email me
                 </Button>
               ) : null}

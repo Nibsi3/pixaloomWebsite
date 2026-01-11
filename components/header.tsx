@@ -71,8 +71,8 @@ export function Header() {
               <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
             </span>
             <div className="min-w-0">
-              <div className="truncate text-sm font-semibold">Cameron Falck</div>
-              <div className="truncate text-xs text-fg-300">Full-Stack Developer</div>
+              <div className="truncate text-sm font-semibold">Pixaloom</div>
+              <div className="truncate text-xs text-fg-300">Web Development Studio</div>
             </div>
           </a>
 

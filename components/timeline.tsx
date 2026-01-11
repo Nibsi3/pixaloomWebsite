@@ -1,4 +1,5 @@
 import { Section } from '@/components/ui/section';
+import { SpotlightCard } from '@/components/ui/spotlight-card';
 
 const items = [
   {
@@ -26,15 +27,15 @@ export function Timeline() {
       title="Experience"
       subtitle="A simple timeline of how I work and what you can expect from a build."
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3 group" data-spotlight>
         {items.map((i) => (
-          <div key={i.title} className="card card-hover p-5">
+          <SpotlightCard key={i.title}>
             <div className="flex items-center justify-between gap-3">
               <div className="text-sm font-semibold">{i.title}</div>
               <div className="text-xs text-fg-300">{i.when}</div>
             </div>
             <div className="mt-3 text-sm text-fg-300">{i.body}</div>
-          </div>
+          </SpotlightCard>
         ))}
       </div>
     </Section>
