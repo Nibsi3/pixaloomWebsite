@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/components/utils';
+import { Lens } from '@/components/ui/lens';
 
 type Props = {
   title: string;
@@ -56,15 +57,17 @@ export function WorkGallery({ title, heroPng, heroFallback, gallery }: Props) {
                 )}
                 aria-pressed={selected}
               >
-                <div className="h-12 w-20 bg-bg-850">
-                  <Image
-                    src={src}
-                    alt=""
-                    width={160}
-                    height={96}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+                <Lens zoomFactor={1.6} lensSize={90}>
+                  <div className="h-12 w-20 bg-bg-850">
+                    <Image
+                      src={src}
+                      alt=""
+                      width={160}
+                      height={96}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </Lens>
               </button>
             );
           })}

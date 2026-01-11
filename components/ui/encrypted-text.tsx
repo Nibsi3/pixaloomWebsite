@@ -125,17 +125,11 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
 
   if (!text) return null;
 
-  if (!mounted) {
-    return (
-      <span className={cn(className)} aria-label={text} role="text">
-        {text}
-      </span>
-    );
-  }
-
   return (
     <motion.span ref={ref} className={cn(className)} aria-label={text} role="text">
       {text.split("").map((char, index) => {
+        if (!mounted) return <span key={index}>{char}</span>;
+
         const isRevealed = index < revealCount;
         const displayChar = isRevealed
           ? char
