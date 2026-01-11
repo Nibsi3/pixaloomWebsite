@@ -63,16 +63,21 @@ export function HoverBorderGradient<T extends React.ElementType = 'button'>({
       }}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        'relative flex rounded-full border content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit',
+        'relative inline-flex w-fit items-center justify-center overflow-hidden rounded-full border border-white/20 bg-black/20 p-px transition duration-500 hover:bg-black/10',
         containerClassName
       )}
       {...(props as Record<string, unknown>)}
     >
-      <div className={cn('w-auto text-white z-10 bg-black px-4 py-2 rounded-[inherit]', className)}>
+      <div
+        className={cn(
+          'relative z-10 inline-flex items-center justify-center gap-2 rounded-[inherit] bg-black px-5 py-2.5 text-sm font-medium text-white',
+          className
+        )}
+      >
         {children}
       </div>
       <motion.div
-        className={cn('flex-none inset-0 overflow-hidden absolute z-0 rounded-[inherit]')}
+        className={cn('pointer-events-none absolute inset-0 z-0 flex-none overflow-hidden rounded-[inherit]')}
         style={{
           filter: 'blur(2px)',
           position: 'absolute',
@@ -85,7 +90,7 @@ export function HoverBorderGradient<T extends React.ElementType = 'button'>({
         }}
         transition={{ ease: 'linear', duration: duration ?? 1 }}
       />
-      <div className="bg-black absolute z-[1] flex-none inset-[2px] rounded-[100px]" />
+      <div className="pointer-events-none absolute inset-[2px] z-[1] flex-none rounded-[inherit] bg-black" />
     </Tag>
   );
 }

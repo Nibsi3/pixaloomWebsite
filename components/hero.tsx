@@ -56,8 +56,13 @@ export function Hero() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <HoverBorderGradient as={Link} href="#contact" containerClassName="rounded-full">
-                    <span>Start a project</span>
+                  <HoverBorderGradient
+                    as={Link}
+                    href="#contact"
+                    containerClassName="rounded-full"
+                    className="px-7 py-3 text-sm font-semibold"
+                  >
+                    Start a project
                   </HoverBorderGradient>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
                     WhatsApp me
