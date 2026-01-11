@@ -196,6 +196,7 @@ body {
     position: relative;
     z-index: 2;
     display: inline-block;
+    border-radius: inherit;
   }
 
   .shiny-cta > span::before {
