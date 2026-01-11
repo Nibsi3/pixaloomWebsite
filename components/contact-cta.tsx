@@ -113,7 +113,7 @@ export function ContactCTA() {
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="John"
                   />
                 </label>
@@ -123,7 +123,7 @@ export function ContactCTA() {
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="you@company.com"
                   />
                 </label>
@@ -133,7 +133,7 @@ export function ContactCTA() {
                   <input
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
-                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="Business / Brand"
                   />
                 </label>
@@ -143,7 +143,7 @@ export function ContactCTA() {
                   <select
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
-                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                    className="w-full rounded-lg border border-bg-700 bg-bg-850/60 px-3 py-2 text-sm outline-none focus:border-accent-500"
                   >
                     <option value="">Select…</option>
                     <option value="R2k–R5k">R2k–R5k</option>
@@ -158,7 +158,7 @@ export function ContactCTA() {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850/60 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="What do you need built? Who is it for? Any deadline?"
                   />
                   <div className="mt-2 text-xs text-fg-300">
@@ -178,7 +178,13 @@ export function ContactCTA() {
                     {submitLabelEnabled}
                   </HoverBorderGradient>
                 ) : (
-                  <Button onClick={onSubmit} variant="primary" size="md" disabled={!canSubmit}>
+                  <Button
+                    onClick={onSubmit}
+                    variant="secondary"
+                    size="md"
+                    disabled={!canSubmit}
+                    className="border-bg-700 bg-black/80 text-fg-300 disabled:opacity-100"
+                  >
                     {submitLabel}
                   </Button>
                 )}
