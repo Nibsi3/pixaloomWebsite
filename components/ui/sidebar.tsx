@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { useState, createContext, useContext } from "react";
+import React, { useEffect, useRef, useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 
@@ -85,6 +85,34 @@ export const DesktopSidebar = ({
   ...props
 }: React.ComponentProps<typeof motion.div>) => {
   const { open, setOpenAction, animate } = useSidebar();
+  const closeTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current !== null) {
+        window.clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  function handleEnter() {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setOpenAction(true);
+  }
+
+  function handleLeave() {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setOpenAction(false);
+      closeTimeoutRef.current = null;
+    }, 120);
+  }
+
   return (
     <>
       <motion.div
@@ -95,8 +123,8 @@ export const DesktopSidebar = ({
         animate={{
           width: animate ? (open ? "260px" : "60px") : "260px",
         }}
-        onMouseEnter={() => setOpenAction(true)}
-        onMouseLeave={() => setOpenAction(false)}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
         {...props}
       >
         {children}
