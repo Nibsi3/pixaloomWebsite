@@ -55,7 +55,7 @@ export function Header() {
             <span className="text-sm font-medium text-fg-200">cameronfalck.dev</span>
           </a>
 
-          <Button href={`${hashPrefix}#contact`} variant="cta" size="sm">
+          <Button href={`${hashPrefix}#contact`} variant="primary" size="sm">
             Hire
           </Button>
         </Container>

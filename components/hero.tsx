@@ -1,5 +1,7 @@
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 
 const whatsapp = 'https://wa.me/27662995533?text=';
 
@@ -39,9 +41,9 @@ export function Hero() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Button href="#contact" variant="cta" size="lg">
-                    Start a project
-                  </Button>
+                  <HoverBorderGradient as={Link} href="#contact" containerClassName="rounded-full">
+                    <span>Start a project</span>
+                  </HoverBorderGradient>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
                     WhatsApp me
                   </Button>
