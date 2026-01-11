@@ -16,6 +16,9 @@ export function ContactCTA() {
   const [company, setCompany] = useState('');
   const [budget, setBudget] = useState('');
   const [message, setMessage] = useState('');
+  const [focusedField, setFocusedField] = useState<
+    'name' | 'email' | 'company' | 'budget' | 'message' | null
+  >(null);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [error, setError] = useState('');
 
@@ -109,40 +112,72 @@ export function ContactCTA() {
             <div className="rounded-lg border border-bg-700 bg-bg-900/70 p-5 backdrop-blur lg:col-span-7">
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="text-sm">
-                  <div className="mb-1 text-xs text-fg-300">Your name</div>
+                  <div
+                    className={`mb-1 text-xs text-fg-100 transition-transform duration-150 ${
+                      focusedField === 'name' || name ? '-translate-y-1' : ''
+                    }`}
+                  >
+                    Your name
+                  </div>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField((cur) => (cur === 'name' ? null : cur))}
                     className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="John"
                   />
                 </label>
 
                 <label className="text-sm">
-                  <div className="mb-1 text-xs text-fg-300">Email (optional)</div>
+                  <div
+                    className={`mb-1 text-xs text-fg-100 transition-transform duration-150 ${
+                      focusedField === 'email' || email ? '-translate-y-1' : ''
+                    }`}
+                  >
+                    Email (optional)
+                  </div>
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField((cur) => (cur === 'email' ? null : cur))}
                     className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="you@company.com"
                   />
                 </label>
 
                 <label className="text-sm">
-                  <div className="mb-1 text-xs text-fg-300">Company (optional)</div>
+                  <div
+                    className={`mb-1 text-xs text-fg-100 transition-transform duration-150 ${
+                      focusedField === 'company' || company ? '-translate-y-1' : ''
+                    }`}
+                  >
+                    Company (optional)
+                  </div>
                   <input
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
+                    onFocus={() => setFocusedField('company')}
+                    onBlur={() => setFocusedField((cur) => (cur === 'company' ? null : cur))}
                     className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="Business / Brand"
                   />
                 </label>
 
                 <label className="text-sm sm:col-span-2">
-                  <div className="mb-1 text-xs text-fg-300">Budget range</div>
+                  <div
+                    className={`mb-1 text-xs text-fg-100 transition-transform duration-150 ${
+                      focusedField === 'budget' || budget ? '-translate-y-1' : ''
+                    }`}
+                  >
+                    Budget range
+                  </div>
                   <select
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
+                    onFocus={() => setFocusedField('budget')}
+                    onBlur={() => setFocusedField((cur) => (cur === 'budget' ? null : cur))}
                     className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 text-sm outline-none focus:border-accent-500"
                   >
                     <option value="">Select…</option>
@@ -154,10 +189,18 @@ export function ContactCTA() {
                 </label>
 
                 <label className="text-sm sm:col-span-2">
-                  <div className="mb-1 text-xs text-fg-300">Project details</div>
+                  <div
+                    className={`mb-1 text-xs text-fg-100 transition-transform duration-150 ${
+                      focusedField === 'message' || message ? '-translate-y-1' : ''
+                    }`}
+                  >
+                    Project details
+                  </div>
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField((cur) => (cur === 'message' ? null : cur))}
                     className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="What do you need built? Who is it for? Any deadline?"
                   />
