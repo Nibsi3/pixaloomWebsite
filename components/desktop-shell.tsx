@@ -1346,6 +1346,7 @@ export function DesktopShell() {
           return (
             <div
               key={w.id}
+              data-window
               className={`absolute rounded-xl border border-neutral-700 shadow-2xl overflow-hidden ${
                 w.id === activeWindowId ? 'ring-1 ring-white/20' : ''
               }`}

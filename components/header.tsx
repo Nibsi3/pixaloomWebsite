@@ -14,6 +14,7 @@ const nav = [
   { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
+  { href: '/os', label: 'Pixaloom OS' },
 ];
 
 export function Header() {
@@ -22,7 +23,11 @@ export function Header() {
   const hashPrefix = pathname === '/' ? '' : '/';
 
   const navResolved = useMemo(
-    () => nav.map((n) => ({ ...n, href: `${hashPrefix}${n.href}` })),
+    () =>
+      nav.map((n) => ({
+        ...n,
+        href: n.href.startsWith('#') ? `${hashPrefix}${n.href}` : n.href,
+      })),
     [hashPrefix]
   );
 

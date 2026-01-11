@@ -283,6 +283,14 @@ export function TerminalIntro({ embedded = false, onMinimizeAction, hideHeader =
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [currentInput, setCurrentInput] = useState('');
 
+  useEffect(() => {
+    if (!embedded) return;
+    const id = window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [embedded]);
+
   const themeClasses = useMemo(() => {
     return 'bg-bg-900 border-bg-700 text-fg-100';
   }, []);
@@ -544,6 +552,9 @@ export function TerminalIntro({ embedded = false, onMinimizeAction, hideHeader =
       <div
         ref={shellRef}
         className="h-[520px] overflow-y-auto rounded-lg border border-bg-700 bg-black/20 p-4 font-mono text-sm leading-relaxed"
+        onPointerDown={() => {
+          inputRef.current?.focus();
+        }}
       >
         {lines.map((l) => {
           if (l.kind === 'banner') {

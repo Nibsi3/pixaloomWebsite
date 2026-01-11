@@ -1,7 +1,5 @@
-import { DesktopShell } from '@/components/desktop-shell';
+import { TerminalLanding } from '@/components/terminal-landing';
 
 export default function HomePage() {
-  return (
-    <DesktopShell />
-  );
+  return <TerminalLanding />;
 }
