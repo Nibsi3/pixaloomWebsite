@@ -106,7 +106,7 @@ export function ContactCTA() {
           />
 
           <div className="grid gap-4 lg:grid-cols-12">
-            <div className="card bg-bg-900/70 p-5 lg:col-span-7">
+            <div className="rounded-lg border border-bg-700 bg-bg-900/80 p-5 backdrop-blur lg:col-span-7">
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="text-sm">
                   <div className="mb-1 text-xs text-fg-300">Your name</div>
