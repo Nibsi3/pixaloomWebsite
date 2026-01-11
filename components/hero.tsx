@@ -43,6 +43,9 @@ export function Hero() {
                   <Button href="#contact" variant="primary" size="lg">
                     Start a project
                   </Button>
+                  <Button href="/os" variant="secondary" size="lg">
+                    Launch Pixaloom OS
+                  </Button>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
                     WhatsApp me
                   </Button>
