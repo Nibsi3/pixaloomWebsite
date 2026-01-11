@@ -23,10 +23,11 @@ export const FlipWords = ({
   }, [currentWord, words]);
 
   useEffect(() => {
-    if (!isAnimating)
-      setTimeout(() => {
-        startAnimation();
-      }, duration);
+    if (isAnimating) return;
+    const timeout = setTimeout(() => {
+      startAnimation();
+    }, duration);
+    return () => clearTimeout(timeout);
   }, [isAnimating, duration, startAnimation]);
 
   return (
@@ -51,10 +52,10 @@ export const FlipWords = ({
         }}
         exit={{
           opacity: 0,
-          y: -60,
-          x: 60,
-          filter: "blur(12px)",
-          scale: 2.5,
+          y: -40,
+          x: 40,
+          filter: "blur(8px)",
+          scale: 2,
           position: "absolute",
         }}
         className={cn(
