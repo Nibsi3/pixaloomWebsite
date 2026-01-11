@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { M_PLUS_Code_Latin } from 'next/font/google';
 import './globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+const mplusCodeLatin = M_PLUS_Code_Latin({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -65,7 +72,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={mplusCodeLatin.className}>
       <body className="min-h-screen bg-bg-900">
         <Script
           id="json-ld"
