@@ -2,6 +2,7 @@ import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
+import { EncryptedText } from '@/components/ui/encrypted-text';
 
 const whatsapp = 'https://wa.me/27662995533?text=';
 
@@ -31,8 +32,22 @@ export function Hero() {
                 </div>
 
                 <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-                  Cameron Falck
-                  <span className="block text-fg-200">Full-Stack Developer</span>
+                  <EncryptedText
+                    text="Cameron Falck"
+                    revealDelayMs={35}
+                    flipDelayMs={28}
+                    encryptedClassName="text-fg-300"
+                    revealedClassName="text-fg-100"
+                  />
+                  <span className="block text-fg-200">
+                    <EncryptedText
+                      text="Full-Stack Developer"
+                      revealDelayMs={28}
+                      flipDelayMs={22}
+                      encryptedClassName="text-fg-300"
+                      revealedClassName="text-fg-200"
+                    />
+                  </span>
                 </h1>
 
                 <p className="mt-5 max-w-xl text-base text-fg-300 sm:text-lg">
