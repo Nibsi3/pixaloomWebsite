@@ -1,50 +1,62 @@
- 'use client';
+'use client';
 
- import { useMemo, useState } from 'react';
- import { usePathname } from 'next/navigation';
- import Image from 'next/image';
- import { cn } from '@/components/utils';
- import { Container } from '@/components/ui/container';
- import { Button } from '@/components/ui/button';
+import { useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { motion } from 'motion/react';
+import {
+  IconLayoutGrid,
+  IconCode,
+  IconBriefcase,
+  IconMail,
+  IconBrandGithub,
+  IconDeviceDesktop,
+  IconMapPin,
+  IconMenu2,
+  IconX,
+} from '@tabler/icons-react';
+import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
+import { Container } from '@/components/ui/container';
 
 const github = 'https://github.com/Nibsi3';
 
-const nav = [
-  { href: '#projects', label: 'Projects' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#contact', label: 'Contact' },
-];
-
-const links = [
-  { href: '/os', label: 'Pixaloom OS' },
-  { href: github, label: 'GitHub' },
-];
-
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const hashPrefix = pathname === '/' ? '' : '/';
 
-  const navResolved = useMemo(
-    () =>
-      nav.map((n) => ({
-        ...n,
-        href: n.href.startsWith('#') ? `${hashPrefix}${n.href}` : n.href,
-      })),
+  const navLinks = useMemo(
+    () => [
+      { label: 'Projects', href: `${hashPrefix}#projects`, icon: <IconLayoutGrid className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'Skills', href: `${hashPrefix}#skills`, icon: <IconCode className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'Experience', href: `${hashPrefix}#experience`, icon: <IconBriefcase className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'Contact', href: `${hashPrefix}#contact`, icon: <IconMail className="h-5 w-5 shrink-0 text-fg-300" /> },
+    ],
     [hashPrefix]
+  );
+
+  const externalLinks = useMemo(
+    () => [
+      { label: 'Pixaloom OS', href: '/os', icon: <IconDeviceDesktop className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'GitHub', href: github, icon: <IconBrandGithub className="h-5 w-5 shrink-0 text-fg-300" /> },
+    ],
+    []
   );
 
   return (
     <>
+      {/* Mobile Header */}
       <header className="sticky top-0 z-50 border-b border-bg-700/70 bg-bg-900/70 backdrop-blur md:hidden">
         <Container className="flex h-14 items-center justify-between">
           <button
             type="button"
             className="inline-flex items-center gap-2 rounded-full border border-bg-700 bg-bg-800 px-3 py-2 text-sm text-fg-200"
-            onClick={() => setOpen(true)}
+            onClick={() => setMobileOpen(true)}
           >
-            <span className="text-xs">≡</span>
+            <IconMenu2 className="h-4 w-4" />
             <span>Menu</span>
           </button>
 
@@ -52,7 +64,6 @@ export function Header() {
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 p-1">
               <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
             </span>
-            <span className="text-sm font-medium text-fg-200">cameronfalck.dev</span>
           </a>
 
           <Button href={`${hashPrefix}#contact`} variant="primary" size="sm">
@@ -61,80 +72,84 @@ export function Header() {
         </Container>
       </header>
 
-      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[280px] border-r border-bg-700/70 bg-bg-900/60 backdrop-blur md:block">
-        <div className="flex h-full flex-col p-4">
-          <a
-            href={`${hashPrefix}#top`}
-            className="flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800/60 px-3 py-2"
-          >
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-850 p-1">
-              <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
-            </span>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold">Pixaloom</div>
-              <div className="truncate text-xs text-fg-300">Web Development Studio</div>
-            </div>
-          </a>
+      {/* Desktop Sidebar - Aceternity Style */}
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="fixed left-0 top-0 z-40 h-screen justify-between gap-6 border-r border-bg-700/70 bg-bg-900/90 backdrop-blur">
+          <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+            {/* Logo */}
+            <a href={`${hashPrefix}#top`} className="flex items-center gap-3 py-2">
+              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-bg-700 bg-bg-850 p-1">
+                <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
+              </span>
+              <motion.span
+                animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+                className="whitespace-pre text-sm font-semibold text-fg-100"
+              >
+                Pixaloom
+              </motion.span>
+            </a>
 
-          <div className="mt-4">
-            <div className="px-2 text-xs font-medium text-fg-300">Navigation</div>
-            <nav className="mt-2 space-y-1">
-              {navResolved.map((n) => (
-                <a key={n.href} className="nav-item" href={n.href}>
-                  {n.label}
-                </a>
+            {/* Navigation Links */}
+            <div className="mt-6 flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <SidebarLink key={link.href} link={link} />
               ))}
-            </nav>
-          </div>
+            </div>
 
-          <div className="mt-4">
-            <div className="px-2 text-xs font-medium text-fg-300">Links</div>
-            <nav className="mt-2 space-y-1">
-              {links.map((l) => (
+            {/* External Links */}
+            <div className="mt-6 flex flex-col gap-1 border-t border-bg-700/50 pt-4">
+              {externalLinks.map((link) => (
                 <a
-                  key={l.href}
-                  className="nav-item"
-                  href={l.href}
+                  key={link.href}
+                  href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="group/sidebar flex items-center justify-start gap-2 py-2"
                 >
-                  <span>{l.label}</span>
-                  <span className="text-[11px] text-fg-400">↗</span>
+                  {link.icon}
+                  <motion.span
+                    animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+                    className="whitespace-pre text-sm text-fg-200 transition duration-150 group-hover/sidebar:translate-x-1"
+                  >
+                    {link.label}
+                  </motion.span>
                 </a>
               ))}
-            </nav>
+            </div>
           </div>
 
-          <div className="mt-4 space-y-2">
-            <Button href={`${hashPrefix}#contact`} variant="primary" size="md" className="w-full">
-              Start a project
-            </Button>
+          {/* Footer */}
+          <div className="flex items-center gap-2 py-2">
+            <IconMapPin className="h-5 w-5 shrink-0 text-fg-400" />
+            <motion.span
+              animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+              className="whitespace-pre text-xs text-fg-400"
+            >
+              George, Western Cape
+            </motion.span>
           </div>
+        </SidebarBody>
+      </Sidebar>
 
-          <div className="mt-auto rounded-lg border border-bg-700 bg-bg-800/50 p-3 text-xs text-fg-300">
-            Based in George, Western Cape
-          </div>
-        </div>
-      </aside>
-
+      {/* Mobile Sidebar Overlay */}
       <div
         className={cn(
           'fixed inset-0 z-50 md:hidden',
-          open ? 'pointer-events-auto' : 'pointer-events-none'
+          mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'
         )}
-        aria-hidden={!open}
+        aria-hidden={!mobileOpen}
       >
         <div
           className={cn(
             'absolute inset-0 bg-black/55 transition-opacity',
-            open ? 'opacity-100' : 'opacity-0'
+            mobileOpen ? 'opacity-100' : 'opacity-0'
           )}
-          onClick={() => setOpen(false)}
+          onClick={() => setMobileOpen(false)}
         />
         <div
           className={cn(
             'absolute left-0 top-0 h-full w-[86%] max-w-[320px] border-r border-bg-700 bg-bg-900/95 backdrop-blur transition-transform',
-            open ? 'translate-x-0' : '-translate-x-full'
+            mobileOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
           <div className="flex h-14 items-center justify-between border-b border-bg-700 px-4">
@@ -142,40 +157,40 @@ export function Header() {
             <button
               type="button"
               className="rounded-full border border-bg-700 bg-bg-800 px-3 py-2 text-sm"
-              onClick={() => setOpen(false)}
+              onClick={() => setMobileOpen(false)}
             >
-              Close
+              <IconX className="h-4 w-4" />
             </button>
           </div>
 
           <div className="p-4">
             <nav className="space-y-1">
-              {navResolved.map((n) => (
+              {navLinks.map((link) => (
                 <a
-                  key={n.href}
-                  className="nav-item"
-                  href={n.href}
-                  onClick={() => setOpen(false)}
+                  key={link.href}
+                  className="nav-item flex items-center gap-3"
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
                 >
-                  {n.label}
+                  {link.icon}
+                  {link.label}
                 </a>
               ))}
             </nav>
 
-            <div className="mt-4">
-              <div className="px-2 text-xs font-medium text-fg-300">Links</div>
-              <nav className="mt-2 space-y-1">
-                {links.map((l) => (
+            <div className="mt-4 border-t border-bg-700/50 pt-4">
+              <nav className="space-y-1">
+                {externalLinks.map((link) => (
                   <a
-                    key={l.href}
-                    className="nav-item"
-                    href={l.href}
+                    key={link.href}
+                    className="nav-item flex items-center gap-3"
+                    href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => setOpen(false)}
+                    onClick={() => setMobileOpen(false)}
                   >
-                    <span>{l.label}</span>
-                    <span className="text-[11px] text-fg-400">↗</span>
+                    {link.icon}
+                    {link.label}
                   </a>
                 ))}
               </nav>

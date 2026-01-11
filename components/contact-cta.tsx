@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 const whatsappBase = 'https://wa.me/27662995533?text=';
 const emailTo = 'info@pixaloom.co.za';
@@ -144,7 +145,7 @@ export function ContactCTA() {
               </label>
             </div>
 
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
               <Button
                 onClick={onSubmit}
                 variant="primary"
@@ -153,13 +154,13 @@ export function ContactCTA() {
               >
                 {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send enquiry'}
               </Button>
-              <Button href={waHref} variant="secondary" size="md">
+              <InteractiveHoverButton href={waHref}>
                 WhatsApp
-              </Button>
+              </InteractiveHoverButton>
               {emailTo ? (
-                <Button href={mailHref} variant="secondary" size="md">
+                <InteractiveHoverButton href={mailHref}>
                   Email me
-                </Button>
+                </InteractiveHoverButton>
               ) : null}
             </div>
 

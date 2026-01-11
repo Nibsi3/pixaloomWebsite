@@ -1,8 +1,9 @@
+'use client';
+
 import { Container } from '@/components/ui/container';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import { FlipWords } from '@/components/ui/flip-words';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 const whatsapp = 'https://wa.me/27662995533?text=';
 
@@ -48,17 +49,19 @@ export function Hero() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Link href="#contact">
-                    <HoverBorderGradient
-                      containerClassName="rounded-full"
-                      className="px-7 py-3 text-sm font-semibold"
-                    >
-                      Start a project
-                    </HoverBorderGradient>
-                  </Link>
-                  <Button href={whatsapp + waText} variant="secondary" size="lg">
+                  <HoverBorderGradient
+                    as="a"
+                    containerClassName="rounded-full"
+                    className="px-7 py-3 text-sm font-semibold"
+                    onClick={() => {
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Start a project
+                  </HoverBorderGradient>
+                  <InteractiveHoverButton href={whatsapp + waText}>
                     WhatsApp me
-                  </Button>
+                  </InteractiveHoverButton>
                 </div>
 
                 <div className="mt-8 flex flex-wrap gap-2 text-xs text-fg-200">
