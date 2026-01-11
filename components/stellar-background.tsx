@@ -61,7 +61,7 @@ export function StellarBackground() {
           float light = 1.0 / (vDistance * 0.012 + 0.4);
           light = pow(light, 3.0) * 2.5;
 
-          float ambient = 0.04;
+          float ambient = 0.08;
 
           vec3 color = vec3(0.85, 0.92, 1.0) * (light + ambient);
 
@@ -81,6 +81,7 @@ export function StellarBackground() {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 1);
 
       container.appendChild(renderer.domElement);
 
@@ -124,9 +125,9 @@ export function StellarBackground() {
       starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
       const starMat = new THREE.PointsMaterial({
         color: 0xaaaaaa,
-        size: 1,
+        size: 1.25,
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.6,
       });
       starPoints = new THREE.Points(starGeo, starMat);
       scene.add(starPoints);
@@ -208,7 +209,7 @@ export function StellarBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 -z-10 overflow-hidden bg-black"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-black"
       aria-hidden="true"
     />
   );

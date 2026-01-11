@@ -67,7 +67,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="min-h-screen bg-bg-900">
+      <body className="min-h-screen bg-transparent">
         <Script
           id="json-ld"
           type="application/ld+json"
