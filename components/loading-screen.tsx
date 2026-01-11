@@ -17,42 +17,38 @@ const BOOT_LINES = [
 
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [dots, setDots] = useState('');
   const [showDots, setShowDots] = useState(false);
   const [linesShown, setLinesShown] = useState(0);
-  const [shouldBoot, setShouldBoot] = useState(true);
 
   useEffect(() => {
     const key = 'pixaloom_boot_shown';
-    try {
-      if (window.sessionStorage.getItem(key) === '1') {
-        setShouldBoot(false);
-        setVisible(false);
-        return;
-      }
-      window.sessionStorage.setItem(key, '1');
-      setShouldBoot(true);
-      const onBeforeUnload = () => {
-        try {
-          window.sessionStorage.removeItem(key);
-        } catch {
-          // ignore
-        }
-      };
-      window.addEventListener('beforeunload', onBeforeUnload);
-      return () => {
-        window.removeEventListener('beforeunload', onBeforeUnload);
-      };
-    } catch {
-      // If storage is unavailable, fall back to always showing.
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!shouldBoot) return;
-    const MIN_DURATION_MS = 3600;
     const startedAt = performance.now();
+
+    let shouldShow = true;
+    try {
+      shouldShow = window.sessionStorage.getItem(key) !== '1';
+      if (shouldShow) window.sessionStorage.setItem(key, '1');
+    } catch {
+      shouldShow = true;
+    }
+
+    if (!shouldShow) {
+      setVisible(false);
+      return;
+    }
+
+    const onBeforeUnload = () => {
+      try {
+        window.sessionStorage.removeItem(key);
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    const MIN_DURATION_MS = 3600;
 
     setProgress(0);
     setLinesShown(0);
@@ -101,8 +97,9 @@ export function LoadingScreen() {
       window.clearInterval(progressId);
       window.clearInterval(linesId);
       window.clearInterval(doneCheckId);
+      window.removeEventListener('beforeunload', onBeforeUnload);
     };
-  }, [shouldBoot]);
+  }, []);
 
   if (!visible) return null;
 
