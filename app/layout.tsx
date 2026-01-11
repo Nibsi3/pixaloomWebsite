@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   applicationName: 'Pixaloom',
   category: 'technology',
   icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    icon: [{ url: '/pixaloomLogo.png', type: 'image/png' }],
   },
   alternates: {
     canonical: '/',

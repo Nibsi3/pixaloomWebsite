@@ -81,7 +81,7 @@ export function Projects() {
               <Link
                 key={i.slug}
                 href={`/work/${i.slug}`}
-                className="card card-hover work-marquee-card overflow-hidden md:w-[360px]"
+                className="group card card-hover work-marquee-card overflow-hidden md:w-[360px]"
               >
                 <div className="border-b border-bg-700 bg-bg-900/20 px-4 py-3">
                   <div className="flex items-center justify-between gap-3">
@@ -99,7 +99,7 @@ export function Projects() {
                     alt={i.name}
                     width={1600}
                     height={900}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
                     loading="lazy"
                   />
                 </div>
@@ -112,7 +112,7 @@ export function Projects() {
               <Link
                 key={`${i.slug}-dup`}
                 href={`/work/${i.slug}`}
-                className="card card-hover work-marquee-card overflow-hidden md:w-[360px]"
+                className="group card card-hover work-marquee-card overflow-hidden md:w-[360px]"
                 tabIndex={-1}
                 aria-hidden="true"
               >
@@ -132,7 +132,7 @@ export function Projects() {
                     alt={i.name}
                     width={1600}
                     height={900}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
                     loading="lazy"
                   />
                 </div>

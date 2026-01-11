@@ -5,6 +5,7 @@ import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 
 const whatsappBase = 'https://wa.me/27662995533?text=';
 const emailTo = 'info@pixaloom.co.za';
@@ -17,6 +18,9 @@ export function ContactCTA() {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [error, setError] = useState('');
+
+  const submitLabel = status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send enquiry';
+  const submitLabelEnabled = status === 'sent' ? 'Sent' : 'Send enquiry';
 
   const composed = useMemo(() => {
     const lines = [
@@ -84,7 +88,19 @@ export function ContactCTA() {
         title="Let’s build something that converts"
         subtitle="Send a quick brief. I’ll reply with a plan, timeline, and options."
       >
-        <div className="grid gap-4 lg:grid-cols-12">
+        <div className="relative">
+          <div
+            className="pointer-events-none absolute -inset-6 opacity-[0.14]"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.16) 1px, transparent 1px)',
+              backgroundSize: '30px 30px',
+              maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 78%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 78%)',
+            }}
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
           <div className="card p-5 lg:col-span-7">
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="text-sm">
@@ -147,14 +163,20 @@ export function ContactCTA() {
             </div>
 
             <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button
-                onClick={onSubmit}
-                variant="primary"
-                size="md"
-                disabled={!canSubmit}
-              >
-                {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send enquiry'}
-              </Button>
+              {canSubmit ? (
+                <HoverBorderGradient
+                  as="button"
+                  containerClassName="rounded-full"
+                  className="px-7 py-3 text-sm font-semibold"
+                  onClick={onSubmit}
+                >
+                  {submitLabelEnabled}
+                </HoverBorderGradient>
+              ) : (
+                <Button onClick={onSubmit} variant="primary" size="md" disabled={!canSubmit}>
+                  {submitLabel}
+                </Button>
+              )}
               <InteractiveHoverButton href={waHref}>
                 WhatsApp
               </InteractiveHoverButton>
@@ -201,6 +223,7 @@ export function ContactCTA() {
                 </div>
               </div>
             </SpotlightCard>
+          </div>
           </div>
         </div>
       </Section>

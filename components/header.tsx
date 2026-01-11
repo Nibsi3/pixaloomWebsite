@@ -62,7 +62,7 @@ export function Header() {
 
           <a href={`${hashPrefix}#top`} className="flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 p-1">
-              <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
+              <Image src="/pixaloomLogo.png" alt="Pixaloom" width={24} height={24} />
             </span>
           </a>
 
@@ -79,7 +79,7 @@ export function Header() {
             {/* Logo */}
             <a href={`${hashPrefix}#top`} className="flex items-center gap-3 py-2">
               <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-bg-700 bg-bg-850 p-1">
-                <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
+                <Image src="/pixaloomLogo.png" alt="Pixaloom" width={24} height={24} />
               </span>
               <motion.span
                 animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}

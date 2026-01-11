@@ -21,8 +21,36 @@ export function LoadingScreen() {
   const [dots, setDots] = useState('');
   const [showDots, setShowDots] = useState(false);
   const [linesShown, setLinesShown] = useState(0);
+  const [shouldBoot, setShouldBoot] = useState(true);
 
   useEffect(() => {
+    const key = 'pixaloom_boot_shown';
+    try {
+      if (window.sessionStorage.getItem(key) === '1') {
+        setShouldBoot(false);
+        setVisible(false);
+        return;
+      }
+      window.sessionStorage.setItem(key, '1');
+      setShouldBoot(true);
+      const onBeforeUnload = () => {
+        try {
+          window.sessionStorage.removeItem(key);
+        } catch {
+          // ignore
+        }
+      };
+      window.addEventListener('beforeunload', onBeforeUnload);
+      return () => {
+        window.removeEventListener('beforeunload', onBeforeUnload);
+      };
+    } catch {
+      // If storage is unavailable, fall back to always showing.
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!shouldBoot) return;
     const MIN_DURATION_MS = 3600;
     const startedAt = performance.now();
 
@@ -74,7 +102,7 @@ export function LoadingScreen() {
       window.clearInterval(linesId);
       window.clearInterval(doneCheckId);
     };
-  }, []);
+  }, [shouldBoot]);
 
   if (!visible) return null;
 
