@@ -102,9 +102,6 @@ export function Header() {
             <Button href={`${hashPrefix}#contact`} variant="primary" size="md" className="w-full">
               Start a project
             </Button>
-            <Button href={github} variant="secondary" size="md" className="w-full">
-              Repo
-            </Button>
           </div>
 
           <div className="mt-auto rounded-lg border border-bg-700 bg-bg-800/50 p-3 text-xs text-fg-300">
@@ -178,9 +175,6 @@ export function Header() {
             <div className="mt-4 space-y-2">
               <Button href="#contact" variant="primary" size="md" className="w-full">
                 Start a project
-              </Button>
-              <Button href={github} variant="secondary" size="md" className="w-full">
-                Repo
               </Button>
             </div>
           </div>

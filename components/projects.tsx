@@ -75,7 +75,11 @@ export function Projects() {
         <WorkMarquee aria-label="Website screenshots">
           <div className="work-marquee-group">
             {workItems.map((i) => (
-              <Link key={i.slug} href={`/work/${i.slug}`} className="card card-hover work-marquee-card overflow-hidden">
+              <Link
+                key={i.slug}
+                href={`/work/${i.slug}`}
+                className="card card-hover work-marquee-card overflow-hidden md:w-[calc((100%-2rem)/3)]"
+              >
                 <div className="border-b border-bg-700 bg-bg-900/20 px-4 py-3">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
@@ -105,7 +109,7 @@ export function Projects() {
               <Link
                 key={`${i.slug}-dup`}
                 href={`/work/${i.slug}`}
-                className="card card-hover work-marquee-card overflow-hidden"
+                className="card card-hover work-marquee-card overflow-hidden md:w-[calc((100%-2rem)/3)]"
                 tabIndex={-1}
                 aria-hidden="true"
               >
