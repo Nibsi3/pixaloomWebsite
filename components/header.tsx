@@ -2,6 +2,7 @@
 
  import { useMemo, useState } from 'react';
  import { usePathname } from 'next/navigation';
+ import Image from 'next/image';
  import { cn } from '@/components/utils';
  import { Container } from '@/components/ui/container';
  import { Button } from '@/components/ui/button';
@@ -48,8 +49,8 @@ export function Header() {
           </button>
 
           <a href={`${hashPrefix}#top`} className="flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 text-sm font-semibold">
-              cf
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 p-1">
+              <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
             </span>
             <span className="text-sm font-medium text-fg-200">cameronfalck.dev</span>
           </a>
@@ -66,8 +67,8 @@ export function Header() {
             href={`${hashPrefix}#top`}
             className="flex items-center gap-2 rounded-lg border border-bg-700 bg-bg-800/60 px-3 py-2"
           >
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-850 text-sm font-semibold">
-              cf
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-850 p-1">
+              <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
             </span>
             <div className="min-w-0">
               <div className="truncate text-sm font-semibold">Cameron Falck</div>
