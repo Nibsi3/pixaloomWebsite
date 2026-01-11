@@ -38,7 +38,7 @@ export default function JokesPage() {
   return (
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
-      <div className="md:pl-[300px] md:pr-0">
+      <div className="md:pl-[272px] md:pr-0">
         <main className="px-4 py-10 sm:px-6">
           <div className="mx-auto max-w-3xl">
             <div className="rounded-lg border border-bg-700 bg-bg-800/40">
