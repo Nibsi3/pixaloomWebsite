@@ -54,7 +54,7 @@ export function Hero() {
                     <FlipWords
                       words={['Full-Stack Developer', 'Web Development', 'Mobile App Development', 'Software Development']}
                       duration={3000}
-                      className="text-fg-200"
+                      className="text-accent-500"
                     />
                   </span>
                 </h1>
