@@ -1,5 +1,3 @@
-import { LoadingScreen } from '@/components/loading-screen';
-
 export default function OSLayout({
   children,
 }: Readonly<{
@@ -7,7 +5,6 @@ export default function OSLayout({
 }>) {
   return (
     <>
-      <LoadingScreen />
       {children}
     </>
   );
