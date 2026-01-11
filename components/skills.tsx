@@ -1,4 +1,5 @@
 import { Section } from '@/components/ui/section';
+import { CometCard } from '@/components/ui/comet-card';
 
 const groups = [
   {
@@ -25,17 +26,19 @@ export function Skills() {
     >
       <div className="grid gap-4 md:grid-cols-3">
         {groups.map((g) => (
-          <div key={g.title} className="card card-hover p-5">
-            <div className="text-sm font-semibold">{g.title}</div>
-            <div className="mt-4 space-y-2">
-              {g.items.map((i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <span className="text-sm text-fg-200">{i}</span>
-                  <span className="text-xs text-fg-300">verified</span>
-                </div>
-              ))}
+          <CometCard key={g.title} className="h-full">
+            <div className="card card-hover h-full p-5">
+              <div className="text-sm font-semibold">{g.title}</div>
+              <div className="mt-4 space-y-2">
+                {g.items.map((i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-sm text-fg-200">{i}</span>
+                    <span className="text-xs text-fg-300">verified</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </CometCard>
         ))}
       </div>
 

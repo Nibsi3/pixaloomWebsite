@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { WorkMarquee } from '@/components/work-marquee';
 import { workItems } from '@/components/work-items';
+import { CometCard } from '@/components/ui/comet-card';
 
 const projects = [
   {
@@ -39,35 +40,37 @@ export function Projects() {
     >
       <div className="grid gap-4 md:grid-cols-3">
         {projects.map((p) => (
-          <div key={p.name} className="card card-hover p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-sm font-semibold text-fg-100">{p.name}</div>
-                <div className="mt-1 text-xs text-fg-300">{p.tag}</div>
+          <CometCard key={p.name} className="h-full">
+            <div className="card card-hover h-full p-5">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold text-fg-100">{p.name}</div>
+                  <div className="mt-1 text-xs text-fg-300">{p.tag}</div>
+                </div>
+                <div className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px] text-fg-200">
+                  Public
+                </div>
               </div>
-              <div className="rounded-md border border-bg-700 bg-bg-850 px-2 py-1 text-[11px] text-fg-200">
-                Public
+
+              <p className="mt-4 text-sm text-fg-300">{p.description}</p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.stack.map((s) => (
+                  <span
+                    key={s}
+                    className="rounded-full border border-bg-700 bg-bg-850/40 px-2 py-1 text-[11px] text-fg-200"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 flex items-center justify-between">
+                <div className="text-xs text-fg-300">Lead score</div>
+                <div className="text-xs font-medium text-accent-500">A+</div>
               </div>
             </div>
-
-            <p className="mt-4 text-sm text-fg-300">{p.description}</p>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {p.stack.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full border border-bg-700 bg-bg-850/40 px-2 py-1 text-[11px] text-fg-200"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-
-            <div className="mt-5 flex items-center justify-between">
-              <div className="text-xs text-fg-300">Lead score</div>
-              <div className="text-xs font-medium text-accent-500">A+</div>
-            </div>
-          </div>
+          </CometCard>
         ))}
       </div>
 
