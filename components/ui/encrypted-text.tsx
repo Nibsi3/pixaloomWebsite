@@ -54,6 +54,8 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
 
+  const [mounted, setMounted] = useState(false);
+
   const [revealCount, setRevealCount] = useState<number>(0);
   const animationFrameRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -63,6 +65,11 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
   );
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (!isInView) return;
 
     const initial = text ? generateGibberishPreservingSpaces(text, charset) : "";
@@ -114,9 +121,17 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isInView, text, revealDelayMs, charset, flipDelayMs]);
+  }, [mounted, isInView, text, revealDelayMs, charset, flipDelayMs]);
 
   if (!text) return null;
+
+  if (!mounted) {
+    return (
+      <span className={cn(className)} aria-label={text} role="text">
+        {text}
+      </span>
+    );
+  }
 
   return (
     <motion.span ref={ref} className={cn(className)} aria-label={text} role="text">
