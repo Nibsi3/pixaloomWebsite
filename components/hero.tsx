@@ -4,6 +4,7 @@ import { Container } from '@/components/ui/container';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import { FlipWords } from '@/components/ui/flip-words';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { SpotlightCard } from '@/components/ui/spotlight-card';
 
 const whatsapp = 'https://wa.me/27662995533?text=';
 
@@ -75,7 +76,7 @@ export function Hero() {
               </div>
 
               <div className="lg:col-span-5">
-                <div className="card card-hover p-5">
+                <SpotlightCard className="h-full">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm font-medium">Lead-gen checklist</div>
@@ -107,7 +108,7 @@ export function Hero() {
                     Want this style for your brand? Drop your goals and I’ll propose a design + build
                     plan.
                   </div>
-                </div>
+                </SpotlightCard>
               </div>
             </div>
           </div>
