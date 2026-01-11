@@ -17,7 +17,7 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
   return (
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
-      <div className="md:pl-[280px]">
+      <div className="md:pl-[320px] md:pr-10">
         <main className="py-8 sm:py-10">
           <Container>
             <Link
