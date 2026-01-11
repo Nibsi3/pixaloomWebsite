@@ -90,140 +90,144 @@ export function ContactCTA() {
       >
         <div className="relative">
           <div
-            className="pointer-events-none absolute -inset-6 opacity-[0.14]"
+            className="pointer-events-none absolute inset-0 opacity-[0.18]"
             style={{
               backgroundImage:
-                'linear-gradient(to right, rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.16) 1px, transparent 1px)',
-              backgroundSize: '30px 30px',
-              maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 78%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 78%)',
+                'linear-gradient(to right, rgba(255,255,255,0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                'radial-gradient(ellipse at center, rgba(16,24,40,0) 40%, rgba(16,24,40,0.78) 100%), linear-gradient(to top, rgba(16,24,40,0.45), rgba(16,24,40,0) 35%)',
             }}
           />
 
           <div className="grid gap-4 lg:grid-cols-12">
-          <div className="card p-5 lg:col-span-7">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="text-sm">
-                <div className="mb-1 text-xs text-fg-300">Your name</div>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
-                  placeholder="John"
-                />
-              </label>
+            <div className="card p-5 lg:col-span-7">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="text-sm">
+                  <div className="mb-1 text-xs text-fg-300">Your name</div>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    placeholder="John"
+                  />
+                </label>
 
-              <label className="text-sm">
-                <div className="mb-1 text-xs text-fg-300">Email (optional)</div>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
-                  placeholder="you@company.com"
-                />
-              </label>
+                <label className="text-sm">
+                  <div className="mb-1 text-xs text-fg-300">Email (optional)</div>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    placeholder="you@company.com"
+                  />
+                </label>
 
-              <label className="text-sm">
-                <div className="mb-1 text-xs text-fg-300">Company (optional)</div>
-                <input
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
-                  placeholder="Business / Brand"
-                />
-              </label>
+                <label className="text-sm">
+                  <div className="mb-1 text-xs text-fg-300">Company (optional)</div>
+                  <input
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    placeholder="Business / Brand"
+                  />
+                </label>
 
-              <label className="text-sm sm:col-span-2">
-                <div className="mb-1 text-xs text-fg-300">Budget range</div>
-                <select
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
-                  className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
-                >
-                  <option value="">Select…</option>
-                  <option value="R2k–R5k">R2k–R5k</option>
-                  <option value="R5k–R10k">R5k–R10k</option>
-                  <option value="R10k–R25k">R10k–R25k</option>
-                  <option value="R25k+">R25k+</option>
-                </select>
-              </label>
+                <label className="text-sm sm:col-span-2">
+                  <div className="mb-1 text-xs text-fg-300">Budget range</div>
+                  <select
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    className="w-full rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                  >
+                    <option value="">Select…</option>
+                    <option value="R2k–R5k">R2k–R5k</option>
+                    <option value="R5k–R10k">R5k–R10k</option>
+                    <option value="R10k–R25k">R10k–R25k</option>
+                    <option value="R25k+">R25k+</option>
+                  </select>
+                </label>
 
-              <label className="text-sm sm:col-span-2">
-                <div className="mb-1 text-xs text-fg-300">Project details</div>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
-                  placeholder="What do you need built? Who is it for? Any deadline?"
-                />
-                <div className="mt-2 text-xs text-fg-300">
-                  Tip: include your goal (leads, sales, bookings) and any examples you like.
-                </div>
-              </label>
-            </div>
+                <label className="text-sm sm:col-span-2">
+                  <div className="mb-1 text-xs text-fg-300">Project details</div>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    placeholder="What do you need built? Who is it for? Any deadline?"
+                  />
+                  <div className="mt-2 text-xs text-fg-300">
+                    Tip: include your goal (leads, sales, bookings) and any examples you like.
+                  </div>
+                </label>
+              </div>
 
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-              {canSubmit ? (
-                <HoverBorderGradient
-                  as="button"
-                  containerClassName="rounded-full"
-                  className="px-7 py-3 text-sm font-semibold"
-                  onClick={onSubmit}
-                >
-                  {submitLabelEnabled}
-                </HoverBorderGradient>
-              ) : (
-                <Button onClick={onSubmit} variant="primary" size="md" disabled={!canSubmit}>
-                  {submitLabel}
-                </Button>
-              )}
-              <InteractiveHoverButton href={waHref}>
-                WhatsApp
-              </InteractiveHoverButton>
-              {emailTo ? (
-                <InteractiveHoverButton href={mailHref}>
-                  Email me
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+                {canSubmit ? (
+                  <HoverBorderGradient
+                    as="button"
+                    containerClassName="rounded-full"
+                    className="px-7 py-3 text-sm font-semibold"
+                    onClick={onSubmit}
+                  >
+                    {submitLabelEnabled}
+                  </HoverBorderGradient>
+                ) : (
+                  <Button onClick={onSubmit} variant="primary" size="md" disabled={!canSubmit}>
+                    {submitLabel}
+                  </Button>
+                )}
+                <InteractiveHoverButton href={waHref}>
+                  WhatsApp
                 </InteractiveHoverButton>
+                {emailTo ? (
+                  <InteractiveHoverButton href={mailHref}>
+                    Email me
+                  </InteractiveHoverButton>
+                ) : null}
+              </div>
+
+              {status === 'sent' ? (
+                <div className="mt-3 text-xs text-accent-500">Thanks — your enquiry was sent.</div>
+              ) : null}
+
+              {status === 'error' ? (
+                <div className="mt-3 text-xs text-danger-500">{error}</div>
               ) : null}
             </div>
 
-            {status === 'sent' ? (
-              <div className="mt-3 text-xs text-accent-500">Thanks — your enquiry was sent.</div>
-            ) : null}
-
-            {status === 'error' ? (
-              <div className="mt-3 text-xs text-danger-500">{error}</div>
-            ) : null}
-
-          </div>
-
-          <div className="lg:col-span-5">
-            <SpotlightCard className="h-full">
-              <div className="text-sm font-semibold">What happens next</div>
-              <div className="mt-4 space-y-3 text-sm text-fg-300">
-                <div className="flex gap-3">
-                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                  <div>I reply with questions + a quick scope</div>
+            <div className="lg:col-span-5">
+              <SpotlightCard className="h-full">
+                <div className="text-sm font-semibold">What happens next</div>
+                <div className="mt-4 space-y-3 text-sm text-fg-300">
+                  <div className="flex gap-3">
+                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                    <div>I reply with questions + a quick scope</div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                    <div>You get a clear quote + timeline</div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                    <div>I ship an initial version fast, then iterate</div>
+                  </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                  <div>You get a clear quote + timeline</div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                  <div>I ship an initial version fast, then iterate</div>
-                </div>
-              </div>
 
-              <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
-                <div className="text-xs font-medium text-fg-200">Local advantage</div>
-                <div className="mt-2 text-xs text-fg-300">
-                  Based in George, Western Cape — great fit for South African businesses needing a
-                  premium web presence.
+                <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
+                  <div className="text-xs font-medium text-fg-200">Local advantage</div>
+                  <div className="mt-2 text-xs text-fg-300">
+                    Based in George, Western Cape — great fit for South African businesses needing a
+                    premium web presence.
+                  </div>
                 </div>
-              </div>
-            </SpotlightCard>
-          </div>
+              </SpotlightCard>
+            </div>
           </div>
         </div>
       </Section>
