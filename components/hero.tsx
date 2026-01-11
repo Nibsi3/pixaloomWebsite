@@ -51,7 +51,7 @@ export function Hero() {
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <HoverBorderGradient
-                    as="a"
+                    as="button"
                     containerClassName="rounded-full"
                     className="px-7 py-3 text-sm font-semibold"
                     onClick={() => {

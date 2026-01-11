@@ -30,18 +30,18 @@ export function Header() {
 
   const navLinks = useMemo(
     () => [
-      { label: 'Projects', href: `${hashPrefix}#projects`, icon: <IconLayoutGrid className="h-5 w-5 shrink-0 text-fg-300" /> },
-      { label: 'Skills', href: `${hashPrefix}#skills`, icon: <IconCode className="h-5 w-5 shrink-0 text-fg-300" /> },
-      { label: 'Experience', href: `${hashPrefix}#experience`, icon: <IconBriefcase className="h-5 w-5 shrink-0 text-fg-300" /> },
-      { label: 'Contact', href: `${hashPrefix}#contact`, icon: <IconMail className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'Projects', href: `${hashPrefix}#projects`, icon: <IconLayoutGrid className="h-5 w-5 shrink-0 text-fg-100" /> },
+      { label: 'Skills', href: `${hashPrefix}#skills`, icon: <IconCode className="h-5 w-5 shrink-0 text-fg-100" /> },
+      { label: 'Experience', href: `${hashPrefix}#experience`, icon: <IconBriefcase className="h-5 w-5 shrink-0 text-fg-100" /> },
+      { label: 'Contact', href: `${hashPrefix}#contact`, icon: <IconMail className="h-5 w-5 shrink-0 text-fg-100" /> },
     ],
     [hashPrefix]
   );
 
   const externalLinks = useMemo(
     () => [
-      { label: 'Pixaloom OS', href: '/os', icon: <IconDeviceDesktop className="h-5 w-5 shrink-0 text-fg-300" /> },
-      { label: 'GitHub', href: github, icon: <IconBrandGithub className="h-5 w-5 shrink-0 text-fg-300" /> },
+      { label: 'Pixaloom OS', href: '/os', icon: <IconDeviceDesktop className="h-5 w-5 shrink-0 text-fg-100" /> },
+      { label: 'GitHub', href: github, icon: <IconBrandGithub className="h-5 w-5 shrink-0 text-fg-100" /> },
     ],
     []
   );
@@ -73,7 +73,7 @@ export function Header() {
       </header>
 
       {/* Desktop Sidebar - Aceternity Style */}
-      <Sidebar open={open} setOpen={setOpen}>
+      <Sidebar open={open} setOpenAction={setOpen}>
         <SidebarBody className="fixed left-0 top-0 z-40 h-screen justify-between gap-6 border-r border-bg-700/70 bg-bg-900/90 backdrop-blur">
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             {/* Logo */}

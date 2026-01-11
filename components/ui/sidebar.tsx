@@ -12,7 +12,7 @@ interface Links {
 
 interface SidebarContextProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenAction: React.Dispatch<React.SetStateAction<boolean>>;
   animate: boolean;
 }
 
@@ -31,21 +31,22 @@ export const useSidebar = () => {
 export const SidebarProvider = ({
   children,
   open: openProp,
-  setOpen: setOpenProp,
+  setOpenAction: setOpenActionProp,
   animate = true,
 }: {
   children: React.ReactNode;
   open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenAction?: React.Dispatch<React.SetStateAction<boolean>>;
   animate?: boolean;
 }) => {
   const [openState, setOpenState] = useState(false);
 
   const open = openProp !== undefined ? openProp : openState;
-  const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
+  const setOpenAction =
+    setOpenActionProp !== undefined ? setOpenActionProp : setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider value={{ open, setOpenAction, animate: animate }}>
       {children}
     </SidebarContext.Provider>
   );
@@ -54,16 +55,16 @@ export const SidebarProvider = ({
 export const Sidebar = ({
   children,
   open,
-  setOpen,
+  setOpenAction,
   animate,
 }: {
   children: React.ReactNode;
   open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenAction?: React.Dispatch<React.SetStateAction<boolean>>;
   animate?: boolean;
 }) => {
   return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+    <SidebarProvider open={open} setOpenAction={setOpenAction} animate={animate}>
       {children}
     </SidebarProvider>
   );
@@ -83,7 +84,7 @@ export const DesktopSidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof motion.div>) => {
-  const { open, setOpen, animate } = useSidebar();
+  const { open, setOpenAction, animate } = useSidebar();
   return (
     <>
       <motion.div
@@ -94,8 +95,8 @@ export const DesktopSidebar = ({
         animate={{
           width: animate ? (open ? "300px" : "60px") : "300px",
         }}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseEnter={() => setOpenAction(true)}
+        onMouseLeave={() => setOpenAction(false)}
         {...props}
       >
         {children}
@@ -109,7 +110,7 @@ export const MobileSidebar = ({
   children,
   ...props
 }: React.ComponentProps<"div">) => {
-  const { open, setOpen } = useSidebar();
+  const { open, setOpenAction } = useSidebar();
   return (
     <>
       <div
@@ -121,7 +122,7 @@ export const MobileSidebar = ({
         <div className="flex justify-end z-20 w-full">
           <IconMenu2
             className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpenAction(!open)}
           />
         </div>
         <AnimatePresence>
@@ -141,7 +142,7 @@ export const MobileSidebar = ({
             >
               <div
                 className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenAction(!open)}
               >
                 <IconX />
               </div>
@@ -179,7 +180,7 @@ export const SidebarLink = ({
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className="text-fg-100 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {link.label}
       </motion.span>

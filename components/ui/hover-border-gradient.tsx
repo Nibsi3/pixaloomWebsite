@@ -62,14 +62,14 @@ export function HoverBorderGradient({
       }}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "relative flex rounded-full border  content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit",
+        "relative inline-flex w-fit cursor-pointer select-none items-center justify-center rounded-full border border-fg-100/20 bg-bg-900/20 transition duration-500 hover:bg-bg-900/10 p-px",
         containerClassName
       )}
       {...props}
     >
       <div
         className={cn(
-          "w-auto text-white z-10 bg-black px-4 py-2 rounded-[inherit]",
+          "relative z-10 cursor-pointer rounded-[inherit] bg-bg-900 px-4 py-2 text-fg-100",
           className
         )}
       >
@@ -84,6 +84,7 @@ export function HoverBorderGradient({
           position: "absolute",
           width: "100%",
           height: "100%",
+          pointerEvents: "none",
         }}
         initial={{ background: movingMap[direction] }}
         animate={{
@@ -93,7 +94,7 @@ export function HoverBorderGradient({
         }}
         transition={{ ease: "linear", duration: duration ?? 1 }}
       />
-      <div className="bg-black absolute z-1 flex-none inset-[2px] rounded-[100px]" />
+      <div className="pointer-events-none absolute inset-[2px] z-[1] flex-none rounded-[100px] bg-bg-900" />
     </Tag>
   );
 }
