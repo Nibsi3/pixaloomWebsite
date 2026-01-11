@@ -82,8 +82,11 @@ export function Header() {
                 <Image src="/pixaloom-logo.svg" alt="Pixaloom" width={24} height={24} />
               </span>
               <motion.span
-                animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+                animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
+                initial={false}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
                 className="whitespace-pre text-sm font-semibold text-fg-100"
+                style={{ overflow: 'hidden' }}
               >
                 Pixaloom
               </motion.span>
@@ -108,8 +111,11 @@ export function Header() {
                 >
                   {link.icon}
                   <motion.span
-                    animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+                    animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
+                    initial={false}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
                     className="whitespace-pre text-sm text-fg-200 transition duration-150 group-hover/sidebar:translate-x-1"
+                    style={{ overflow: 'hidden' }}
                   >
                     {link.label}
                   </motion.span>
@@ -122,8 +128,11 @@ export function Header() {
           <div className="flex items-center gap-2 py-2">
             <IconMapPin className="h-5 w-5 shrink-0 text-fg-400" />
             <motion.span
-              animate={{ display: open ? 'inline-block' : 'none', opacity: open ? 1 : 0 }}
+              animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
+              initial={false}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
               className="whitespace-pre text-xs text-fg-400"
+              style={{ overflow: 'hidden' }}
             >
               George, Western Cape
             </motion.span>

@@ -41,7 +41,7 @@ export function Projects() {
       <div className="grid gap-4 md:grid-cols-3">
         {projects.map((p) => (
           <CometCard key={p.name} className="h-full">
-            <div className="card card-hover h-full p-5">
+            <div className="card card-hover flex h-full flex-col p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-sm font-semibold text-fg-100">{p.name}</div>
@@ -65,7 +65,7 @@ export function Projects() {
                 ))}
               </div>
 
-              <div className="mt-5 flex items-center justify-between">
+              <div className="mt-auto flex items-center justify-between pt-5">
                 <div className="text-xs text-fg-300">Lead score</div>
                 <div className="text-xs font-medium text-accent-500">A+</div>
               </div>

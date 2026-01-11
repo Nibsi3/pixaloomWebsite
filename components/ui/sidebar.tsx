@@ -177,10 +177,13 @@ export const SidebarLink = ({
 
       <motion.span
         animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
+          maxWidth: animate ? (open ? 220 : 0) : 220,
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
+        initial={false}
+        transition={{ duration: 0.15, ease: "easeOut" }}
         className="text-fg-100 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        style={{ overflow: "hidden" }}
       >
         {link.label}
       </motion.span>

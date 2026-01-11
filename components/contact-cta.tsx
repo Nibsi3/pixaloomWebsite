@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { SpotlightCard } from '@/components/ui/spotlight-card';
 
 const whatsappBase = 'https://wa.me/27662995533?text=';
 const emailTo = 'info@pixaloom.co.za';
@@ -174,30 +175,32 @@ export function ContactCTA() {
 
           </div>
 
-          <div className="card p-5 lg:col-span-5">
-            <div className="text-sm font-semibold">What happens next</div>
-            <div className="mt-4 space-y-3 text-sm text-fg-300">
-              <div className="flex gap-3">
-                <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                <div>I reply with questions + a quick scope</div>
+          <div className="lg:col-span-5">
+            <SpotlightCard className="h-full">
+              <div className="text-sm font-semibold">What happens next</div>
+              <div className="mt-4 space-y-3 text-sm text-fg-300">
+                <div className="flex gap-3">
+                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                  <div>I reply with questions + a quick scope</div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                  <div>You get a clear quote + timeline</div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
+                  <div>I ship an initial version fast, then iterate</div>
+                </div>
               </div>
-              <div className="flex gap-3">
-                <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                <div>You get a clear quote + timeline</div>
-              </div>
-              <div className="flex gap-3">
-                <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent-500" />
-                <div>I ship an initial version fast, then iterate</div>
-              </div>
-            </div>
 
-            <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
-              <div className="text-xs font-medium text-fg-200">Local advantage</div>
-              <div className="mt-2 text-xs text-fg-300">
-                Based in George, Western Cape — great fit for South African businesses needing a
-                premium web presence.
+              <div className="mt-6 rounded-lg border border-bg-700 bg-bg-850/30 p-4">
+                <div className="text-xs font-medium text-fg-200">Local advantage</div>
+                <div className="mt-2 text-xs text-fg-300">
+                  Based in George, Western Cape — great fit for South African businesses needing a
+                  premium web presence.
+                </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </Section>
