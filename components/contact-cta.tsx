@@ -90,7 +90,7 @@ export function ContactCTA() {
       >
         <div className="relative">
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.18]"
+            className="pointer-events-none absolute inset-0 z-0 opacity-[0.22]"
             style={{
               backgroundImage:
                 'linear-gradient(to right, rgba(255,255,255,0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px)',
@@ -98,15 +98,15 @@ export function ContactCTA() {
             }}
           />
           <div
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-0 z-0"
             style={{
               backgroundImage:
                 'radial-gradient(ellipse at center, rgba(16,24,40,0) 40%, rgba(16,24,40,0.78) 100%), linear-gradient(to top, rgba(16,24,40,0.45), rgba(16,24,40,0) 35%)',
             }}
           />
 
-          <div className="grid gap-4 lg:grid-cols-12">
-            <div className="rounded-lg border border-bg-700 bg-bg-900/80 p-5 backdrop-blur lg:col-span-7">
+          <div className="relative z-10 grid gap-4 lg:grid-cols-12">
+            <div className="rounded-lg border border-bg-700 bg-bg-900/70 p-5 backdrop-blur lg:col-span-7">
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="text-sm">
                   <div className="mb-1 text-xs text-fg-300">Your name</div>
@@ -143,13 +143,13 @@ export function ContactCTA() {
                   <select
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
-                    className="w-full rounded-lg border border-bg-700 bg-bg-850/60 px-3 py-2 text-sm outline-none focus:border-accent-500"
+                    className="w-full rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 text-sm outline-none focus:border-accent-500"
                   >
                     <option value="">Select…</option>
-                    <option value="R2k–R5k">R2k–R5k</option>
                     <option value="R5k–R10k">R5k–R10k</option>
                     <option value="R10k–R25k">R10k–R25k</option>
-                    <option value="R25k+">R25k+</option>
+                    <option value="R25k–R50k">R25k–R50k</option>
+                    <option value="R50k+">R50k+</option>
                   </select>
                 </label>
 
@@ -158,7 +158,7 @@ export function ContactCTA() {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-850/60 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
+                    className="min-h-[120px] w-full resize-y rounded-lg border border-bg-700 bg-bg-800/90 px-3 py-2 font-mono text-sm outline-none focus:border-accent-500"
                     placeholder="What do you need built? Who is it for? Any deadline?"
                   />
                   <div className="mt-2 text-xs text-fg-300">
@@ -207,7 +207,7 @@ export function ContactCTA() {
               ) : null}
             </div>
 
-            <div className="card bg-bg-800/45 p-5 lg:col-span-5">
+            <SpotlightCard className="h-full lg:col-span-5">
               <div className="text-sm font-semibold">What happens next</div>
               <div className="mt-4 space-y-3 text-sm text-fg-300">
                 <div className="flex gap-3">
@@ -231,7 +231,7 @@ export function ContactCTA() {
                   premium web presence.
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </Section>

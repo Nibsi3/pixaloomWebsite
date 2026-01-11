@@ -110,7 +110,7 @@ export const DesktopSidebar = ({
     closeTimeoutRef.current = window.setTimeout(() => {
       setOpenAction(false);
       closeTimeoutRef.current = null;
-    }, 120);
+    }, 260);
   }
 
   return (
@@ -125,6 +125,7 @@ export const DesktopSidebar = ({
         }}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
+        onMouseMove={handleEnter}
         {...props}
       >
         {children}

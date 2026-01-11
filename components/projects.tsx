@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { WorkMarquee } from '@/components/work-marquee';
 import { workItems } from '@/components/work-items';
 import { CometCard } from '@/components/ui/comet-card';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 
 const projects = [
   {
@@ -146,9 +147,15 @@ export function Projects() {
             Want your project here next? I can build the site and the conversion system.
           </div>
           <div className="flex gap-2">
-            <Button href="#contact" variant="primary">
-              Get a quote
-            </Button>
+            <Link href="#contact" className="inline-flex">
+              <HoverBorderGradient
+                as="button"
+                containerClassName="rounded-full"
+                className="px-5 py-3 text-sm font-semibold"
+              >
+                Get a quote
+              </HoverBorderGradient>
+            </Link>
             <Button href="https://github.com/Nibsi3" variant="secondary">
               View GitHub
             </Button>
