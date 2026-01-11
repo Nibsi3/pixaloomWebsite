@@ -3,7 +3,7 @@ import { cn } from '@/components/utils';
 
 type CommonProps = {
   className?: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'cta';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
 };
@@ -18,6 +18,7 @@ const variants: Record<NonNullable<CommonProps['variant']>, string> = {
     'border-bg-700 bg-bg-800 text-fg-100 hover:border-fg-300/30 hover:bg-bg-700',
   ghost:
     'border-transparent bg-transparent text-fg-200 hover:border-bg-700 hover:bg-bg-800/60',
+  cta: 'shiny-cta',
 };
 
 const sizes: Record<NonNullable<CommonProps['size']>, string> = {
@@ -35,19 +36,19 @@ export function Button(
 ) {
   const { className, variant = 'secondary', size = 'md', children, disabled } = props;
 
-  const cls = cn(base, variants[variant], sizes[size], className);
+  const cls = cn(variant === 'cta' ? variants.cta : base, variant === 'cta' ? undefined : variants[variant], variant === 'cta' ? undefined : sizes[size], className);
 
   if ('href' in props && props.href) {
     if (disabled) {
       return (
         <span className={cls} aria-disabled="true">
-          {children}
+          {variant === 'cta' ? <span>{children}</span> : children}
         </span>
       );
     }
     return (
       <Link className={cls} href={props.href}>
-        {children}
+        {variant === 'cta' ? <span>{children}</span> : children}
       </Link>
     );
   }
@@ -59,7 +60,7 @@ export function Button(
       type={props.type ?? 'button'}
       disabled={disabled}
     >
-      {children}
+      {variant === 'cta' ? <span>{children}</span> : children}
     </button>
   );
 }

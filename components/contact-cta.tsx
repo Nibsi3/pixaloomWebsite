@@ -147,7 +147,7 @@ export function ContactCTA() {
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
               <Button
                 onClick={onSubmit}
-                variant="primary"
+                variant="cta"
                 size="lg"
                 disabled={!canSubmit}
               >
@@ -208,11 +208,11 @@ export function ContactCTA() {
             <div className="truncate text-xs text-fg-300">Fast build · SEO · Lead-gen</div>
           </div>
           <div className="flex shrink-0 gap-2">
-            <Button href="#contact" variant="primary" size="sm">
+            <Button href="#contact" variant="cta" size="sm">
               Quote
             </Button>
             <Button href={waHref} variant="secondary" size="sm">
-              WA
+              WhatsApp
             </Button>
           </div>
         </div>

@@ -39,7 +39,7 @@ export function Hero() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Button href="#contact" variant="primary" size="lg">
+                  <Button href="#contact" variant="cta" size="lg">
                     Start a project
                   </Button>
                   <Button href={whatsapp + waText} variant="secondary" size="lg">
