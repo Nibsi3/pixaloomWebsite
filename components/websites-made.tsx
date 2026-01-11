@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Container } from '@/components/ui/container';
 import { WorkMarquee } from '@/components/work-marquee';
 import { workItems } from '@/components/work-items';
@@ -41,15 +42,14 @@ export function WebsitesMade() {
                 </div>
 
                 <div className="aspect-[16/9] w-full bg-bg-850">
-                  <picture>
-                    <source srcSet={i.png} type="image/png" />
-                    <img
-                      src={i.fallback}
-                      alt={i.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </picture>
+                  <Image
+                    src={i.png || i.fallback}
+                    alt={i.name}
+                    width={1600}
+                    height={900}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               </Link>
             ))}
@@ -77,15 +77,14 @@ export function WebsitesMade() {
                 </div>
 
                 <div className="aspect-[16/9] w-full bg-bg-850">
-                  <picture>
-                    <source srcSet={i.png} type="image/png" />
-                    <img
-                      src={i.fallback}
-                      alt={i.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </picture>
+                  <Image
+                    src={i.png || i.fallback}
+                    alt={i.name}
+                    width={1600}
+                    height={900}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               </Link>
             ))}

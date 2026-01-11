@@ -1,6 +1,7 @@
 'use client';
 
 import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import { TerminalIntro } from '@/components/terminal-intro';
 import { workItems } from '@/components/work-items';
 
@@ -215,7 +216,13 @@ function PortfolioApp() {
         <div className="p-4">
           {selectedProject.png && (
             <div className="rounded-xl overflow-hidden mb-4">
-              <img src={selectedProject.png} alt={selectedProject.name} className="w-full h-48 object-cover" />
+              <Image
+                src={selectedProject.png}
+                alt={selectedProject.name}
+                width={1200}
+                height={675}
+                className="w-full h-48 object-cover"
+              />
             </div>
           )}
           <p className="text-neutral-400 mb-4">{selectedProject.meta}</p>
@@ -263,9 +270,11 @@ function PortfolioApp() {
           >
             {project.png && (
               <div className="h-24 overflow-hidden">
-                <img 
-                  src={project.png} 
+                <Image
+                  src={project.png}
                   alt={project.name}
+                  width={640}
+                  height={360}
                   className="h-full w-full object-cover transition-transform group-hover:scale-110"
                 />
               </div>
@@ -1451,7 +1460,13 @@ export function DesktopShell() {
                     : 'hover:bg-white/10 hover:scale-110'
                 }`}
               >
-                <img src={a.icon} alt={a.label} className="h-7 w-7 object-contain brightness-0 invert drop-shadow-lg" />
+                <Image
+                  src={a.icon}
+                  alt={a.label}
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 object-contain brightness-0 invert drop-shadow-lg"
+                />
                 {open && (
                   <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full transition-all ${
                     active ? 'h-1.5 w-4 bg-cyan-400' : 'h-1 w-1 bg-white/60'

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { LoadingScreen } from '@/components/loading-screen';
 import './globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -14,6 +13,7 @@ export const metadata: Metadata = {
   description:
     'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
   applicationName: 'Pixaloom',
+  category: 'technology',
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
   },
@@ -27,12 +27,14 @@ export const metadata: Metadata = {
     description:
       'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
     siteName: 'Pixaloom',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Pixaloom — Web Design & Development' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Pixaloom — Web Design & Development',
     description:
       'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
+    images: ['/twitter-image'],
   },
   robots: {
     index: true,
@@ -70,7 +72,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <LoadingScreen />
         {children}
       </body>
     </html>

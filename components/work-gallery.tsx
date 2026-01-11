@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import { cn } from '@/components/utils';
 
 type Props = {
@@ -27,14 +28,14 @@ export function WorkGallery({ title, heroPng, heroFallback, gallery }: Props) {
     <div className="space-y-3">
       <div className="overflow-hidden rounded-lg border border-bg-700 bg-bg-850">
         <div className="aspect-[16/9] w-full">
-          <picture>
-            <source srcSet={encodeURI(active)} type="image/png" />
-            <img
-              src={heroFallback}
-              alt={title}
-              className="h-full w-full object-cover"
-            />
-          </picture>
+          <Image
+            src={active || heroFallback}
+            alt={title}
+            width={1600}
+            height={900}
+            className="h-full w-full object-cover"
+            priority={false}
+          />
         </div>
       </div>
 
@@ -56,11 +57,12 @@ export function WorkGallery({ title, heroPng, heroFallback, gallery }: Props) {
                 aria-pressed={selected}
               >
                 <div className="h-12 w-20 bg-bg-850">
-                  <img
-                    src={encodeURI(src)}
+                  <Image
+                    src={src}
                     alt=""
+                    width={160}
+                    height={96}
                     className="h-full w-full object-cover"
-                    loading="lazy"
                   />
                 </div>
               </button>
