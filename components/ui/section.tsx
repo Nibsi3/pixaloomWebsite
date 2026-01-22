@@ -28,7 +28,7 @@ export function Section({
           </div>
         ) : null}
 
-        <div className="overflow-hidden rounded-lg border border-bg-700 bg-bg-800/40">
+        <div className="overflow-visible rounded-lg border border-bg-700 bg-bg-800/40">
           <div className="relative flex flex-col gap-3 border-b border-bg-700 bg-bg-900/25 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center gap-2">

@@ -96,9 +96,10 @@ export const CometCard = ({
         whileHover={{
           scale: 1.05,
           z: 50,
+          zIndex: 30,
           transition: { duration: 0.2 },
         }}
-        className="relative rounded-2xl"
+        className="relative z-0 rounded-2xl will-change-transform"
       >
         {children}
         <motion.div

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import {
@@ -61,8 +60,8 @@ export function Header() {
           </button>
 
           <a href={`${hashPrefix}#top`} className="flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 p-1">
-              <Image src="/pixaloomLogo.png" alt="Pixaloom" width={24} height={24} />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-bg-700 bg-bg-800 font-bold text-fg-100 text-sm">
+              PX
             </span>
           </a>
 
@@ -73,19 +72,24 @@ export function Header() {
       </header>
 
       {/* Desktop Sidebar - Aceternity Style */}
-      <Sidebar open={open} setOpenAction={setOpen}>
+      <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="fixed left-0 top-0 z-40 h-screen justify-between gap-6 border-r border-bg-700/70 bg-bg-900/90 backdrop-blur">
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             {/* Logo */}
-            <a href={`${hashPrefix}#top`} className="flex items-center gap-3 py-2">
-              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-bg-700 bg-bg-850 p-1">
-                <Image src="/pixaloomLogo.png" alt="Pixaloom" width={24} height={24} />
-              </span>
+            <a
+              href={`${hashPrefix}#top`}
+              className="grid w-full grid-cols-[70px_1fr] items-center py-2"
+            >
+              <div className="flex h-10 items-center justify-center">
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-bg-700 bg-bg-850 font-bold text-fg-100 text-sm">
+                  PX
+                </span>
+              </div>
               <motion.span
                 animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
                 initial={false}
                 transition={{ duration: 0.15, ease: 'easeOut' }}
-                className="whitespace-pre text-sm font-semibold text-fg-100"
+                className="whitespace-pre text-sm font-semibold text-white"
                 style={{ overflow: 'hidden' }}
               >
                 Pixaloom
@@ -107,9 +111,9 @@ export function Header() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/sidebar flex items-center justify-start gap-2 py-2"
+                  className="group/sidebar grid w-full grid-cols-[70px_1fr] items-center py-2"
                 >
-                  {link.icon}
+                  <div className="flex h-10 items-center justify-center">{link.icon}</div>
                   <motion.span
                     animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
                     initial={false}
@@ -125,8 +129,10 @@ export function Header() {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center gap-2 py-2">
-            <IconMapPin className="h-5 w-5 shrink-0 text-fg-400" />
+          <div className="grid w-full grid-cols-[70px_1fr] items-center py-2">
+            <div className="flex h-10 items-center justify-center">
+              <IconMapPin className="h-5 w-5 shrink-0 text-fg-400" />
+            </div>
             <motion.span
               animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
               initial={false}

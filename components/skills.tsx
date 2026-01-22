@@ -25,7 +25,7 @@ export function Skills() {
       title="Developer-grade UX"
       subtitle="A GitHub-like feel, but optimized for real customers: clarity, trust, and high-intent actions across the page."
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-3 overflow-visible">
         {groups.map((g) => (
           <CometCard key={g.title} className="h-full">
             <div className="card card-hover h-full p-5">

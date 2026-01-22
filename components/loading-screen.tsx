@@ -17,7 +17,7 @@ const BOOT_LINES = [
 
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [dots, setDots] = useState('');
   const [showDots, setShowDots] = useState(false);
   const [linesShown, setLinesShown] = useState(0);
@@ -49,12 +49,6 @@ export function LoadingScreen() {
     window.addEventListener('beforeunload', onBeforeUnload);
 
     const MIN_DURATION_MS = 3600;
-
-    setProgress(0);
-    setLinesShown(0);
-    setDots('');
-    setShowDots(false);
-    setVisible(true);
 
     let progressValue = 0;
     let linesValue = 0;
