@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useState, createContext, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 
 interface Links {
@@ -179,10 +179,13 @@ export const SidebarLink = ({
 
       <motion.span
         animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
+          scaleX: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-white text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        initial={false}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+        className="text-white text-sm group-hover/sidebar:translate-x-1 whitespace-pre inline-block !p-0 !m-0"
+        style={{ overflow: "hidden", transformOrigin: "left center", willChange: "transform, opacity" }}
       >
         {link.label}
       </motion.span>

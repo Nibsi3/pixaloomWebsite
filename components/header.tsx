@@ -85,15 +85,6 @@ export function Header() {
                   PX
                 </span>
               </div>
-              <motion.span
-                animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
-                initial={false}
-                transition={{ duration: 0.15, ease: 'easeOut' }}
-                className="whitespace-pre text-sm font-semibold text-white"
-                style={{ overflow: 'hidden' }}
-              >
-                Pixaloom
-              </motion.span>
             </a>
 
             {/* Navigation Links */}
@@ -115,11 +106,11 @@ export function Header() {
                 >
                   <div className="flex h-10 items-center justify-center">{link.icon}</div>
                   <motion.span
-                    animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
+                    animate={{ opacity: open ? 1 : 0, scaleX: open ? 1 : 0 }}
                     initial={false}
                     transition={{ duration: 0.15, ease: 'easeOut' }}
-                    className="whitespace-pre text-sm text-fg-200 transition duration-150 group-hover/sidebar:translate-x-1"
-                    style={{ overflow: 'hidden' }}
+                    className="whitespace-pre text-sm text-fg-200 group-hover/sidebar:translate-x-1"
+                    style={{ overflow: 'hidden', transformOrigin: 'left center', willChange: 'transform, opacity' }}
                   >
                     {link.label}
                   </motion.span>
@@ -134,11 +125,11 @@ export function Header() {
               <IconMapPin className="h-5 w-5 shrink-0 text-fg-400" />
             </div>
             <motion.span
-              animate={{ maxWidth: open ? 220 : 0, opacity: open ? 1 : 0 }}
+              animate={{ opacity: open ? 1 : 0, scaleX: open ? 1 : 0 }}
               initial={false}
               transition={{ duration: 0.15, ease: 'easeOut' }}
               className="whitespace-pre text-xs text-fg-400"
-              style={{ overflow: 'hidden' }}
+              style={{ overflow: 'hidden', transformOrigin: 'left center' }}
             >
               George, Western Cape
             </motion.span>
