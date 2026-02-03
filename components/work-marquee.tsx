@@ -37,8 +37,10 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
       const state = dragRef.current;
       const shouldPause = pausedRef.current || state.active;
 
+      const dt = now - last;
+      last = now;
+
       if (!shouldPause) {
-        const dt = now - last;
         const dx = dt / msPerPx;
         node.scrollLeft += dx;
 
@@ -47,8 +49,6 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
           node.scrollLeft -= half;
         }
       }
-
-      last = now;
       rafRef.current = requestAnimationFrame(tick);
     };
 
@@ -63,6 +63,8 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const el = viewportRef.current;
     if (!el) return;
+
+    e.currentTarget.setPointerCapture(e.pointerId);
 
     dragRef.current.active = true;
     dragRef.current.moved = false;
@@ -110,14 +112,15 @@ export function WorkMarquee({ className, children, speedPxPerSec = 35 }: Props) 
         className="work-marquee-viewport"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onMouseEnter={() => {
-          pausedRef.current = true;
+        onPointerUp={(e) => {
+          endDrag();
+          e.currentTarget.releasePointerCapture(e.pointerId);
         }}
-        onMouseLeave={() => {
-          pausedRef.current = false;
+        onPointerCancel={(e) => {
+          endDrag();
+          e.currentTarget.releasePointerCapture(e.pointerId);
         }}
+        onPointerLeave={endDrag}
         onClickCapture={onClickCapture}
       >
         {children}

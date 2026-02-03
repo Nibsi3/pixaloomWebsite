@@ -503,4 +503,63 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
     ],
     gallery: ['/pixa_pics/ai/Screenshot 2026-01-10 145507.png'],
   },
+  {
+    slug: 'haval',
+    name: 'Haval South Africa',
+    png: '/work/haval.png',
+    fallback: '/work/haval.svg',
+    meta: 'Automotive · Dealership · Lead Generation',
+    scope:
+      'A high-impact digital presence for Haval, the Chinese automotive giant making waves in South Africa. The project focused on showcasing their SUV lineup with bold visuals, seamless lead capture, and a user experience that converts browsers into test-drive bookings.',
+    highlights: [
+      'Vehicle showcase with immersive hero sections and model breakdowns',
+      'Lead generation forms integrated throughout the buyer journey',
+      'Mobile-first design for on-the-go car shoppers',
+      'Dealer locator with regional filtering',
+      'Finance calculator and enquiry flow for serious buyers',
+      'SEO-optimized model pages for organic discovery',
+    ],
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Headless CMS', 'Lead capture integrations'],
+    facts: [
+      { label: 'Industry', value: 'Automotive' },
+      { label: 'Brand', value: 'Haval South Africa' },
+      { label: 'Goal', value: 'Test drives + enquiries' },
+      { label: 'Focus', value: 'Conversion + brand presence' },
+    ],
+    sections: [
+      {
+        title: 'Vehicle showcase',
+        bullets: [
+          'Hero sections with bold imagery and key specs',
+          'Model comparison tools for informed decisions',
+          'Gallery views with interior/exterior shots',
+        ],
+      },
+      {
+        title: 'Lead generation',
+        bullets: [
+          'Test drive booking forms with dealer routing',
+          'Finance enquiry flow with pre-qualification',
+          'Newsletter and launch notification signups',
+        ],
+      },
+      {
+        title: 'Dealer experience',
+        bullets: [
+          'Dealer locator with map integration',
+          'Regional stock availability indicators',
+          'Direct dealer contact options',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/haval/landing page.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152459.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152516.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152520.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152529.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152539.png',
+      '/pixa_pics/haval/Screenshot 2026-02-03 152638.png',
+    ],
+  },
 ];
