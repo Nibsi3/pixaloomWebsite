@@ -76,9 +76,9 @@ export function Projects() {
       </div>
 
       <div className="mt-10">
-        <WorkMarquee aria-label="Website screenshots">
+        <WorkMarquee aria-label="Website screenshots" speedPxPerSec={140}>
           <div className="work-marquee-group">
-            {workItems.map((i) => (
+            {workItems.map((i, idx) => (
               <Link
                 key={i.slug}
                 href={`/work/${i.slug}`}
@@ -98,10 +98,13 @@ export function Projects() {
                   <Image
                     src={i.png || i.fallback}
                     alt={i.name}
-                    width={1600}
-                    height={900}
+                    width={800}
+                    height={450}
+                    sizes="(min-width: 768px) 360px, 78vw"
+                    quality={70}
                     className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    loading="lazy"
+                    priority={idx < 2}
+                    loading={idx < 2 ? 'eager' : 'lazy'}
                   />
                 </div>
               </Link>
@@ -131,8 +134,10 @@ export function Projects() {
                   <Image
                     src={i.png || i.fallback}
                     alt={i.name}
-                    width={1600}
-                    height={900}
+                    width={800}
+                    height={450}
+                    sizes="(min-width: 768px) 360px, 78vw"
+                    quality={55}
                     className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
                     loading="lazy"
                   />

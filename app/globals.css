@@ -58,24 +58,18 @@ body {
   }
 
   .work-marquee-viewport {
-    @apply flex overflow-x-auto;
-    scroll-behavior: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    touch-action: pan-x;
-    cursor: grab;
+    @apply overflow-hidden;
   }
 
-  .work-marquee-viewport::-webkit-scrollbar {
-    display: none;
-  }
-
-  .work-marquee-viewport:active {
-    cursor: grabbing;
+  .work-marquee-track {
+    @apply flex w-max;
+    will-change: transform;
+    animation: work-marquee-scroll var(--work-marquee-duration, 20s) linear infinite;
+    transform: translate3d(0, 0, 0);
   }
 
   .work-marquee-group {
-    @apply flex w-max gap-4 px-1 py-1;
+    @apply flex w-max shrink-0 gap-4 px-1 py-1;
   }
 
   .work-marquee-card {
@@ -178,6 +172,15 @@ body {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+@keyframes work-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
