@@ -10,7 +10,7 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 export function WorkMarquee({ className, children, speedPxPerSec = 140, ...props }: Props) {
   const durationSec = useMemo(() => {
     const clamped = Math.max(1, speedPxPerSec);
-    return Math.max(6, 12 * (140 / clamped));
+    return Math.max(40, 90 * (140 / clamped));
   }, [speedPxPerSec]);
 
   return (
