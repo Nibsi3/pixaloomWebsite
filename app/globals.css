@@ -72,6 +72,11 @@ body {
     @apply flex w-max shrink-0 gap-4 px-1 py-1;
   }
 
+  .work-marquee:hover .work-marquee-track,
+  .work-marquee:focus-within .work-marquee-track {
+    animation-play-state: paused;
+  }
+
   .work-marquee-card {
     width: min(460px, 78vw);
     flex: 0 0 auto;
