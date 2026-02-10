@@ -37,16 +37,6 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
                   <span className="rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[10px] text-fg-300">
                     {item.meta.split('·')[0]?.trim()}
                   </span>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-full border border-bg-700 bg-bg-850 px-2 py-0.5 text-[10px] text-accent-400 transition hover:bg-bg-800"
-                    >
-                      Live Site ↗
-                    </a>
-                  )}
                 </div>
                 <p className="text-xs text-fg-300">{item.meta}</p>
               </div>

@@ -1,43 +1,39 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { workItems, type WorkItem } from '@/components/work-items';
 import { cn } from '@/components/utils';
-import { IconChevronLeft, IconChevronRight, IconExternalLink } from '@tabler/icons-react';
+ 
 
 const categories = ['All', 'Web App', 'Ecommerce', 'Business', 'News', 'Healthcare', 'AI & Backend', 'Automotive'] as const;
 
-const featuredSlugs = ['nordflam', 'buildvolume', 'covercrete', 'featherbleu', 'george-herald', 'trakcare-barcode-scanner'];
-const featuredItems = featuredSlugs
-  .map((slug) => workItems.find((w) => w.slug === slug))
-  .filter(Boolean) as WorkItem[];
+const featured = workItems.find((w) => w.slug === 'nordflam') as WorkItem;
+const topOrder = ['caps-tutor', 'illumi', 'buildvolume'];
 
 export function ProjectsShowcase() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [carouselIndex, setCarouselIndex] = useState(0);
+ 
+  const filtered = useMemo(() => {
+    const base =
+      activeCategory === 'All'
+        ? workItems
+        : workItems.filter((w) => w.category === activeCategory);
 
-  const filtered =
-    activeCategory === 'All'
-      ? workItems
-      : workItems.filter((w) => w.category === activeCategory);
+    const priority = (slug: string) => {
+      const idx = topOrder.indexOf(slug);
+      return idx === -1 ? Number.POSITIVE_INFINITY : idx;
+    };
 
-  const prev = useCallback(() => {
-    setCarouselIndex((i) => (i === 0 ? featuredItems.length - 1 : i - 1));
-  }, []);
-
-  const next = useCallback(() => {
-    setCarouselIndex((i) => (i === featuredItems.length - 1 ? 0 : i + 1));
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(next, 6000);
-    return () => clearInterval(timer);
-  }, [next]);
-
-  const featured = featuredItems[carouselIndex];
+    return [...base].sort((a, b) => {
+      const pa = priority(a.slug);
+      const pb = priority(b.slug);
+      if (pa !== pb) return pa - pb;
+      return a.name.localeCompare(b.name);
+    });
+  }, [activeCategory]);
 
   return (
     <section className="py-8 sm:py-10">
@@ -58,26 +54,12 @@ export function ProjectsShowcase() {
           </p>
         </div>
 
-        {/* Featured carousel */}
+        {/* Featured */}
         <div className="mb-10 overflow-hidden rounded-lg border border-bg-700 bg-bg-800/40">
           <div className="border-b border-bg-700 bg-bg-900/25 px-4 py-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-fg-100">Featured Projects</h2>
-              <div className="flex items-center gap-1">
-                {featuredItems.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCarouselIndex(idx)}
-                    className={cn(
-                      'h-1.5 rounded-full transition-all',
-                      idx === carouselIndex
-                        ? 'w-6 bg-accent-500'
-                        : 'w-1.5 bg-bg-600 hover:bg-bg-500'
-                    )}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
+              <h2 className="text-sm font-semibold text-fg-100">Featured Project</h2>
+              <span className="text-xs text-fg-300">{featured.name}</span>
             </div>
           </div>
 
@@ -141,36 +123,9 @@ export function ProjectsShowcase() {
                   >
                     View Project
                   </Link>
-                  {featured.url && (
-                    <a
-                      href={featured.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-bg-700 bg-bg-800 px-4 py-2 text-sm font-medium text-fg-100 transition hover:border-fg-300/30 hover:bg-bg-700"
-                    >
-                      Live Site
-                      <IconExternalLink className="h-3.5 w-3.5" />
-                    </a>
-                  )}
                 </div>
               </div>
             </div>
-
-            {/* Nav arrows */}
-            <button
-              onClick={prev}
-              className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-bg-700 bg-bg-900/80 p-1.5 text-fg-200 backdrop-blur-sm transition hover:bg-bg-800 md:left-3"
-              aria-label="Previous project"
-            >
-              <IconChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={next}
-              className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-bg-700 bg-bg-900/80 p-1.5 text-fg-200 backdrop-blur-sm transition hover:bg-bg-800 md:right-3"
-              aria-label="Next project"
-            >
-              <IconChevronRight className="h-4 w-4" />
-            </button>
           </div>
         </div>
 
@@ -214,7 +169,7 @@ export function ProjectsShowcase() {
                   alt={`${project.name} — ${project.meta}`}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover grayscale transition duration-300 group-hover:grayscale-0"
+                  className="object-cover"
                   loading="lazy"
                 />
                 {project.category && (
