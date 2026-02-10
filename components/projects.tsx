@@ -102,7 +102,7 @@ export function Projects() {
                     height={450}
                     sizes="(min-width: 768px) 360px, 78vw"
                     quality={70}
-                    className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
+                    className="h-full w-full object-cover"
                     priority={idx < 2}
                     loading={idx < 2 ? 'eager' : 'lazy'}
                   />
@@ -138,7 +138,7 @@ export function Projects() {
                     height={450}
                     sizes="(min-width: 768px) 360px, 78vw"
                     quality={55}
-                    className="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
+                    className="h-full w-full object-cover"
                     loading="lazy"
                   />
                 </div>

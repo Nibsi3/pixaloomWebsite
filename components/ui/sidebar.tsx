@@ -100,7 +100,6 @@ export const DesktopSidebar = ({
       >
         {children}
       </motion.div>
-      <div className="hidden md:block w-[70px] shrink-0" />
     </>
   );
 };
@@ -180,12 +179,12 @@ export const SidebarLink = ({
       <motion.span
         animate={{
           opacity: animate ? (open ? 1 : 0) : 1,
-          scaleX: animate ? (open ? 1 : 0) : 1,
+          width: animate ? (open ? "auto" : 0) : "auto",
         }}
         initial={false}
         transition={{ duration: 0.15, ease: "easeOut" }}
         className="text-white text-sm group-hover/sidebar:translate-x-1 whitespace-pre inline-block !p-0 !m-0"
-        style={{ overflow: "hidden", transformOrigin: "left center", willChange: "transform, opacity" }}
+        style={{ overflow: "hidden", willChange: "opacity" }}
       >
         {link.label}
       </motion.span>

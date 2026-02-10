@@ -13,7 +13,7 @@ export function TerminalLanding() {
   return (
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
-      <div className="md:pl-[264px] md:pr-0">
+      <div>
         <main>
           <Hero />
           <Metrics />

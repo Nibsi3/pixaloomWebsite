@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/container';
@@ -5,6 +6,26 @@ import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { WorkGallery } from '@/components/work-gallery';
 import { workItems } from '@/components/work-items';
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const item = workItems.find((x) => x.slug === params.slug);
+  if (!item) return {};
+
+  const title = `${item.name} — ${item.meta}`;
+  const description = item.scope.slice(0, 160);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/work/${item.slug}` },
+    openGraph: {
+      title: `${item.name} · Pixaloom`,
+      description,
+      url: `/work/${item.slug}`,
+      images: item.png ? [{ url: item.png, alt: item.name }] : undefined,
+    },
+  };
+}
 
 export default function WorkDetailPage({ params }: { params: { slug: string } }) {
   const item = workItems.find((x) => x.slug === params.slug);
@@ -17,7 +38,7 @@ export default function WorkDetailPage({ params }: { params: { slug: string } })
   return (
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
-      <div className="md:pl-[264px] md:pr-0">
+      <div>
         <main className="py-8 sm:py-10">
           <Container>
             <Link
