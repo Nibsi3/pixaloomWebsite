@@ -22,7 +22,7 @@ export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-bg-900 bg-grid-fade">
       <Header />
-      <div>
+      <div className="md:pl-[70px]">
         <main>
           <ProjectsShowcase />
         </main>
