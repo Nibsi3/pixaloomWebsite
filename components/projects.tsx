@@ -98,13 +98,12 @@ export function Projects() {
                   <Image
                     src={i.png || i.fallback}
                     alt={i.name}
-                    width={800}
-                    height={450}
-                    sizes="(min-width: 768px) 360px, 78vw"
-                    quality={70}
+                    width={460}
+                    height={259}
+                    sizes="460px"
+                    quality={60}
                     className="h-full w-full object-cover"
-                    priority={idx < 2}
-                    loading={idx < 2 ? 'eager' : 'lazy'}
+                    loading="eager"
                   />
                 </div>
               </Link>
@@ -134,12 +133,12 @@ export function Projects() {
                   <Image
                     src={i.png || i.fallback}
                     alt={i.name}
-                    width={800}
-                    height={450}
-                    sizes="(min-width: 768px) 360px, 78vw"
-                    quality={55}
+                    width={460}
+                    height={259}
+                    sizes="460px"
+                    quality={60}
                     className="h-full w-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               </Link>

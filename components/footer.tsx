@@ -12,13 +12,16 @@ export function Footer() {
             <div className="mt-1 text-xs text-fg-300">George, Western Cape · Full-Stack Developer</div>
           </div>
           <div className="flex flex-wrap gap-3 text-sm">
-            <a className="text-fg-200 hover:text-fg-100" href="#projects">
+            <a className="text-fg-200 hover:text-fg-100" href="/projects">
               Projects
             </a>
-            <a className="text-fg-200 hover:text-fg-100" href="#skills">
+            <a className="text-fg-200 hover:text-fg-100" href="/blog">
+              Blog
+            </a>
+            <a className="text-fg-200 hover:text-fg-100" href="/#skills">
               Skills
             </a>
-            <a className="text-fg-200 hover:text-fg-100" href="#contact">
+            <a className="text-fg-200 hover:text-fg-100" href="/#contact">
               Contact
             </a>
             <a className="text-fg-200 hover:text-fg-100" href="https://github.com/Nibsi3">
@@ -27,7 +30,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 text-xs text-fg-300">© {year} Cameron Falck. All rights reserved.</div>
+        <div className="mt-6 text-xs text-fg-300">
+          Web design &amp; development in George, Western Cape. Serving the Garden Route including Wilderness, Knysna, Mossel Bay, Plettenberg Bay, and Oudtshoorn.
+        </div>
+        <div className="mt-2 text-xs text-fg-400">© {year} Pixaloom. All rights reserved.</div>
       </Container>
     </footer>
   );

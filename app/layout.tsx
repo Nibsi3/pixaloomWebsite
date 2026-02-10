@@ -62,12 +62,43 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': 'ProfessionalService',
+    '@id': siteUrl,
     name: 'Pixaloom',
     url: siteUrl,
-    sameAs: ['https://github.com/Nibsi3'],
     description:
       'Modern, conversion-first websites and web apps. Performance-focused, SEO-ready, and designed to generate leads.',
+    sameAs: ['https://github.com/Nibsi3'],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'George',
+      addressRegion: 'Western Cape',
+      addressCountry: 'ZA',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: -33.963,
+      longitude: 22.4617,
+    },
+    areaServed: [
+      { '@type': 'City', name: 'George' },
+      { '@type': 'City', name: 'Wilderness' },
+      { '@type': 'City', name: 'Knysna' },
+      { '@type': 'City', name: 'Mossel Bay' },
+      { '@type': 'City', name: 'Plettenberg Bay' },
+      { '@type': 'City', name: 'Oudtshoorn' },
+      { '@type': 'AdministrativeArea', name: 'Garden Route' },
+    ],
+    knowsAbout: [
+      'Web Design',
+      'Web Development',
+      'Next.js',
+      'React',
+      'SEO',
+      'Ecommerce',
+      'Lead Generation',
+    ],
+    priceRange: '$$',
   };
 
   return (
