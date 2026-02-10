@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { StellarBackground } from '@/components/stellar-background';
 import { LoadingScreen } from '@/components/loading-screen';
@@ -117,7 +116,6 @@ export default function RootLayout({
           aria-hidden="true"
         />
         <div className="relative z-20">{children}</div>
-        <Analytics />
       </body>
     </html>
   );
