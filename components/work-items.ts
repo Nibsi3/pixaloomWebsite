@@ -10,12 +10,15 @@ export type WorkItem = {
   gallery?: string[];
   facts?: { label: string; value: string }[];
   sections?: { title: string; description?: string; bullets?: string[] }[];
+  category?: 'Web App' | 'Ecommerce' | 'Business' | 'News' | 'AI & Backend' | 'Healthcare' | 'Automotive';
+  url?: string;
 };
 
 export const workItems: WorkItem[] = [
   {
     slug: 'caps-tutor',
     name: 'CAPS Tutor',
+    category: 'Web App',
     png: '/work/capstutor.png',
     fallback: '/work/caps-tutor.svg',
     meta: 'EdTech · AI Tutor · Web App',
@@ -123,6 +126,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'paws-on-route',
     name: 'Paws On Route',
+    category: 'Business',
     png: '/work/pawsonroute.png',
     fallback: '/work/paws-on-route.svg',
     meta: 'WordPress · Local Services · SEO',
@@ -160,6 +164,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'team-colours',
     name: 'Team Colours',
+    category: 'Ecommerce',
     png: '/work/teamcolours.png',
     fallback: '/work/team-colours.svg',
     meta: 'WordPress · Ecommerce · SEO',
@@ -197,6 +202,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'vicbay',
     name: 'VicBay',
+    category: 'Ecommerce',
     png: '/work/vicbay.png',
     fallback: '/work/vicbay.svg',
     meta: 'WordPress · Ecommerce · SEO',
@@ -233,6 +239,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'illumi',
     name: 'Illumi',
+    category: 'Web App',
     png: '/work/illumi.png',
     fallback: '/work/illumi.svg',
     meta: 'Next.js · Invoicing · Finance Dashboard',
@@ -324,6 +331,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'physiotherapy',
     name: 'Physiotherapy',
+    category: 'Healthcare',
     png: '/work/physiope.png',
     fallback: '/work/physiotherapy.svg',
     meta: 'WordPress · Healthcare · Contact Flow',
@@ -360,6 +368,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'kikay-pharma',
     name: 'Kikay Pharma Consultants',
+    category: 'Business',
     png: '/work/kikay.png',
     fallback: '/work/kikay.svg',
     meta: 'WordPress · Corporate · Enquiries',
@@ -396,6 +405,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'spotlight',
     name: 'Spotlight',
+    category: 'Web App',
     png: '/work/spotlight.png',
     fallback: '/work/spotlight.svg',
     meta: 'Next.js · Maps · Admin · Analytics',
@@ -438,6 +448,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'nexai',
     name: 'NexAI',
+    category: 'AI & Backend',
     png: '/work/nexai.png',
     fallback: '/work/nexai.svg',
     meta: 'AI · Backend · Integrations',
@@ -474,6 +485,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'ai-testing',
     name: 'AI Testing',
+    category: 'AI & Backend',
     png: '/work/ai.png',
     fallback: '/work/ai-testing.svg',
     meta: 'Robotics · QA · Platforms',
@@ -506,6 +518,7 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
   {
     slug: 'haval',
     name: 'Haval South Africa',
+    category: 'Automotive',
     png: '/work/haval.png',
     fallback: '/work/haval.svg',
     meta: 'Automotive · Dealership · Lead Generation',
@@ -560,6 +573,364 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
       '/pixa_pics/haval/Screenshot 2026-02-03 152529.png',
       '/pixa_pics/haval/Screenshot 2026-02-03 152539.png',
       '/pixa_pics/haval/Screenshot 2026-02-03 152638.png',
+    ],
+  },
+  {
+    slug: 'nordflam',
+    name: 'NORDflam SA',
+    category: 'Ecommerce',
+    url: 'https://nordflam.vercel.app',
+    png: '/work/nordflam.png',
+    fallback: '/work/nordflam.png',
+    meta: 'Next.js · Ecommerce · Product Catalog',
+    scope:
+      'A premium product showcase and ecommerce website for NORDflam SA, the South African distributor of NORDflam fireplaces — a European brand with over two decades of leadership in sustainable heating technology. The site presents their full cast iron, steel, and wood-burning fireplace range with detailed product pages, pricing, and a dealer locator to connect customers with authorized retailers across Southern Africa.',
+    highlights: [
+      'Product catalog with categories: cast iron, steel, wood burning, and recuperation',
+      'Individual product pages with specs, pricing, and imagery',
+      'Dealer/retailer locator for authorized stockists',
+      'Technology page showcasing ECODESIGN 2022 certification and engineering',
+      'Sustainability section highlighting eco-friendly manufacturing',
+      'Clean, brand-forward design with strong visual hierarchy',
+      'SEO-optimized structure for product and brand discovery',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'Product catalog + ecommerce' },
+      { label: 'Industry', value: 'Fireplaces & heating' },
+      { label: 'Region', value: 'Southern Africa' },
+      { label: 'Status', value: 'Live' },
+    ],
+    sections: [
+      {
+        title: 'Product experience',
+        bullets: [
+          'Category-based browsing across cast iron, steel, and wood-burning ranges',
+          'Detailed product pages with specifications, kW output, and pricing in ZAR',
+          'Clean product cards with quick-view information',
+        ],
+      },
+      {
+        title: 'Brand & trust',
+        bullets: [
+          'Technology page explaining combustion engineering and efficiency ratings',
+          'Sustainability messaging with ECODESIGN 2022 certification',
+          'Retailer network to build buyer confidence',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/nordflam/nordflam-fireplace-cover.png',
+      '/pixa_pics/nordflam/nordflam-products-page.png',
+      '/pixa_pics/nordflam/nordflam-product-categories.png',
+      '/pixa_pics/nordflam/nordflam-technology-page.png',
+      '/pixa_pics/nordflam/nordflam-retailers-page.png',
+    ],
+  },
+  {
+    slug: 'buildvolume',
+    name: 'BuildVolume',
+    category: 'Ecommerce',
+    url: 'https://buildvolume.vercel.app',
+    png: '/work/buildvolume.png',
+    fallback: '/work/buildvolume.png',
+    meta: 'Next.js · Ecommerce · 3D Printing',
+    scope:
+      'A full ecommerce website for BuildVolume, South Africa\'s official supplier of 3D printers, 3D scanners, consumables, and spares. The site serves as both a product discovery platform and an online shop, featuring brand landing pages for Ultimaker, Formlabs, Bambu Lab, and Creality, along with support resources, a training facility page, and a blog. BuildVolume operates from locations in Pretoria, Sandton, and Century City.',
+    highlights: [
+      'Full online shop with 100+ products across printers, scanners, consumables, and spares',
+      'Brand-specific landing pages for Ultimaker, Formlabs, Bambu Lab, and Creality',
+      'Individual product pages with detailed specs and pricing',
+      'Order form for streamlined purchasing',
+      'Support section with resources and book-in support',
+      'Training facility page for customer education',
+      'Blog for industry news and updates',
+      'SEO-optimized product and category pages',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'Ecommerce + product catalog' },
+      { label: 'Industry', value: '3D printing & scanning' },
+      { label: 'Products', value: '100+ SKUs' },
+      { label: 'Status', value: 'Live' },
+    ],
+    sections: [
+      {
+        title: 'Shop & products',
+        bullets: [
+          'Category-based navigation: printers, scanners, consumables, spares',
+          'Product detail pages with images, specs, and pricing',
+          'Brand landing pages with curated product selections',
+          'Order form for direct purchasing',
+        ],
+      },
+      {
+        title: 'Support & education',
+        bullets: [
+          'Dedicated support section for troubleshooting and book-in',
+          'Training facility page for hands-on customer education',
+          'Blog with industry updates and how-to content',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/buildvolume/buildvolume-3d-printing-cover.png',
+      '/pixa_pics/buildvolume/buildvolume-homepage.png',
+      '/pixa_pics/buildvolume/buildvolume-shop-page.png',
+      '/pixa_pics/buildvolume/buildvolume-product-detail.png',
+      '/pixa_pics/buildvolume/buildvolume-about-page.png',
+    ],
+  },
+  {
+    slug: 'covercrete',
+    name: 'Covercrete',
+    category: 'Business',
+    url: 'https://covercrete.vercel.app',
+    png: '/work/covercrete.png',
+    fallback: '/work/covercrete.png',
+    meta: 'Next.js · Business · Lead Generation',
+    scope:
+      'A premium business website for Covercrete, a South African decorative concrete finishes company serving Gauteng, Cape Town, and KZN. The site showcases their seamless cementitious screed finishes with a strong visual gallery, 14+ colour options, application types, and a clear process flow — all designed to drive free quote requests and establish trust with homeowners and contractors.',
+    highlights: [
+      'Visual gallery showcasing real project transformations',
+      '14+ colour options with dedicated colour browser page',
+      'Application pages: floors, walls, bathrooms, outdoor, pools, countertops',
+      'Step-by-step "How It Works" process flow',
+      'Client testimonials for social proof',
+      'Strong CTA flow driving free quote requests',
+      'Pricing transparency page',
+      'SEO-optimized for decorative concrete keywords in South Africa',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'Business website + lead gen' },
+      { label: 'Industry', value: 'Decorative concrete finishes' },
+      { label: 'Regions', value: 'Gauteng · Cape Town · KZN' },
+      { label: 'Status', value: 'Live' },
+    ],
+    sections: [
+      {
+        title: 'Visual selling',
+        bullets: [
+          'Before/after gallery of real project transformations',
+          'Colour browser with 14+ finish options',
+          'Application-specific pages for targeted discovery',
+        ],
+      },
+      {
+        title: 'Lead generation',
+        bullets: [
+          'Free quote CTAs placed throughout the buyer journey',
+          'Clear process flow to reduce friction',
+          'Testimonials and social proof for conversion',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/covercrete/covercrete-decorative-concrete-cover.png',
+      '/pixa_pics/covercrete/covercrete-homepage.png',
+      '/pixa_pics/covercrete/covercrete-colour-options.png',
+      '/pixa_pics/covercrete/covercrete-gallery-page.png',
+      '/pixa_pics/covercrete/covercrete-contact-page.png',
+    ],
+  },
+  {
+    slug: 'featherbleu',
+    name: 'Featherbleu Industries',
+    category: 'Business',
+    url: 'https://featherbleu.vercel.app',
+    png: '/work/featherbleu.png',
+    fallback: '/work/featherbleu.png',
+    meta: 'Next.js · Security · Smart Home',
+    scope:
+      'A professional business website for Featherbleu Industries, a Garden Route-based company specializing in smart security and home automation. The site covers their full service offering — gate automation, CCTV systems, access control, garage doors, and smart home automation — with service-specific pages, project showcases, and resource sections for installation guides, maintenance advice, and security tips.',
+    highlights: [
+      'Service pages for gate automation, CCTV, access control, garage doors, and smart home',
+      'Project showcase demonstrating completed installations',
+      'Resource hub: installation guides, maintenance advice, security tips, industry news',
+      'Blog with security-focused content',
+      'All 5-star review social proof',
+      'Strong contact flow for enquiries and quotes',
+      'SEO-optimized for Garden Route security keywords',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'Business website + lead gen' },
+      { label: 'Industry', value: 'Security & home automation' },
+      { label: 'Region', value: 'George to Knysna (Garden Route)' },
+      { label: 'Status', value: 'Live' },
+    ],
+    sections: [
+      {
+        title: 'Service pages',
+        bullets: [
+          'Dedicated pages for each service vertical with clear CTAs',
+          'Project showcase of completed installations',
+          'Service comparison to help buyers choose',
+        ],
+      },
+      {
+        title: 'Resources & content',
+        bullets: [
+          'Installation guides and maintenance advice',
+          'Security tips and industry news articles',
+          'Blog system for ongoing content growth and SEO',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/featherbleu/featherbleu-security-automation-cover.png',
+      '/pixa_pics/featherbleu/featherbleu-homepage.png',
+      '/pixa_pics/featherbleu/featherbleu-services-page.png',
+      '/pixa_pics/featherbleu/featherbleu-cctv-systems.png',
+      '/pixa_pics/featherbleu/featherbleu-gate-automation.png',
+      '/pixa_pics/featherbleu/featherbleu-contact-page.png',
+    ],
+  },
+  {
+    slug: 'george-herald',
+    name: 'George Herald',
+    category: 'News',
+    url: 'https://georgeherald.vercel.app',
+    png: '/work/georgeherald.png',
+    fallback: '/work/georgeherald.png',
+    meta: 'Next.js · News Platform · CMS',
+    scope:
+      'A full-featured digital news platform for the George Herald, the Garden Route\'s trusted local newspaper. The site delivers breaking news, sport, community stories, classifieds, photo galleries, and video content — with an admin CMS for article management, category/tag workflows, media uploads, and workspace-based content organization. Work in progress.',
+    highlights: [
+      'News homepage with hero stories, latest articles, and trending sections',
+      'Category sections: news, sport, community, lifestyle, entertainment, opinion, schools',
+      'Regional sub-sections: Mossel Bay, Knysna-Plett, Oudtshoorn, Graaff-Reinet',
+      'Photo galleries and video content pages',
+      'Classifieds section with subcategories (vacancies, services, etc.)',
+      'Full admin CMS: article creation, categories, tags, media, and member management',
+      'Search functionality across all content',
+      'SEO-optimized article pages with structured metadata',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Cloudflare R2 (media storage)',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'News platform + CMS' },
+      { label: 'Industry', value: 'Local news & media' },
+      { label: 'Region', value: 'George & Garden Route' },
+      { label: 'Status', value: 'Work in progress' },
+    ],
+    sections: [
+      {
+        title: 'Reader experience',
+        bullets: [
+          'Breaking news with hero stories and trending articles',
+          'Category navigation across 10+ sections',
+          'Photo galleries, video pages, and classified listings',
+          'Full-text search across all published content',
+        ],
+      },
+      {
+        title: 'Admin CMS',
+        bullets: [
+          'Article creation and editing with rich content support',
+          'Category and tag management workflows',
+          'Media upload and management via Cloudflare R2',
+          'Member and workspace management for multi-author support',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/georgeherald/george-herald-news-cover.png',
+      '/pixa_pics/georgeherald/george-herald-homepage.png',
+      '/pixa_pics/georgeherald/george-herald-article-page.png',
+      '/pixa_pics/georgeherald/george-herald-sport-section.png',
+      '/pixa_pics/georgeherald/george-herald-community-section.png',
+    ],
+  },
+  {
+    slug: 'trakcare-barcode-scanner',
+    name: 'TrakCare Barcode Scanner',
+    category: 'Healthcare',
+    url: 'https://trakcare-barcode-scanner.vercel.app',
+    png: '/work/trakcare.png',
+    fallback: '/work/trakcare.png',
+    meta: 'Next.js · Healthcare · Utility',
+    scope:
+      'A purpose-built barcode scanning utility for doctors and healthcare workers using the NHLS TrakCare Lab system. My wife is a doctor and had issues with the lengthy login and patient search process in TrakCare — logging in, navigating to the patient search page, entering data, and searching for patient MRN numbers just to view results. Existing solutions were locked behind paywalls, so she asked me to build a free alternative. TrakCare Barcode Scanner lets medical staff scan a patient barcode, instantly copy credentials for quick login, and jump straight to patient results — saving significant time during rounds and consultations.',
+    highlights: [
+      'Barcode scanning via device camera for instant patient lookup',
+      'TrakCare credential storage on-device for quick copy-paste login',
+      'Direct deep-link to patient results in TrakCare Lab',
+      'Zero paywall — free for all healthcare workers',
+      'Built for speed: scan → login → results in seconds',
+      'Mobile-first design for bedside and ward use',
+      'Privacy-focused: all credentials stored locally on device only',
+    ],
+    stack: [
+      'Next.js 16 (App Router)',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
+      'Turbopack',
+      'Vercel',
+    ],
+    facts: [
+      { label: 'Type', value: 'Healthcare utility app' },
+      { label: 'Users', value: 'Doctors & healthcare workers' },
+      { label: 'System', value: 'NHLS TrakCare Lab' },
+      { label: 'Status', value: 'Live' },
+    ],
+    sections: [
+      {
+        title: 'Problem solved',
+        bullets: [
+          'Eliminated lengthy manual login and patient search workflow',
+          'Replaced paid alternatives with a free, purpose-built tool',
+          'Reduced patient lookup from minutes to seconds',
+        ],
+      },
+      {
+        title: 'How it works',
+        bullets: [
+          'Step 1: Save TrakCare credentials locally for quick access',
+          'Step 2: Scan patient barcode with device camera',
+          'Step 3: Auto-navigate to patient results in TrakCare Lab',
+        ],
+      },
+    ],
+    gallery: [
+      '/pixa_pics/trakcare/trakcare-barcode-scanner-cover.png',
     ],
   },
 ];

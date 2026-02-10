@@ -161,8 +161,8 @@ export function Projects() {
                 Get a quote
               </HoverBorderGradient>
             </Link>
-            <Button href="https://github.com/Nibsi3" variant="secondary">
-              View GitHub
+            <Button href="/projects" variant="secondary">
+              View Projects
             </Button>
           </div>
         </div>
