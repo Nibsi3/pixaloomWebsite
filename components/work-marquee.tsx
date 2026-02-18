@@ -18,7 +18,7 @@ export function WorkMarquee({ className, children, speedPxPerSec = 140, ...props
       <div className="work-marquee-viewport">
         <div
           className="work-marquee-track"
-          style={{ animation: `work-marquee-scroll ${durationSec}s linear infinite` }}
+          style={{ '--work-marquee-duration': `${durationSec}s` } as React.CSSProperties}
         >
           {children}
         </div>

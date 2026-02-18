@@ -66,6 +66,8 @@ body {
     will-change: transform;
     animation: work-marquee-scroll var(--work-marquee-duration, 20s) linear infinite;
     transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .work-marquee-group {

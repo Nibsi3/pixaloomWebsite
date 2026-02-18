@@ -883,8 +883,8 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
     name: 'TrakCare Barcode Scanner',
     category: 'Healthcare',
     url: 'https://trakcare-barcode-scanner.vercel.app',
-    png: '/work/trakcare.png',
-    fallback: '/work/trakcare.png',
+    png: '/trakare/trakcareCover.png',
+    fallback: '/trakare/trakcareCover.png',
     meta: 'Next.js · Healthcare · Utility',
     scope:
       'A purpose-built barcode scanning utility for doctors and healthcare workers using the NHLS TrakCare Lab system. My wife is a doctor and had issues with the lengthy login and patient search process in TrakCare — logging in, navigating to the patient search page, entering data, and searching for patient MRN numbers just to view results. Existing solutions were locked behind paywalls, so she asked me to build a free alternative. TrakCare Barcode Scanner lets medical staff scan a patient barcode, instantly copy credentials for quick login, and jump straight to patient results — saving significant time during rounds and consultations.',
@@ -931,6 +931,90 @@ The platform combines structured CAPS-aligned content, interactive lessons, prac
     ],
     gallery: [
       '/pixa_pics/trakcare/trakcare-barcode-scanner-cover.png',
+    ],
+  },
+  {
+    slug: 'slip-a-tip',
+    name: 'Slip a Tip',
+    category: 'Web App',
+    png: '/slipatip/cover.png',
+    fallback: '/slipatip/cover.png',
+    meta: 'Node.js · Fintech · Digital Tipping',
+    scope:
+      'Slip a Tip is a South African digital tipping platform that enables customers to send cashless tips to informal workers such as car guards. The platform allocates funds to individual worker wallets and supports payouts via bank transfer (EFT, RTC, PayShap) or card-based withdrawals (virtual/physical debit card with ATM PIN). Built as an embedded finance fintech stack — not just a payment app — it includes a ledger-based wallet system, payment orchestration, card issuing integration, reconciliation engine, and a compliance-aware architecture designed for regulatory requirements in South Africa.',
+    highlights: [
+      'QR-based tipping flow for instant cashless tips to informal workers',
+      'Ledger-based wallet system with double-entry bookkeeping and immutable transaction logs',
+      'Payout via EFT, RTC, PayShap, or card-based withdrawal (virtual/physical debit card)',
+      'Card issuing integration with PIN-enabled ATM withdrawal support',
+      'FICA/KYC verification for workers and AML transaction monitoring',
+      'Reconciliation engine with daily checks, mismatch alerts, and settlement reporting',
+      'JWT authentication with RBAC, rate limiting, and OWASP Top 10 protections',
+      'PCI-DSS compliance via payment partner — tokenised transactions only',
+      'Safeguarded trust account architecture for stored value funds',
+      'Event-driven webhook processing with idempotency keys for payment retries',
+    ],
+    stack: [
+      'Node.js (TypeScript)',
+      'React Native (iOS + Android)',
+      'Next.js (Admin Dashboard)',
+      'PostgreSQL',
+      'Redis (session + rate limiting)',
+      'BullMQ (async job queue)',
+      'Direct Transact / PayShap / Stitch',
+      'Kubernetes / serverless deployment',
+    ],
+    facts: [
+      { label: 'Type', value: 'Digital tipping + embedded finance' },
+      { label: 'Region', value: 'South Africa' },
+      { label: 'Users', value: 'Customers · Workers · Admins' },
+      { label: 'Payout', value: 'EFT · PayShap · Card · ATM' },
+    ],
+    sections: [
+      {
+        title: 'Wallet architecture',
+        bullets: [
+          'Internal stored value wallet with ledger-based balance tracking',
+          'Double-entry system: debit platform clearing account, credit worker wallet on each tip',
+          'Worker sees updated balance instantly after payment confirmation',
+          'Actual funds safeguarded in trust account with infrastructure partner',
+        ],
+      },
+      {
+        title: 'Payments & payouts',
+        bullets: [
+          'Acceptance via card (Visa/Mastercard), PayShap, and instant EFT',
+          'Bank transfer payout: EFT, RTC, PayShap',
+          'Card-based withdrawal: virtual debit card, physical debit card, PIN-enabled ATM',
+          'Card issuing handled by BaaS provider (Direct Transact or equivalent)',
+        ],
+      },
+      {
+        title: 'Security & compliance',
+        bullets: [
+          'VPC isolation, AES-256 encryption at rest, TLS 1.2+ for all APIs',
+          'WAF, JWT auth, RBAC, rate limiting, input validation',
+          'PCI-DSS handled by payments partner — no card details stored',
+          'FICA/KYC verification, AML monitoring, suspicious activity reporting',
+          'Webhook signature verification and idempotency keys',
+        ],
+      },
+      {
+        title: 'Settlement & reconciliation',
+        bullets: [
+          'Automated daily reconciliation checks across all wallets',
+          'Mismatch alerts and settlement monitoring dashboards',
+          'Immutable transaction logs for audit trail',
+          'Admin dashboard for user management, KYC status, and reporting',
+        ],
+      },
+    ],
+    gallery: [
+      '/slipatip/cover.png',
+      '/slipatip/Screenshot 2026-02-18 114955.png',
+      '/slipatip/Screenshot 2026-02-18 115018.png',
+      '/slipatip/Screenshot 2026-02-18 115037.png',
+      '/slipatip/Screenshot 2026-02-18 115044.png',
     ],
   },
 ];
