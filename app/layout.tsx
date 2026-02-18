@@ -112,7 +112,7 @@ export default function RootLayout({
         <StellarBackground />
         <div
           className="pointer-events-none fixed inset-0 z-10 opacity-[0.12] contrast-150"
-          style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}
+          style={{ backgroundImage: "url('/noise.svg')" }}
           aria-hidden="true"
         />
         <div className="relative z-20">{children}</div>
