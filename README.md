@@ -30,11 +30,12 @@ This repository contains active product code and implementation details for the 
 - `scripts/`
 
 ## Demo
-![icon](public\icon.png)
+![icon](public/icon.png)
 
-![pixaloomLogo](public\pixaloomLogo.png)
+![pixaloomLogo](public/pixaloomLogo.png)
 
 ## Security Notes
 - Keep credentials in environment variables, never in tracked files.
 - Rotate and replace any key immediately if exposure is suspected.
 - Use least-privilege tokens for third-party integrations.
+
